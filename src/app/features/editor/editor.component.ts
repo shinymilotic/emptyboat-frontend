@@ -312,7 +312,7 @@ export class EditorComponent implements OnInit, OnDestroy {
           this.router.navigate(["/articles/", data]);
         },
         error: (errors) => {
-          this.errors = errors.errors;
+          this.errors = errors;
           this.isSubmitting = false;
         },
       });

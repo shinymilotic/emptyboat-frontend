@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -8,14 +8,9 @@ import { Router } from "@angular/router";
 import { User } from "../../core/models/auth/user.model";
 import { UserService } from "../../core/services/user.service";
 import { ListErrorsComponent } from "../../shared/list-errors.component";
-import { ApiValidationError } from "../../core/models/apivalidationerror.model";
-import { Subject } from "rxjs";
-import { map, takeUntil } from "rxjs/operators";
 import { SettingsForm } from "./SettingsForm";
 import { InputTextModule } from 'primeng/inputtext';
-import { InputText} from 'primeng/inputtext';
 import { FloatLabelModule} from 'primeng/floatlabel';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ApiError } from "src/app/core/models/apierrors.model";
 
 @Component({

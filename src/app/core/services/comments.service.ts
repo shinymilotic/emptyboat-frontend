@@ -3,7 +3,6 @@ import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Comment } from "../models/blog/comment.model";
 import { RestResponse } from "../models/restresponse.model";
-import { CommentList } from "../models/blog/comment-list.model";
 
 @Injectable({ providedIn: "root" })
 export class CommentsService {
@@ -16,9 +15,7 @@ export class CommentsService {
 
   add(slug: string, payload: string): Observable<RestResponse<Comment>> {
     return this.http
-      .post<RestResponse<Comment>>(`/articles/${slug}/comments`, {
-        comment: { body: payload },
-      });
+      .post<RestResponse<Comment>>(`/articles/${slug}/comments`, { body: payload });
   }
 
   delete(commentId: string, slug: string): Observable<RestResponse<void>> {

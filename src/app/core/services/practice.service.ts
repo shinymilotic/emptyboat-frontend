@@ -1,13 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import { Practice } from "../models/test/practice.model";
 import { UserPractice } from "../models/test/user-practices.model";
 import { PracticeResult } from "src/app/features/profile/practice-result/PracticeResult";
 import { RestResponse } from "../models/restresponse.model";
 import { CreatePracticeResponse } from "src/app/features/test/practice-test/create-practice-res.model";
-import { UserPracticeResponse } from "src/app/features/profile/user-practice/user-practice-res.model";
 
 @Injectable({ providedIn: "root" })
 export class PracticeService {
@@ -15,7 +13,7 @@ export class PracticeService {
 
   createPractice(practice: Practice): Observable<RestResponse<CreatePracticeResponse>> {
     return this.http
-      .post<RestResponse<CreatePracticeResponse>>(`/practice`, { practice });
+      .post<RestResponse<CreatePracticeResponse>>(`/practice`, practice);
   }
 
   getPractices(username: string): Observable<RestResponse<UserPractice[]>> {

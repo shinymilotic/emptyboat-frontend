@@ -1,12 +1,11 @@
 import { NgForOf, CommonModule } from "@angular/common";
-import { Component, OnInit, Signal } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
 } from "@angular/forms";
 import {
   ActivatedRoute,
@@ -15,7 +14,6 @@ import {
   RouterLinkActive,
 } from "@angular/router";
 import {
-  combineLatest,
   catchError,
   throwError,
   takeUntil,
@@ -65,7 +63,6 @@ export class TestComponent implements OnInit {
     const group: any = {};
 
     questions.forEach((question) => {
-
       if (question.questionType == 1) {
           const choiceQuestion = question as ChoiceQuestion;
           if (choiceQuestion.isMultipleAnswers) {
