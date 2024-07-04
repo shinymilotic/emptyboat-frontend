@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
 import { ArticleListConfig } from "../models/blog/article-list-config.model";
 import { Article } from "../models/blog/article.model";
 import { RestResponse } from "../models/restresponse.model";
@@ -32,23 +31,23 @@ export class ArticlesService {
       .get<RestResponse<Article>>(`/articles/${slug}`);
       }
 
-  delete(slug: string): Observable<void> {
-    return this.http.delete<void>(`/articles/${slug}`);
+  delete(slug: string): Observable<RestResponse<void>> {
+    return this.http.delete<RestResponse<void>>(`/articles/${slug}`);
   }
 
-  create(article: Partial<Article>): Observable<RestResponse<Article>> {
+  create(article: Partial<Article>): Observable<RestResponse<string>> {
     return this.http
-      .post<RestResponse<Article>>("/articles", article);
+      .post<RestResponse<string>>("/articles", article);
   }
 
-  update(article: Partial<Article>): Observable<RestResponse<Article>> {
+  update(article: Partial<Article>): Observable<RestResponse<string>> {
     return this.http
-      .put<RestResponse<Article>>(`/articles/${article.slug}`, article);
+      .put<RestResponse<string>>(`/articles/${article.slug}`, article);
   }
 
-  favorite(slug: string): Observable<RestResponse<Article>> {
+  favorite(slug: string): Observable<RestResponse<void>> {
     return this.http
-      .post<RestResponse<Article>>(`/articles/${slug}/favorite`, {});
+      .post<RestResponse<void>>(`/articles/${slug}/favorite`, {});
   }
 
   unfavorite(slug: string): Observable<RestResponse<void>> {

@@ -8,6 +8,7 @@ import { Answer } from "./Answer";
 import { ChoiceAnswer } from "./ChoiceAnswer";
 import { EssayAnswer } from "./EssayAnswer";
 import { EssayResult } from "./EssayQuestion";
+import { RestResponse } from "src/app/core/models/restresponse.model";
 
 @Component({
     selector: "app-practice-result",
@@ -30,10 +31,8 @@ export class PracticeResultComponent implements OnInit {
     private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.practiceService.getPractice(this.id).subscribe((data: PracticeResult) => {
-      console.log(data);
-
-      this.practiceResult = data;
+    this.practiceService.getPractice(this.id).subscribe((data: RestResponse<PracticeResult>) => {
+      this.practiceResult = data.data;
     });
   }
 

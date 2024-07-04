@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import { Comment } from "../models/blog/comment.model";
 import { RestResponse } from "../models/restresponse.model";
@@ -10,9 +9,9 @@ import { CommentList } from "../models/blog/comment-list.model";
 export class CommentsService {
   constructor(private readonly http: HttpClient) {}
 
-  getAll(slug: string): Observable<RestResponse<CommentList>> {
+  getAll(slug: string): Observable<RestResponse<Comment[]>> {
     return this.http
-      .get<RestResponse<CommentList>>(`/articles/${slug}/comments`);
+      .get<RestResponse<Comment[]>>(`/articles/${slug}/comments`);
   }
 
   add(slug: string, payload: string): Observable<RestResponse<Comment>> {

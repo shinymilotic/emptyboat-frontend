@@ -24,7 +24,7 @@ import { Router } from "@angular/router";
         MenuModule
     ]
 })
-export class TopBarComponent implements OnInit {
+export class TopBarComponent {
 
     createMenuItems: Signal<MenuItem[]> = computed(() => {
         const user = this.userService.userSignal();
@@ -93,9 +93,9 @@ export class TopBarComponent implements OnInit {
         public readonly layoutService: LayoutService,
         public readonly userService: UserService,
         public readonly router: Router
-    ) { }
-    ngOnInit(): void {
-    }
+    ) {
+
+     }
 
     logout(): void {
         this.userService.logout()
@@ -104,6 +104,7 @@ export class TopBarComponent implements OnInit {
             if (isLogout) {
               this.userService.purgeAuth();
               void this.router.navigate(["/"]);
+              window.location.reload();
             }
           }
         });

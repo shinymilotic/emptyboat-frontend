@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
 import { Test } from "../models/test/test.model";
 import { TestResponse } from "../models/test/test-response.model";
+import { RestResponse } from "../models/restresponse.model";
+import { SimpleTestResponse } from "src/app/features/test/test-list/simple-test-response.model";
 
 @Injectable({ providedIn: "root" })
 export class TestService {
@@ -19,24 +20,22 @@ export class TestService {
   //   // return this.http.delete<void>(`/articles/${slug}`);
   // }
 
-  get(): Observable<TestResponse[]> {
+  get(): Observable<RestResponse<SimpleTestResponse[]>> {
     return this.http
-      .get<{ tests: TestResponse[] }>("/tests")
-      .pipe(map((data) => data.tests));
+      .get<RestResponse<SimpleTestResponse[]>>("/tests");
   }
 
-  getOne(slug: string): Observable<TestResponse> {
+  getOne(slug: string): Observable<RestResponse<TestResponse>> {
     return this.http
-      .get<TestResponse>(`/tests/${slug}`)
-      .pipe(map((data) => data));
+      .get<RestResponse<TestResponse>>(`/tests/${slug}`);
   }
 
-  create(test: Partial<Test>): Observable<string> {
-    return this.http.post<string>("/test", { test: test });
+  create(test: Partial<Test>): Observable<RestResponse<void>> {
+    return this.http.post<RestResponse<void>>("/test", { test });
   }
 
-  delete(slug: string): Observable<boolean> {
-    return this.http.delete<boolean>(`/tests/${slug}`);
+  delete(slug: string): Observable<RestResponse<void>> {
+    return this.http.delete<RestResponse<void>>(`/tests/${slug}`);
   }
 
   // update(article: Partial<Article>): Observable<Article> {

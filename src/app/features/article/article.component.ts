@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, Signal, computed } from "@angular/core";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { User } from "../../core/models/auth/user.model";
 import { Article } from "../../core/models/blog/article.model";
 import { ArticlesService } from "../../core/services/articles.service";
 import { CommentsService } from "../../core/services/comments.service";
@@ -16,7 +15,6 @@ import { catchError, takeUntil } from "rxjs/operators";
 import { Subject, combineLatest, throwError } from "rxjs";
 import { Comment } from "../../core/models/blog/comment.model";
 import { ShowAuthedDirective } from "../../shared/show-authed.directive";
-import { Profile } from "../../core/models/auth/profile.model";
 import { ApiError } from "src/app/core/models/apierrors.model";
 
 @Component({
@@ -81,8 +79,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(([article, comments]) => {
-        this.article = article;
-        this.comments = comments;
+        this.article = article.data;
+        this.comments = comments.data;
       });
   }
 
@@ -101,9 +99,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleFollowing(profile: Profile): void {
-    this.article.author.following = profile.following;
-  }
+  // toggleFollowing(): void {
+  //   this.article.author.following = !this.article.author.following;
+  // }
 
   deleteArticle(): void {
     this.isDeleting = true;
@@ -125,7 +123,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (comment) => {
-          this.comments.unshift(comment);
+          this.comments.unshift(comment.data);
           this.commentControl.reset("");
           this.isSubmitting = false;
         },

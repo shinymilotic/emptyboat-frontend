@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { ListErrorsComponent } from "../../../shared/list-errors.component";
@@ -11,7 +11,7 @@ import { ApiError } from "src/app/core/models/apierrors.model";
     standalone: true,
     imports: [RouterLink, ListErrorsComponent, ReactiveFormsModule]
 })
-export class ConfirmEmailComponent implements OnInit, OnDestroy {
+export class ConfirmEmailComponent implements OnInit {
   private isConfirmed: boolean = false;
   private errors!: ApiError;
 
@@ -22,21 +22,16 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const token :string = this.route.snapshot.params["token"];
     this.userService.confirmEmail(token).subscribe({
-      next: (isConfirm: boolean) => {
-        if (isConfirm) {
+      next: () => {
           this.isConfirmed = true;
-        }
       },
       error: (errors) => {
-        this.errors = errors.errors;
+        this.errors = errors;
       }
     });
   }
 
   getIsConfirmed() : boolean {
     return this.isConfirmed;
-  }
-
-  ngOnDestroy() {
   }
 }

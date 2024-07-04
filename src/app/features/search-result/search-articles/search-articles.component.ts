@@ -50,7 +50,7 @@ export class SearchArticlesComponent {
     this.searchService
       .search(param)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
+      .subscribe(({data}) => {
         this.loading = LoadingState.LOADED;
         this.results.push(...data.articles);
         if (data.articles != undefined && data.articles.length > 0) {

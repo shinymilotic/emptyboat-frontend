@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { map, shareReplay } from "rxjs/operators";
+import { shareReplay } from "rxjs/operators";
 import { Profile } from "../models/auth/profile.model";
 import { HttpClient } from "@angular/common/http";
 import { RestResponse } from "../models/restresponse.model";
@@ -9,22 +9,19 @@ import { RestResponse } from "../models/restresponse.model";
 export class ProfileService {
   constructor(private readonly http: HttpClient) {}
 
-  get(username: string): Observable<Profile> {
+  get(username: string): Observable<RestResponse<Profile>> {
     return this.http.get<RestResponse<Profile>>("/profiles/" + username).pipe(
-      map((data) => data.data),
       shareReplay(1)
     );
   }
 
-  follow(username: string): Observable<Profile> {
+  follow(username: string): Observable<RestResponse<void>> {
     return this.http
-      .post<{ profile: Profile }>("/profiles/" + username + "/follow", {})
-      .pipe(map((data: { profile: Profile }) => data.profile));
+      .post<RestResponse<void>>("/profiles/" + username + "/follow", {});
   }
 
-  unfollow(username: string): Observable<Profile> {
+  unfollow(username: string): Observable<RestResponse<void>> {
     return this.http
-      .delete<{ profile: Profile }>("/profiles/" + username + "/follow")
-      .pipe(map((data: { profile: Profile }) => data.profile));
+      .delete<RestResponse<void>>("/profiles/" + username + "/follow");
   }
 }

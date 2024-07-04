@@ -1,7 +1,6 @@
 import { Injectable, signal } from "@angular/core";
-import { Observable, BehaviorSubject, pipe } from "rxjs";
-
-import { map, distinctUntilChanged, tap, shareReplay } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { tap, shareReplay } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import { User } from "../models/auth/user.model";
 import { AuthCookieUtils } from "../utils/authCookie.utils";
@@ -19,10 +18,10 @@ export class UserService {
 
   login(credentials: { email: string; password: string }): Observable<RestResponse<User>> {
     return this.http
-      .post<RestResponse<User>>("/users/login", { user: credentials })
-      .pipe(tap((user) => {
-        this.userSignal.set(user.data);
-        this.authCookieUtils.saveUserIdCookie(user.data.id);
+      .post<RestResponse<User>>("/users/login", credentials )
+      .pipe(tap(({data}) => {
+        this.userSignal.set(data);
+        this.authCookieUtils.saveUserIdCookie(data.id);
       }));
   }
 
@@ -32,35 +31,33 @@ export class UserService {
     password: string;
   }): Observable<RestResponse<void>> {
     return this.http
-      .post<RestResponse<void>>("/users", { user: credentials });
+      .post<RestResponse<void>>("/users", credentials);
   }
 
-  logout(): Observable<boolean> {
-    return this.http.post<boolean>("/users/logout", {});
+  logout(): Observable<RestResponse<void>> {
+    return this.http.post<RestResponse<void>>("/users/logout", {});
   }
 
-  getCurrentUser(): Observable<User> {
-    return this.http.get<RestResponse<User>>("/users").pipe(map((data) => data.data));
+  getCurrentUser(): Observable<RestResponse<User>> {
+    return this.http.get<RestResponse<User>>("/users");
   }
 
-  update(user: Partial<User>): Observable<User> {
-    return this.http.put<User>("/users", user).pipe(
+  update(user: Partial<User>): Observable<RestResponse<User>> {
+    return this.http.put<RestResponse<User>>("/users", user).pipe(
       tap((user) => {
-        this.userSignal.set(user);
+        this.userSignal.set(user.data);
       })
     );
   }
 
-  auth(): Observable<User> {
+  auth(): Observable<RestResponse<User>> {
     return this.http.get<RestResponse<User>>("/users").pipe(
       tap({
-        next: (user) => {
-          this.userSignal.set(user.data);
-          // this.setAuth(accessToken, refreshToken);
+        next: ({data}) => {
+          this.userSignal.set(data);
         },
         error: () => this.purgeAuth(),
       }),
-      map((data) => data.data),
       shareReplay(1)
     );
   }
@@ -70,23 +67,21 @@ export class UserService {
     this.userSignal.set(null);
   }
 
-  refreshToken(): Observable<string> {
+  refreshToken(): Observable<RestResponse<string>> {
     return this.http
-      .post<{userId: string}>("/users/refreshToken", {})
-      .pipe(map((data) => data.userId));
+      .post<RestResponse<string>>("/users/refreshToken", {});
       ;
   }
 
-  confirmEmail(token: string) : Observable<boolean> {
+  confirmEmail(token: string) : Observable<RestResponse<void>> {
     return this.http
-      .post<boolean>(`/confirmEmail`, {"confirmToken" : token});
+      .post<RestResponse<void>>(`/confirmEmail`, {"confirmToken" : token});
     ;
   }
 
-  getFollowers(userId: string) : Observable<User[]> {
+  getFollowers(userId: string) : Observable<RestResponse<User[]>> {
     return this.http
-      .get<User[]>(`/followers/${userId}`, {})
-      .pipe(map((data: any) => data.followers));
+      .get<RestResponse<User[]>>(`/followers/${userId}`, {});
     ;
   }
 }

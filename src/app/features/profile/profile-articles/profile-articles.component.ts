@@ -28,8 +28,8 @@ export class ProfileArticlesComponent implements OnInit, OnDestroy {
       .get(this.route.snapshot.params["username"])
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (profile: Profile) => {
-          this.profile = profile;
+        next: ({data}) => {
+          this.profile = data;
           this.articlesConfig = {
             filters: {
               author: this.profile.username,

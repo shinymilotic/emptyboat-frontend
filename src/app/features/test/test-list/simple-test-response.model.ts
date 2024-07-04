@@ -1,5 +1,5 @@
 
-export interface TestListResponse {
+export interface SimpleTestResponse {
   title: string;
   description: string;
   slug: string;

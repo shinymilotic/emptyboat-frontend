@@ -44,7 +44,7 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getCurrentUser().subscribe((data) => {
+    this.userService.getCurrentUser().subscribe(({data}) => {
       this.settingsForm.patchValue(data);
     });
   }
@@ -55,9 +55,9 @@ export class SettingsComponent implements OnInit {
     this.userService
       .update(this.settingsForm.value)
       .subscribe({
-        next: (user) => void this.router.navigate(["/@".concat(user.username)]),
+        next: ({data}) => void this.router.navigate(["/@".concat(data.username)]),
         error: (err) => {
-          this.errors = err.errors;
+          this.errors = err;
           this.isSubmitting = false;
         },
       });

@@ -1,7 +1,6 @@
 import {
   Component,
   ElementRef,
-  HostBinding,
   OnDestroy,
   OnInit,
   Renderer2,
@@ -9,7 +8,6 @@ import {
   inject,
 } from "@angular/core";
 import {
-  UntypedFormGroup,
   ReactiveFormsModule,
   FormGroup,
   FormControl,
@@ -19,16 +17,13 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ListErrorsComponent } from "../../shared/list-errors.component";
 import { NgForOf, NgFor, AsyncPipe } from "@angular/common";
 import { ArticlesService } from "../../core/services/articles.service";
-import { combineLatest, Observable, Subject, throwError } from "rxjs";
-import { catchError, map, startWith, takeUntil, tap } from "rxjs/operators";
+import { Observable, Subject, throwError } from "rxjs";
+import { catchError, map, takeUntil, tap } from "rxjs/operators";
 import { UserService } from "../../core/services/user.service";
-import { ApiValidationError } from "../../core/models/apivalidationerror.model";
 import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { TagsService } from "src/app/core/services/tags.service";
 import { Editor } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
-import {Paragraph} from '@tiptap/extension-paragraph'
-import {Heading} from '@tiptap/extension-heading'
 import { ApiError } from "src/app/core/models/apierrors.model";
 
 interface ArticleForm {
@@ -90,7 +85,9 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.tagField = new FormControl<string>("", { nonNullable: true });
     this.filteredTags = inject(TagsService)
       .getAll()
-      .pipe(tap(() => (this.tagsLoaded = true)));
+      .pipe(
+        map((data) => data.data),
+        tap(() => (this.tagsLoaded = true)));
     this.selectedTagIndex = -1;
   }
 
@@ -242,10 +239,10 @@ export class EditorComponent implements OnInit, OnDestroy {
             return throwError(() => err);
           }),
         )
-        .subscribe((article) => {
-          if (this.userService.userSignal()?.username === article.author.username) {
-            this.inTags = article.tagList;
-            this.articleForm.patchValue(article);
+        .subscribe(({data}) => {
+          if (this.userService.userSignal()?.username === data.author.username) {
+            this.inTags = data.tagList;
+            this.articleForm.patchValue(data);
             this.isUpdate = true;
           } else {
             void this.router.navigate(["/"]);
@@ -294,7 +291,7 @@ export class EditorComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: ({data}) => {
-          this.router.navigate(["/articles/", data.slug]);
+          this.router.navigate(["/articles/", data]);
         },
         error: (err) => {
           this.errors = err;
@@ -311,8 +308,8 @@ export class EditorComponent implements OnInit, OnDestroy {
       })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (article) => {
-          this.router.navigate(["/articles/", article.slug]);
+        next: ({data}) => {
+          this.router.navigate(["/articles/", data]);
         },
         error: (errors) => {
           this.errors = errors.errors;

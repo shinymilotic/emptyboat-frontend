@@ -5,7 +5,7 @@ import {
   FormControl,
   ReactiveFormsModule,
 } from "@angular/forms";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { RouterLink } from "@angular/router";
 import { ListErrorsComponent } from "../../../shared/list-errors.component";
 import { UserService } from "../../../core/services/user.service";
 import { takeUntil } from "rxjs/operators";
@@ -65,7 +65,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   submitForm(): void {
     this.isSubmitting = true;
-    // this.errors = { errors: {} };
 
     let observable = this.userService.register(
       this.authForm.value as {
@@ -78,12 +77,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     observable.pipe(takeUntil(this.destroy$)).subscribe({
       next: () => this.isRegisterSuccess = true,
       error: (error: ApiError) => {
-        console.log(error);
-        // if (error.data == null) {
-        //   this.errors = [{messageId: error.code, message: error.message}];
-        // } else {
-        //    = error.data.errors;
-        // }
         this.errors = error;
         this.isSubmitting = false;
       },

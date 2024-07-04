@@ -3,15 +3,16 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
+  OnInit,
   Output,
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { switchMap, takeUntil } from "rxjs/operators";
-import { EMPTY, Observable, Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { ProfileService } from "../../core/services/profile.service";
 import { UserService } from "../../core/services/user.service";
 import { Profile } from "../../core/models/auth/profile.model";
 import { NgClass } from "@angular/common";
+import { RestResponse } from "src/app/core/models/restresponse.model";
 
 @Component({
   selector: "app-follow-button",
@@ -20,17 +21,21 @@ import { NgClass } from "@angular/common";
   imports: [NgClass],
   standalone: true,
 })
-export class FollowButtonComponent implements OnDestroy {
+export class FollowButtonComponent implements OnInit, OnDestroy {
   @Input() profile!: Profile;
-  @Output() toggle = new EventEmitter<Profile>();
+  @Output() toggle = new EventEmitter<void>();
   isSubmitting = false;
   destroy$ = new Subject<void>();
+  following!: boolean;
 
   constructor(
     private readonly profileService: ProfileService,
     private readonly router: Router,
     private readonly userService: UserService
   ) {}
+  ngOnInit(): void {
+    this.following = this.profile?.following
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -46,15 +51,16 @@ export class FollowButtonComponent implements OnDestroy {
 
     this.toggleFollow(this.profile.following)
       .subscribe({
-        next: (profile: Profile) => {
+        next: () => {
           this.isSubmitting = false;
-          this.toggle.emit(profile);
+          this.following = !this.following;
+          this.toggle.emit();
         },
         error: () => (this.isSubmitting = false),
       });
   }
 
-  public toggleFollow(following: boolean): Observable<Profile> {
+  public toggleFollow(following: boolean): Observable<RestResponse<void>> {
     if (!following) {
       return this.profileService.follow(this.profile.username);
     } else {

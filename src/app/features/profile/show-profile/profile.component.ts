@@ -1,14 +1,13 @@
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import {
   ActivatedRoute,
-  NavigationEnd,
   Router,
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
 } from "@angular/router";
-import { catchError, switchMap, takeUntil } from "rxjs/operators";
-import { combineLatest, of, Subject, throwError } from "rxjs";
+import { catchError } from "rxjs/operators";
+import { Subject, throwError } from "rxjs";
 import { UserService } from "../../../core/services/user.service";
 import { Profile } from "../../../core/models/auth/profile.model";
 import { ProfileService } from "../../../core/services/profile.service";
@@ -50,8 +49,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }),
       )
       .subscribe((profile) => {
-        this.profile = profile;
-        this.isUser = profile.username === this.userService.userSignal()?.username;
+        this.profile = profile.data;
+        this.isUser = profile.data.username === this.userService.userSignal()?.username;
       });
   }
 
@@ -60,7 +59,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  onToggleFollowing(profile: Profile) {
-    this.profile = profile;
-  }
+  // onToggleFollowing(profile: Profile) {
+  //   this.profile = profile;
+  // }
 }

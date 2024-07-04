@@ -4,7 +4,7 @@ import { RouterLinkActive, RouterLink } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { ApiError } from "src/app/core/models/apierrors.model";
 import { TestService } from "src/app/core/services/test.service";
-import { TestListResponse } from "./test-list-response.model";
+import { SimpleTestResponse } from "./simple-test-response.model";
 
 @Component({
     selector: "app-test-list",
@@ -15,7 +15,7 @@ import { TestListResponse } from "./test-list-response.model";
 })
 export class TestListComponent implements OnDestroy {
   errors!: ApiError;
-  tests: TestListResponse[] = [];
+  tests: SimpleTestResponse[] = [];
   destroy$ = new Subject<void>();
 
   constructor(private readonly testService: TestService) {}
@@ -25,7 +25,7 @@ export class TestListComponent implements OnDestroy {
       .get()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (data) => {
+        next: ({data}) => {
           this.tests = data;
         },
         error: (err) => {

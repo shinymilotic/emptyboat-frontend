@@ -21,8 +21,8 @@ export class UserPracticeComponent implements OnInit {
 
   ngOnInit() {
     const username = this.getUsername();
-    this.practiceService.getPractices(username).subscribe((practices) => {
-      practices.forEach(practice => {
+    this.practiceService.getPractices(username).subscribe(({data}) => {
+      data.forEach(practice => {
         const [day, month, year] = practice.date.split(/[- :]/);
         const date = day + '/' + month + '/' + year;
         if (this.practiceMap.has(date)) {
@@ -31,7 +31,7 @@ export class UserPracticeComponent implements OnInit {
           this.practiceMap.set(date, [practice]);
         }
       });
-      this.practices = practices; 
+      this.practices = data; 
     });
   }
 

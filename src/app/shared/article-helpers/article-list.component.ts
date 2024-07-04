@@ -3,7 +3,6 @@ import {
   HostListener,
   Input,
   OnDestroy,
-  OnInit,
 } from "@angular/core";
 import { ArticlesService } from "../../core/services/articles.service";
 import { ArticleListConfig } from "../../core/models/blog/article-list-config.model";
@@ -20,7 +19,7 @@ import { takeUntil } from "rxjs/operators";
   imports: [ArticlePreviewComponent, NgForOf, NgClass],
   standalone: true,
 })
-export class ArticleListComponent implements OnDestroy, OnInit {
+export class ArticleListComponent implements OnDestroy {
   query!: ArticleListConfig;
   results: Article[] = [];
   lastArticleId : string | undefined = '';
@@ -44,9 +43,6 @@ export class ArticleListComponent implements OnDestroy, OnInit {
   constructor(
     private articlesService: ArticlesService,
   ) {}
-
-  ngOnInit(): void {
-  }
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -80,7 +76,7 @@ export class ArticleListComponent implements OnDestroy, OnInit {
   onScroll(event: any) {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1 &&
        this.loading == LoadingState.LOADED &&
-       this.isNoMore == false) {
+       !this.isNoMore) {
       this.runQuery();
     }
   }

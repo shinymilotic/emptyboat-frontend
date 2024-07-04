@@ -98,10 +98,10 @@ export class TestComponent implements OnInit {
           return throwError(() => err);
         })
       )
-      .subscribe((test) => {
-        test.questions.forEach((question) => {
-          this.slug = test.slug;
-          this.title = test.title;
+      .subscribe(({data}) => {
+        data.questions.forEach((question) => {
+          this.slug = data.slug;
+          this.title = data.title;
           if (question.questionType == QuestionType.CHOICE) {
             const choiceQuestion = question as ChoiceQuestion;
             this.questions.push(choiceQuestion);
@@ -158,8 +158,8 @@ export class TestComponent implements OnInit {
     });
 
     this.practiceService.createPractice(practice)
-      .subscribe(({practiceId}) => {
-          this.router.navigate([`@${this.userService.userSignal()?.username}/practices/${practiceId}`]);
+      .subscribe(({data}) => {
+          this.router.navigate([`@${this.userService.userSignal()?.username}/practices/${data.practiceId}`]);
         },
       );
   }
@@ -173,7 +173,7 @@ export class TestComponent implements OnInit {
           this.router.navigate(["/tests"]);
         },
         error: (errors) => {
-          this.errors = errors.errors;
+          this.errors = errors;
           this.isSubmitting = false;
         },
       });

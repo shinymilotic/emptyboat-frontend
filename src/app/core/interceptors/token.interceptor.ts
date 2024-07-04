@@ -12,6 +12,7 @@ import {
 } from "rxjs";
 import { UserService } from "../services/user.service";
 import { AuthCookieUtils } from "../utils/authCookie.utils";
+import { RestResponse } from "../models/restresponse.model";
 
 @Injectable({ providedIn: "root" })
 export class TokenInterceptor implements HttpInterceptor {
@@ -47,10 +48,10 @@ export class TokenInterceptor implements HttpInterceptor {
       this.refreshTokenSubject.next(null);
 
       return this.userService.refreshToken().pipe(
-        switchMap((userId: string) => {
-          if (userId != "") {
-            this.refreshTokenSubject.next(userId);
-            this.authCookieUtils.saveUserIdCookie(userId);
+        switchMap((userId: RestResponse<string>) => {
+          if (userId.data != "") {
+            this.refreshTokenSubject.next(userId.data);
+            this.authCookieUtils.saveUserIdCookie(userId.data);
           }
           return next.handle(this.addTokenHeader(request));
         }),

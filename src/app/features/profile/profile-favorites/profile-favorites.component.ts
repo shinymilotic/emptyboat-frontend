@@ -29,8 +29,8 @@ export class ProfileFavoritesComponent implements OnInit, OnDestroy {
       .get(this.route.parent?.snapshot.params["username"])
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (profile: Profile) => {
-          this.profile = profile;
+        next: ({data}) => {
+          this.profile = data;
           this.favoritesConfig = {
             filters: {
               favorited: this.profile.username,
