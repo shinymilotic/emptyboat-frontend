@@ -1,5 +1,4 @@
 <div class="editor-page">
-  <!-- <app-side-bar class="col-sm-0 col-s-0"></app-side-bar> -->
 
   <div class="p-4">
     <app-list-errors [errors]="errors"></app-list-errors>
@@ -36,7 +35,6 @@
             (input)="changeInputTag()"
             (keydown)="selectTag($event)"
           />
-          <!-- (keydown.enter)="this.addTag()" -->
   
           <div #tagInput [hidden]="isInputTag">
             <div
