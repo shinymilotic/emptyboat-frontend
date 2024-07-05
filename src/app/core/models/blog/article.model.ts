@@ -2,7 +2,6 @@ import { Profile } from "../auth/profile.model";
 
 export interface Article {
   id: string;
-  slug: string;
   title: string;
   description: string;
   body: string;

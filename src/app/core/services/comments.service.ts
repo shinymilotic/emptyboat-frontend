@@ -8,17 +8,17 @@ import { RestResponse } from "../models/restresponse.model";
 export class CommentsService {
   constructor(private readonly http: HttpClient) {}
 
-  getAll(slug: string): Observable<RestResponse<Comment[]>> {
+  getAll(id: string): Observable<RestResponse<Comment[]>> {
     return this.http
-      .get<RestResponse<Comment[]>>(`/articles/${slug}/comments`);
+      .get<RestResponse<Comment[]>>(`/articles/${id}/comments`);
   }
 
-  add(slug: string, payload: string): Observable<RestResponse<Comment>> {
+  add(id: string, payload: string): Observable<RestResponse<Comment>> {
     return this.http
-      .post<RestResponse<Comment>>(`/articles/${slug}/comments`, { body: payload });
+      .post<RestResponse<Comment>>(`/articles/${id}/comments`, { body: payload });
   }
 
-  delete(commentId: string, slug: string): Observable<RestResponse<void>> {
-    return this.http.delete<RestResponse<void>>(`/articles/${slug}/comments/${commentId}`);
+  delete(commentId: string, id: string): Observable<RestResponse<void>> {
+    return this.http.delete<RestResponse<void>>(`/articles/${id}/comments/${commentId}`);
   }
 }

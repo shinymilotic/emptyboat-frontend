@@ -6,7 +6,7 @@
   <div>
     <div class="w3-teal p-2 test" *ngFor="let test of this.tests">
       <a
-        [routerLink]="['/practice', test.slug]"
+        [routerLink]="['/practice', test.id]"
         routerLinkActive="active"
         >
         <h1 class="font-bold mb-4 title">{{ test.title }}</h1>

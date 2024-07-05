@@ -58,9 +58,9 @@ export class FavoriteButtonComponent implements OnDestroy {
 
   public toggleFavorite(favorited: boolean): Observable<any> {
     if (!favorited) {
-      return this.articleService.favorite(this.article.slug);
+      return this.articleService.favorite(this.article.id);
     } else {
-      return this.articleService.unfavorite(this.article.slug);
+      return this.articleService.unfavorite(this.article.id);
     }
   }
 }

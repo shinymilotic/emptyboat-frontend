@@ -67,10 +67,10 @@ export class ArticleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const slug = this.route.snapshot.params["slug"];
+    const id = this.route.snapshot.params["id"];
     combineLatest([
-      this.articleService.get(slug),
-      this.commentsService.getAll(slug)
+      this.articleService.get(id),
+      this.commentsService.getAll(id)
     ])
       .pipe(
         catchError((err) => {
@@ -107,7 +107,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.isDeleting = true;
 
     this.articleService
-      .delete(this.article.slug)
+      .delete(this.article.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         void this.router.navigate(["/"]);
@@ -119,7 +119,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
     this.commentFormErrors = null;
 
     this.commentsService
-      .add(this.article.slug, this.commentControl.value)
+      .add(this.article.id, this.commentControl.value)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (comment) => {
@@ -136,7 +136,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   deleteComment(comment: Comment): void {
     this.commentsService
-      .delete(comment.id, this.article.slug)
+      .delete(comment.id, this.article.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.comments = this.comments.filter((item) => item !== comment);

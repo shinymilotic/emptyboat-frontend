@@ -45,7 +45,7 @@ export class TestComponent implements OnInit {
   errors!: ApiError[];
   isSubmitting = false;
   title: string = "";
-  slug: string = "";
+  id: string = "";
   questions: Question[] = [];
   destroy$ = new Subject<void>();
   questionForm: FormGroup = new FormGroup([]);
@@ -87,8 +87,8 @@ export class TestComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const slug = this.route.snapshot.params["slug"];
-    this.testService.getOne(slug)
+    const id = this.route.snapshot.params["id"];
+    this.testService.getOne(id)
       .pipe(
         catchError((err) => {
           void this.router.navigate(["/"]);
@@ -97,7 +97,7 @@ export class TestComponent implements OnInit {
       )
       .subscribe(({data}) => {
         data.questions.forEach((question) => {
-          this.slug = data.slug;
+          this.id = data.id;
           this.title = data.title;
           if (question.questionType == QuestionType.CHOICE) {
             const choiceQuestion = question as ChoiceQuestion;
@@ -118,7 +118,7 @@ export class TestComponent implements OnInit {
 
   createPractice() {
     let practice: Practice = {
-      slug: this.slug,
+      id: this.id,
       choiceAnswers: [],
       essayAnswers: [],
     };
@@ -163,7 +163,7 @@ export class TestComponent implements OnInit {
 
   deleteTest() {
     this.testService
-      .delete(this.slug)
+      .delete(this.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (result) => {

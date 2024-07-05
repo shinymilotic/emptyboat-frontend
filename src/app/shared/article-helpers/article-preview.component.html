@@ -1,6 +1,6 @@
 <div
   class="article-preview col-12"
-  [routerLink]="['/articles', article.slug]"
+  [routerLink]="['/articles', article.id]"
   (click)="$event.stopPropagation()"
 >
   <app-article-meta [article]="article"> </app-article-meta>

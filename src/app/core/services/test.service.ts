@@ -25,17 +25,17 @@ export class TestService {
       .get<RestResponse<SimpleTestResponse[]>>("/tests");
   }
 
-  getOne(slug: string): Observable<RestResponse<TestResponse>> {
+  getOne(id: string): Observable<RestResponse<TestResponse>> {
     return this.http
-      .get<RestResponse<TestResponse>>(`/tests/${slug}`);
+      .get<RestResponse<TestResponse>>(`/tests/${id}`);
   }
 
   create(test: Partial<Test>): Observable<RestResponse<void>> {
-    return this.http.post<RestResponse<void>>("/test", { test });
+    return this.http.post<RestResponse<void>>("/test", test);
   }
 
-  delete(slug: string): Observable<RestResponse<void>> {
-    return this.http.delete<RestResponse<void>>(`/tests/${slug}`);
+  delete(id: string): Observable<RestResponse<void>> {
+    return this.http.delete<RestResponse<void>>(`/tests/${id}`);
   }
 
   // update(article: Partial<Article>): Observable<Article> {

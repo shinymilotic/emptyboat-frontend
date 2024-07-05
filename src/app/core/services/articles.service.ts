@@ -26,13 +26,13 @@ export class ArticlesService {
     );
   }
 
-  get(slug: string): Observable<RestResponse<Article>> {
+  get(id: string): Observable<RestResponse<Article>> {
     return this.http
-      .get<RestResponse<Article>>(`/articles/${slug}`);
+      .get<RestResponse<Article>>(`/articles/${id}`);
       }
 
-  delete(slug: string): Observable<RestResponse<void>> {
-    return this.http.delete<RestResponse<void>>(`/articles/${slug}`);
+  delete(id: string): Observable<RestResponse<void>> {
+    return this.http.delete<RestResponse<void>>(`/articles/${id}`);
   }
 
   create(article: Partial<Article>): Observable<RestResponse<string>> {
@@ -42,15 +42,15 @@ export class ArticlesService {
 
   update(article: Partial<Article>): Observable<RestResponse<string>> {
     return this.http
-      .put<RestResponse<string>>(`/articles/${article.slug}`, article);
+      .put<RestResponse<string>>(`/articles/${article.id}`, article);
   }
 
-  favorite(slug: string): Observable<RestResponse<void>> {
+  favorite(id: string): Observable<RestResponse<void>> {
     return this.http
-      .post<RestResponse<void>>(`/articles/${slug}/favorite`, {});
+      .post<RestResponse<void>>(`/articles/${id}/favorite`, {});
   }
 
-  unfavorite(slug: string): Observable<RestResponse<void>> {
-    return this.http.delete<RestResponse<void>>(`/articles/${slug}/favorite`);
+  unfavorite(id: string): Observable<RestResponse<void>> {
+    return this.http.delete<RestResponse<void>>(`/articles/${id}/favorite`);
   }
 }

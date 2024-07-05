@@ -3,7 +3,6 @@
 
   <div>
     <h1>{{this.practiceResult.testTitle}}</h1>
-    <!-- <button (click)="deleteTest()" class="overcloud-btn w-28">Xóa bài test</button> -->
       <ol>
         @for (question of this.practiceResult.questions; track $index) {
           <li
@@ -20,9 +19,9 @@
           }
           
           @if (question.questionType == 2) {
-              <textarea type="text" [disabled]="true" class="border-none outline-none w-full">
+              <div type="text" class="border-none outline-none w-full">
                 {{asEssayQuestion(question).answer}}
-              </textarea>
+              </div>
           }
           
           </li>

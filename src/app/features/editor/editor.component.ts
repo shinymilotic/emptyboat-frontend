@@ -25,11 +25,11 @@ import { TagsService } from "src/app/core/services/tags.service";
 import { Editor } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import { ApiError } from "src/app/core/models/apierrors.model";
+import { Article } from "src/app/core/models/blog/article.model";
 
 interface ArticleForm {
   title: FormControl<string>;
   description: FormControl<string>;
-  slug: FormControl<string>;
   body: FormControl<string>;
 }
 
@@ -45,8 +45,7 @@ interface ArticleForm {
         ReactiveFormsModule,
         NgFor,
         AsyncPipe,
-        FormsModule,
-        
+        FormsModule
     ]
 })
 export class EditorComponent implements OnInit, OnDestroy {
@@ -79,7 +78,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.articleForm = new FormGroup<ArticleForm>({
       title: new FormControl("", { nonNullable: true }),
       description: new FormControl("", { nonNullable: true }),
-      slug: new FormControl("", { nonNullable: true }),
       body: new FormControl("", { nonNullable: true }),
     });
     this.tagField = new FormControl<string>("", { nonNullable: true });
@@ -136,15 +134,6 @@ export class EditorComponent implements OnInit, OnDestroy {
         action: () => this.editor.chain().focus().toggleCode().run(),
         isActive: () => this.editor.isActive('code'),
       },
-      // {
-      //   icon: 'mark-pen-line',
-      //   title: 'Highlight',
-      //   action: () => this.editor.chain().focus().toggleHighlight().run(),
-      //   isActive: () => this.editor.isActive('highlight'),
-      // },
-      // {
-      //   type: 'divider',
-      // },
       {
         icon: 'format_h1',
         title: 'Heading 1',
@@ -175,21 +164,13 @@ export class EditorComponent implements OnInit, OnDestroy {
         action: () => this.editor.chain().focus().toggleOrderedList().run(),
         isActive: () => this.editor.isActive('orderedList'),
       },
-      // {
-      //   icon: 'list-check-2',
-      //   title: 'Task List',
-      //   action: () => this.editor.chain().focus().toggleTaskList().run(),
-      //   isActive: () => this.editor.isActive('taskList'),
-      // },
       {
         icon: 'code_blocks',
         title: 'Code Block',
         action: () => this.editor.chain().focus().toggleCodeBlock().run(),
         isActive: () => this.editor.isActive('codeBlock'),
       },
-      // {
-      //   type: 'divider',
-      // },
+
       {
         icon: 'format_quote',
         title: 'Blockquote',
@@ -201,20 +182,6 @@ export class EditorComponent implements OnInit, OnDestroy {
         title: 'Horizontal Rule',
         action: () => this.editor.chain().focus().setHorizontalRule().run(),
       },
-      // {
-      //   type: 'divider',
-      // },
-      // {
-      //   icon: 'text-wrap',
-      //   title: 'Hard Break',
-      //   action: () => this.editor.chain().focus().setHardBreak().run(),
-      // },
-      // {
-      //   icon: 'format-clear',
-      //   title: 'Clear Format',
-      //   action: () => this.editor.chain().focus().clearNodes().unsetAllMarks()
-      //     .run(),
-      // },
       {
         icon: 'undo',
         title: 'Undo',
@@ -229,10 +196,10 @@ export class EditorComponent implements OnInit, OnDestroy {
       },
     ];
 
-    const slug = this.route.snapshot.params["slug"];
-    if (slug != undefined) {
+    const id = this.route.snapshot.params["id"];
+    if (id != undefined) {
       
-      this.articleService.get(slug)
+      this.articleService.get(id)
         .pipe(
           catchError((err) => {
             void this.router.navigate(["/editor"]);
@@ -301,11 +268,15 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   createArticle() {
+    const article: Partial<Article> = {
+      title: this.articleForm.value.title,
+      description: this.articleForm.value.description,
+      body: this.editor.getHTML(),
+      tagList: this.inTags,
+    };
+
     this.articleService
-      .create({
-        ...this.articleForm.value,
-        tagList: this.inTags,
-      })
+      .create(article)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: ({data}) => {

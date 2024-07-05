@@ -27,7 +27,7 @@ export const routes: Routes = [
           ),
       },
       {
-        path: "practice/:slug",
+        path: "practice/:id",
         loadComponent: () =>
           import("./features/test/practice-test/test.component").then(
             (m) => m.TestComponent
@@ -80,7 +80,7 @@ export const routes: Routes = [
             canActivate: [() => inject(UserService).userSignal()],
           },
           {
-            path: ":slug",
+            path: ":id",
             loadComponent: () =>
               import("./features/editor/editor.component").then(
                 (m) => m.EditorComponent
@@ -90,7 +90,7 @@ export const routes: Routes = [
         ],
       },
       {
-        path: "articles/:slug",
+        path: "articles/:id",
         loadComponent: () =>
           import("./features/article/article.component").then(
             (m) => m.ArticleComponent
