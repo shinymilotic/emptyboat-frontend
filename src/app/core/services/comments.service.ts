@@ -18,7 +18,7 @@ export class CommentsService {
       .post<RestResponse<Comment>>(`/articles/${id}/comments`, { body: payload });
   }
 
-  delete(commentId: string, id: string): Observable<RestResponse<void>> {
-    return this.http.delete<RestResponse<void>>(`/articles/${id}/comments/${commentId}`);
+  delete(commentId: string, articleId: string): Observable<RestResponse<void>> {
+    return this.http.delete<RestResponse<void>>(`/articles/${articleId}/comments/${commentId}`);
   }
 }
