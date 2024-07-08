@@ -45,7 +45,6 @@ export class TestComponent implements OnInit {
   errors!: ApiError[];
   isSubmitting = false;
   title: string = "";
-  id: string = "";
   questions: Question[] = [];
   destroy$ = new Subject<void>();
   questionForm: FormGroup = new FormGroup([]);
@@ -88,6 +87,7 @@ export class TestComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.params["id"];
+    console.log(id);
     this.testService.getOne(id)
       .pipe(
         catchError((err) => {
@@ -97,7 +97,6 @@ export class TestComponent implements OnInit {
       )
       .subscribe(({data}) => {
         data.questions.forEach((question) => {
-          this.id = data.id;
           this.title = data.title;
           if (question.questionType == QuestionType.CHOICE) {
             const choiceQuestion = question as ChoiceQuestion;
@@ -117,8 +116,8 @@ export class TestComponent implements OnInit {
   }
 
   createPractice() {
-    let practice: Practice = {
-      id: this.id,
+    const practice: Practice = {
+      id: this.route.snapshot.params["id"],
       choiceAnswers: [],
       essayAnswers: [],
     };
@@ -153,7 +152,7 @@ export class TestComponent implements OnInit {
         });
       }
     });
-
+    console.log(practice);
     this.practiceService.createPractice(practice)
       .subscribe(({data}) => {
           this.router.navigate([`@${this.userService.userSignal()?.username}/practices/${data.practiceId}`]);
@@ -163,7 +162,7 @@ export class TestComponent implements OnInit {
 
   deleteTest() {
     this.testService
-      .delete(this.id)
+      .delete(this.route.snapshot.params["id"])
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (result) => {

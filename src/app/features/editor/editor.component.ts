@@ -238,9 +238,8 @@ export class EditorComponent implements OnInit, OnDestroy {
 
   submitForm(): void {
     this.isSubmitting = true;
-    let htmlString = "";
     
-    this.articleForm.controls.body.setValue(htmlString);
+
     if (this.isUpdate === true) {
       this.updateArticle();
     } else {
@@ -250,11 +249,15 @@ export class EditorComponent implements OnInit, OnDestroy {
 
 
   updateArticle() {
+    const article: Partial<Article> = {
+      id: this.route.snapshot.params["id"],
+      title: this.articleForm.value.title,
+      description: this.articleForm.value.description,
+      body: this.editor.getHTML(),
+      tagList: this.inTags,
+    };
     this.articleService
-      .update({
-        ...this.articleForm.value,
-        tagList: this.inTags,
-      })
+      .update(article)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: ({data}) => {
@@ -274,7 +277,6 @@ export class EditorComponent implements OnInit, OnDestroy {
       body: this.editor.getHTML(),
       tagList: this.inTags,
     };
-
     this.articleService
       .create(article)
       .pipe(takeUntil(this.destroy$))

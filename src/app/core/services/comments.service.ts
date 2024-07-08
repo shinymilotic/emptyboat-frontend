@@ -19,6 +19,6 @@ export class CommentsService {
   }
 
   delete(commentId: string, articleId: string): Observable<RestResponse<void>> {
-    return this.http.delete<RestResponse<void>>(`/articles/${articleId}/comments/${commentId}`);
+    return this.http.delete<RestResponse<void>>(`/comment/${commentId}`);
   }
 }
