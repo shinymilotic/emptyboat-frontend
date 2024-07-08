@@ -34,7 +34,6 @@ export class SettingsComponent implements OnInit {
       image: new FormControl("", { nonNullable: true }),
       username: new FormControl("", { nonNullable: true }),
       bio: new FormControl("", { nonNullable: true }),
-      email: new FormControl("", { nonNullable: true }),
     });
   }
 

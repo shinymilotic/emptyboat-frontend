@@ -1,11 +1,6 @@
 @if (comment) {
   <div class="card">
-    <div class="card-block">
-      <p class="card-text">
-        {{ comment.body }}
-      </p>
-    </div>
-    <div class="card-footer">
+    <div class="card-header">
       <a
         class="comment-author"
         [routerLink]="['/@'.concat(comment.author.username)]"
@@ -27,11 +22,18 @@
         {{ comment.createdAt | date : "longDate" }}
       </span>
       @if (canModify()) {
-        <span class="mod-options" >
-          <i class="ion-trash-a cursor-pointer" (click)="delete.emit(true)">X</i>
+        <span class="mod-options cursor-pointer" >
+          <i class="pi pi-trash" (click)="delete.emit(true)"></i>
         </span>
+
+
       }
       
+    </div>
+    <div class="card-block">
+      <p class="card-text">
+        {{ comment.body }}
+      </p>
     </div>
   </div>  
 }
