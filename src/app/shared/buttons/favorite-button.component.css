@@ -7,7 +7,9 @@
 }
 
 .btn-favorite:hover {
-  border-radius: 10px;
-  border: solid 1px;
   cursor: pointer;
+}
+
+.pi-heart-fill {
+  background-color: white;
 }

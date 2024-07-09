@@ -8,7 +8,7 @@
   @if (article.favorited) {
     <i class="pi pi-heart-fill" style="color:rgba(254, 44, 85, 1)" ></i>
   } @else {
-    <i class="pi pi-heart"></i>
+    <i class="pi pi-heart " (mouseenter)="heartMouseEnter($event)" (mouseleave)="heartMouseLeave($event)" ></i>
   }
   <span><ng-content></ng-content></span>
 </button>

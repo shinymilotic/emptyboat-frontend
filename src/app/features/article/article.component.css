@@ -246,11 +246,8 @@ a.btn.disabled,fieldset[disabled] a.btn{
 
 .follow-favorites-panel {
     display: flex;
+    margin-top: 20px;
 }
-
-
-
-
   
   /* Small devices (portrait tablets and large phones, 600px and up) */
   @media only screen and (min-width: 1200px)   {

@@ -26,22 +26,24 @@
               </span>
             }
     
-            @if (!canModify()) {
+            
               <div class="follow-favorites-panel">
+                @if (!canModify()) {
                 <app-follow-button
                   [profile]="article.author"
                 >
                 </app-follow-button>
+              }
                 &nbsp;&nbsp;
                 <app-favorite-button
                   [article]="article"
                   (toggle)="onToggleFavorite($event)"
                 > 
                   {{ article.favorited ? " " : " " }}
-                  <span class="counter">({{ article.favoritesCount }})</span>
+                  <span class="counter">{{ article.favoritesCount }}</span>
                 </app-favorite-button>
               </div>
-            }
+           
             
           </app-article-meta>
         </div>

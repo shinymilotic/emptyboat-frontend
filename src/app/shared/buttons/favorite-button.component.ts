@@ -4,6 +4,7 @@ import {
   Input,
   OnDestroy,
   Output,
+  Renderer2,
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { EMPTY, Observable, Subject, of, switchMap } from "rxjs";
@@ -30,7 +31,8 @@ export class FavoriteButtonComponent implements OnDestroy {
   constructor(
     private readonly articleService: ArticlesService,
     private readonly router: Router,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly renderer: Renderer2
   ) {}
 
   ngOnDestroy() {
@@ -62,5 +64,16 @@ export class FavoriteButtonComponent implements OnDestroy {
     } else {
       return this.articleService.unfavorite(this.article.id);
     }
+  }
+
+  heartMouseLeave($event: MouseEvent) {
+    this.renderer.removeClass($event.target, "pi-heart-fill");
+    this.renderer.addClass($event.target, "pi-heart");
+    this.renderer.removeAttribute($event.target, "style");
+  }
+  heartMouseEnter($event: MouseEvent) {
+    this.renderer.removeClass($event.target, "pi-heart");
+    this.renderer.addClass($event.target, "pi-heart-fill");
+    this.renderer.setAttribute($event.target, "style", "color:gray");
   }
 }
