@@ -66,14 +66,4 @@ export class FavoriteButtonComponent implements OnDestroy {
     }
   }
 
-  heartMouseLeave($event: MouseEvent) {
-    this.renderer.removeClass($event.target, "pi-heart-fill");
-    this.renderer.addClass($event.target, "pi-heart");
-    this.renderer.removeAttribute($event.target, "style");
-  }
-  heartMouseEnter($event: MouseEvent) {
-    this.renderer.removeClass($event.target, "pi-heart");
-    this.renderer.addClass($event.target, "pi-heart-fill");
-    this.renderer.setAttribute($event.target, "style", "color:gray");
-  }
 }

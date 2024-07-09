@@ -13,3 +13,11 @@
 .pi-heart-fill {
   background-color: white;
 }
+
+.pi-heart {
+  color: gray;
+}
+
+.pi-heart:hover {
+  color: black;
+}

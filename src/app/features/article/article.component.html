@@ -62,6 +62,17 @@
               </li>
               }
             </ul>
+
+            <div class="flex">
+              <app-favorite-button
+                [article]="article"
+                (toggle)="onToggleFavorite($event)"
+              > 
+                {{ article.favorited ? " " : " " }}
+                <span class="counter">{{ article.favoritesCount }}</span>
+              </app-favorite-button>
+              <i id="comments-btn" class="pi pi-comments"></i>
+            </div>
         </div>
     
         <hr />
@@ -88,6 +99,7 @@
             }
             
           </app-article-meta>
+          
         </div>
     
         <div class="row max-w-lg m-auto">
