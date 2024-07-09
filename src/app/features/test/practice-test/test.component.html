@@ -1,7 +1,7 @@
 <div class="flex justify-center">
   <!-- <app-side-bar class="col-sm-0 col-s-0"></app-side-bar> -->
 
-  <div>
+  <div class="w-full">
     <h1>{{ this.title }}</h1>
     <!-- <button (click)="deleteTest()" class="overcloud-btn w-28">Xóa bài test</button> -->
     <form (ngSubmit)="createPractice()" [formGroup]="this.questionForm">
@@ -10,7 +10,7 @@
           *ngFor="let question of this.questions; let qIndex = index"
           class="list-decimal p-3"
         >
-          <pre class="question m-2">{{ question.question }}</pre>
+          <div class="question m-2">{{ question.question }}</div>
           @if (question.questionType == 1) {
           <ol class="answers-list">
             <li *ngFor="let answer of asChoiceQuestion(qIndex).answers; let aIndex = index">
@@ -39,7 +39,7 @@
               }
               
               <label for="{{ answer.id }}" class="cursor-pointer">
-                <pre class="inline-block m-2">{{ answer.answer }}</pre></label
+                <div class="inline-block m-2">{{ answer.answer }}</div></label
               >
             </li>
           </ol>

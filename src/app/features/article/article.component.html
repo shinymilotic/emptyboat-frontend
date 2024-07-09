@@ -10,18 +10,18 @@
             @if (canModify()) {
               <span>
                 <a
-                  class="btn btn-sm btn-outline-secondary"
+                  class=""
                   [routerLink]="['/editor', article.id]"
                 >
-                  <i class="ion-edit"></i>Edit
+                  Edit
                 </a>
                 <span>&nbsp;&nbsp;</span>
                 <button
-                  class="btn btn-sm btn-outline-danger"
+                  class=""
                   [ngClass]="{ disabled: isDeleting }"
                   (click)="deleteArticle()"
                 >
-                  <i class="ion-trash-a"></i> Delete
+                  Delete
                 </button>
               </span>
             }
@@ -82,18 +82,18 @@
             @if (canModify()) {
               <span>
                 <a
-                  class="btn btn-sm btn-outline-secondary bg-black text-white"
+                  class=""
                   [routerLink]="['/editor', article.id]"
                 >
-                  <i class="ion-edit"></i> Edit
+                  Edit
                 </a>
                 <span>&nbsp;&nbsp;</span>
                 <button
-                  class="btn btn-sm btn-outline-danger"
+                  class=""
                   [ngClass]="{ disabled: isDeleting }"
                   (click)="deleteArticle()"
                 >
-                  <i class="ion-trash-a"></i> Delete
+                  Delete
                 </button>
               </span>
             }
@@ -116,7 +116,7 @@
                     ></textarea>
                   </div>
                   <div class="card-footer">
-                    <button class="btn btn-sm comment-btn" type="submit">
+                    <button class="comment-btn" type="submit">
                       Comment
                     </button>
                   </div>
