@@ -1,9 +1,7 @@
 <button
-  class="btn btn-sm action-btn btn-follow"
+  class="overcloud-btn"
   [ngClass]="{
     disabled: isSubmitting,
-    'btn-outline-secondary': !this.following,
-    'btn-secondary': this.following
   }"
   (click)="toggleFollowing()"
 >

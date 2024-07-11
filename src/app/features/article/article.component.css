@@ -127,13 +127,9 @@
 }
 
 .comment-btn {
-    background-color: #0084ff;
-    color: white;
-    border-radius: 5px;
-    font-weight: 100;
-    border-color: gray;
+    border-radius: 3rem;
     float: right;
-    cursor: pointer;
+    padding:.5rem 1rem;
 }
 
 .follow-favorites-panel {
