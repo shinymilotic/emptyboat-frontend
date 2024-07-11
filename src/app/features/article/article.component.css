@@ -159,3 +159,7 @@
 #comments-btn:hover {
     color: black;
 }
+
+.comment-form {
+    padding-bottom: 0px;
+}

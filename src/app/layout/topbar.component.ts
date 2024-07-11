@@ -9,7 +9,6 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { MenuModule } from 'primeng/menu';
 import { UserService } from '../core/services/user.service';
 import { Router } from "@angular/router";
-import * as e from 'express';
 
 @Component({
     selector: 'app-topbar',

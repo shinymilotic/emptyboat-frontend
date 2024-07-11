@@ -16,6 +16,7 @@ import { Subject, combineLatest, throwError } from "rxjs";
 import { Comment } from "../../core/models/blog/comment.model";
 import { ShowAuthedDirective } from "../../shared/show-authed.directive";
 import { ApiError } from "src/app/core/models/apierrors.model";
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
     selector: "app-article-page",
@@ -35,6 +36,7 @@ import { ApiError } from "src/app/core/models/apierrors.model";
         ArticleCommentComponent,
         ReactiveFormsModule,
         ShowAuthedDirective,
+        DialogModule
     ]
 })
 export class ArticleComponent implements OnInit, OnDestroy {
@@ -55,7 +57,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
   isSubmitting = false;
   isDeleting = false;
   destroy$ = new Subject<void>();
+  visible: boolean = false;
 
+  
   constructor(
     private readonly route: ActivatedRoute,
     private readonly articleService: ArticlesService,
@@ -145,5 +149,9 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   trackById(index: number, item: Comment): string {
     return item.id;
+  }
+
+  showDialog() {
+    this.visible = true;
   }
 }

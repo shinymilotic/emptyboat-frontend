@@ -71,7 +71,7 @@
                 {{ article.favorited ? " " : " " }}
                 <span class="counter">{{ article.favoritesCount }}</span>
               </app-favorite-button>
-              <i id="comments-btn" class="pi pi-comments"></i>
+              <i id="comments-btn" class="pi pi-comments" (click)="showDialog()"></i>
             </div>
         </div>
     
@@ -102,42 +102,48 @@
           
         </div>
     
-        <div class="row max-w-lg m-auto">
-            <div *appShowAuthed="true">
-              <app-list-errors></app-list-errors>
-              <form class="card comment-form" (ngSubmit)="addComment()">
-                <fieldset [disabled]="isSubmitting" class="border-none">
-                  <div class="card-block">
-                    <textarea
-                      class="form-control max-w-md w-11/12 outline-none"
-                      placeholder="Write comment..."
-                      rows="3"
-                      [formControl]="commentControl"
-                    ></textarea>
-                  </div>
-                  <div class="card-footer">
+        
+        <p-dialog 
+            header="Comments" 
+            [(visible)]="visible" 
+            [modal]="true" 
+            [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+            [style]="{ width: '50vw' }" 
+            [draggable]="false" 
+            [resizable]="false">
+              <div *appShowAuthed="true">
+                <app-list-errors></app-list-errors>
+                <form class="comment-form" (ngSubmit)="addComment()">
+                  <fieldset [disabled]="isSubmitting" class="border-none">
+                    <div class="card-block">
+                      <textarea
+                        class="form-control max-w-md w-11/12 outline-none"
+                        placeholder="Write comment..."
+                        rows="3"
+                        [formControl]="commentControl"
+                      ></textarea>
+                    </div>
+                    <hr>
                     <button class="comment-btn" type="submit">
-                      Comment
+                      Respond
                     </button>
-                  </div>
-                </fieldset>
-              </form>
-            </div>
-    
-            <div *appShowAuthed="false">
-              <a [routerLink]="['/login']">Login</a> or 
-              <a [routerLink]="['/register']">Register</a> to comments on this post.
-            </div>
-            <br>
-            @for (comment of comments; track $index) {
-              <app-article-comment
-              [comment]="comment"
-              (delete)="deleteComment(comment)"
-              >
-              </app-article-comment>
-            }
-            
-        </div>
+                  </fieldset>
+                </form>
+              </div>
+      
+              <div *appShowAuthed="false">
+                <a [routerLink]="['/login']">Login</a> or 
+                <a [routerLink]="['/register']">Register</a> to comments on this post.
+              </div>
+              <br>
+              @for (comment of comments; track $index) {
+                <app-article-comment
+                [comment]="comment"
+                (delete)="deleteComment(comment)"
+                >
+                </app-article-comment>
+              }  
+        </p-dialog>
       </div>
     </div>
   </div>  
