@@ -4,11 +4,6 @@
   list-style-type: upper-latin;
 }
 
-#submitBtn {
-  display: block;
-  float: right;
-}
-
 fieldset.form-group {
   padding: 5px;
   border-radius: 10px;

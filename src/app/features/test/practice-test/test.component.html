@@ -4,8 +4,8 @@
   <div class="w-full">
     <h1>{{ this.title }}</h1>
     <!-- <button (click)="deleteTest()" class="overcloud-btn w-28">Xóa bài test</button> -->
-    <form (ngSubmit)="createPractice()" [formGroup]="this.questionForm">
-      <ol>
+    <form (ngSubmit)="createPractice()" [formGroup]="this.questionForm" class="flex flex-col items-center">
+      <ol class="w-full">
         <li
           *ngFor="let question of this.questions; let qIndex = index"
           class="list-decimal p-3"
@@ -55,8 +55,7 @@
     
       <button
         type="submit"
-        id="submitBtn"
-        class="btn btn-lg btn-primary overcloud-btn"
+        class="overcloud-btn"
       >
         Nộp bài test
       </button>

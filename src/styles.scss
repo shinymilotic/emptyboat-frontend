@@ -107,22 +107,17 @@ app-root {
 }
 
 .overcloud-btn {
-  outline: none;
+  background-color: #0084ff;
+  padding: 7px;
+  color: white;
+  border-radius: 15px;
   border: none;
-  border-radius: 10px;
-  padding: 8px;
-  background-color: rgba(0, 0, 0, 0.05) !important;
   cursor: pointer;
+  width: 120px;
 }
 
 .overcloud-btn:hover {
-  color: white;
-  background-color: #0084ff !important;
-}
-
-.overcloud-btn:focus {
-  color: white;
-  background-color: #0084ff !important;
+  background-color: #071c2e;
 }
 
 .btn-outline-danger{

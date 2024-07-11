@@ -9,6 +9,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { MenuModule } from 'primeng/menu';
 import { UserService } from '../core/services/user.service';
 import { Router } from "@angular/router";
+import * as e from 'express';
 
 @Component({
     selector: 'app-topbar',
@@ -103,10 +104,13 @@ export class TopBarComponent {
           next: (isLogout) => {
             if (isLogout) {
               this.userService.purgeAuth();
-              void this.router.navigate(["/"]);
-              window.location.reload();
+              void this.router.navigate(["/"]).then(() => window.location.reload());
             }
-          }
+          },
+          error: (errors) => {
+            console.log(errors);
+            void this.router.navigate(["/"]).then(() => window.location.reload());
+        }
         });
       }
 }

@@ -51,12 +51,13 @@ export class UserService {
   }
 
   auth(): Observable<RestResponse<User>> {
+    console.log("auth");
     return this.http.get<RestResponse<User>>("/users").pipe(
       tap({
         next: ({data}) => {
           this.userSignal.set(data);
         },
-        error: () => this.purgeAuth(),
+        error: (errors) => this.purgeAuth(),
       }),
       shareReplay(1)
     );
