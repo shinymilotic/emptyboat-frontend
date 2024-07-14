@@ -6,7 +6,6 @@
 }
 
 .setting-btn {
-  background-color: white;
   border-radius: 10px;
   padding: 4px 16px;
 }
@@ -20,7 +19,6 @@
 .setting-btn:hover,
 .nav-item:hover {
   color: white;
-  background-color: #0084ff;
 }
 
 .setting-btn:focus,
@@ -36,4 +34,16 @@
 .user-info {
   background-color: white;
   border-radius: 13px;
+}
+
+.menu-btn {
+  border-radius: 10px;
+  padding: 4px 16px;
+  background-color: white;
+  color: black;
+}
+
+.menu-btn:hover {
+  background-color: #0084ff;
+  color: white;
 }

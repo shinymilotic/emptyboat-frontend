@@ -10,14 +10,14 @@
             @if (canModify()) {
               <span>
                 <a
-                  class=""
+                  class="overcloud-btn edit-btn"
                   [routerLink]="['/editor', article.id]"
                 >
                   Edit
                 </a>
                 <span>&nbsp;&nbsp;</span>
                 <button
-                  class=""
+                  class="delete-btn"
                   [ngClass]="{ disabled: isDeleting }"
                   (click)="deleteArticle()"
                 >
@@ -25,15 +25,13 @@
                 </button>
               </span>
             }
-    
-            
               <div class="follow-favorites-panel">
                 @if (!canModify()) {
                 <app-follow-button
                   [profile]="article.author"
                 >
                 </app-follow-button>
-              }
+                }
                 &nbsp;&nbsp;
                 <app-favorite-button
                   [article]="article"
@@ -43,8 +41,6 @@
                   <span class="counter">{{ article.favoritesCount }}</span>
                 </app-favorite-button>
               </div>
-           
-            
           </app-article-meta>
         </div>
       </div>
@@ -82,14 +78,14 @@
             @if (canModify()) {
               <span>
                 <a
-                  class=""
+                  class="overcloud-btn edit-btn"
                   [routerLink]="['/editor', article.id]"
                 >
                   Edit
                 </a>
                 <span>&nbsp;&nbsp;</span>
                 <button
-                  class=""
+                  class="delete-btn"
                   [ngClass]="{ disabled: isDeleting }"
                   (click)="deleteArticle()"
                 >
@@ -117,7 +113,7 @@
                   <fieldset [disabled]="isSubmitting" class="border-none">
                     <div class="card-block">
                       <textarea
-                        class="form-control max-w-md w-11/12 outline-none"
+                        class="form-control w-11/12 outline-none"
                         placeholder="Write comment..."
                         rows="3"
                         [formControl]="commentControl"

@@ -159,3 +159,22 @@
 .comment-form {
     padding-bottom: 0px;
 }
+
+.delete-btn {
+    background-color: white;
+    color: #E4003A;
+    border-color: #E4003A;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: .2s ease-in-out;
+}
+
+.delete-btn:hover {
+    background-color: #E4003A;
+    color: white;
+}
+
+.edit-btn {
+    padding: 2px 16px;
+    border-radius: 8px;
+}
