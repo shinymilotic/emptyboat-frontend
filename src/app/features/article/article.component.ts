@@ -52,7 +52,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   });  
 
   commentControl: FormControl<string>;
-  commentFormErrors: ApiError | null = null;
+  commentFormErrors!: ApiError;
   bodyAsHtml!: string;
   isSubmitting = false;
   isDeleting = false;
@@ -120,7 +120,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   addComment() {
     this.isSubmitting = true;
-    this.commentFormErrors = null;
 
     this.commentsService
       .add(this.article.id, this.commentControl.value)

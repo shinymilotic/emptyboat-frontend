@@ -12,7 +12,7 @@ fieldset.form-group {
 }
 
 .inTag div {
-  background-color: white;
+  background-color: #f2f2f2;
   padding: 8px 16px;
   width: fit-content;
   flex-direction: row;
@@ -64,3 +64,7 @@ fieldset.form-group {
   }
 }
 
+.post-btn {
+  padding: .5em 2em;
+  border-radius: 8px;
+}

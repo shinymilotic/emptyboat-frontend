@@ -26,6 +26,8 @@ import { Editor } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import { ApiError } from "src/app/core/models/apierrors.model";
 import { Article } from "src/app/core/models/blog/article.model";
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
 
 interface ArticleForm {
   title: FormControl<string>;
@@ -45,7 +47,9 @@ interface ArticleForm {
         ReactiveFormsModule,
         NgFor,
         AsyncPipe,
-        FormsModule
+        InputTextModule,
+        FormsModule,
+        DropdownModule
     ]
 })
 export class EditorComponent implements OnInit, OnDestroy {
@@ -54,7 +58,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   errors!: ApiError;
   isSubmitting = false;
   destroy$ = new Subject<void>();
-  filteredTags: Observable<string[]>;
+  filteredTags: string[] = [];
   inTags: string[] = [];
   allTags!: string[];
   tagsLoaded = false;
@@ -73,7 +77,8 @@ export class EditorComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly userService: UserService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private readonly tagsService: TagsService
   ) {
     this.articleForm = new FormGroup<ArticleForm>({
       title: new FormControl("", { nonNullable: true }),
@@ -81,11 +86,7 @@ export class EditorComponent implements OnInit, OnDestroy {
       body: new FormControl("", { nonNullable: true }),
     });
     this.tagField = new FormControl<string>("", { nonNullable: true });
-    this.filteredTags = inject(TagsService)
-      .getAll()
-      .pipe(
-        map((data) => data.data),
-        tap(() => (this.tagsLoaded = true)));
+    
     this.selectedTagIndex = -1;
   }
 
@@ -198,7 +199,6 @@ export class EditorComponent implements OnInit, OnDestroy {
 
     const id = this.route.snapshot.params["id"];
     if (id != undefined) {
-      
       this.articleService.get(id)
         .pipe(
           catchError((err) => {
@@ -216,6 +216,12 @@ export class EditorComponent implements OnInit, OnDestroy {
           }
         });
     }
+
+    this.tagsService.getAll().subscribe(({data}) => {
+      this.filteredTags = data;
+      console.log(data);
+    }
+    );
   }
 
   ngOnDestroy() {
@@ -363,11 +369,12 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.renderer.addClass(this.activeElement, "selectedTag");
   }
 
-  clickTag() {
-    let element: Element | null = this.activeElement;
-    if (element != null && element.innerHTML != null) {
-      let tag: string = element.innerHTML;
-
+  clickTag($event: any) {
+    if ($event == null) {
+      return;
+    }
+    if ($event.value != null) {
+      let tag: string = $event.value;
       if (tag != null && tag.trim() !== "" && this.inTags.indexOf(tag) < 0) {
         this.inTags.push(tag);
       }

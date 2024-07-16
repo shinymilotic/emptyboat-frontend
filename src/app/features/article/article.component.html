@@ -108,7 +108,7 @@
             [draggable]="false" 
             [resizable]="false">
               <div *appShowAuthed="true">
-                <app-list-errors></app-list-errors>
+                <app-list-errors [errors]="this.commentFormErrors"></app-list-errors>
                 <form class="comment-form" (ngSubmit)="addComment()">
                   <fieldset [disabled]="isSubmitting" class="border-none">
                     <div class="card-block">
