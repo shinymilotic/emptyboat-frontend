@@ -155,7 +155,7 @@ export class CreateTestComponent implements OnInit, OnDestroy {
         next: (data) => {
           void this.router.navigate(["/tests"]);
         },
-        error: ({ errors }) => {
+        error: (errors) => {
           this.errors = errors;
           this.isSubmitting = false;
         },

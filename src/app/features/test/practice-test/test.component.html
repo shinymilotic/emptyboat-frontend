@@ -15,14 +15,13 @@
           <ol class="answers-list">
             <li *ngFor="let answer of asChoiceQuestion(qIndex).answers; let aIndex = index">
               @if (!asChoiceQuestion(qIndex).isMultipleAnswers) {
-                <input
-                class="cursor-pointer"
-                type="radio"
-                id="{{ answer.id }}"
-                value="{{ answer.id }}"
-                formControlName="{{ question.id }}"
-              />
-
+                  <input
+                  class="cursor-pointer"
+                  type="radio"
+                  id="{{ answer.id }}"
+                  value="{{ answer.id }}"
+                  formControlName="{{ question.id }}"
+                />
               }
               
               @if (asChoiceQuestion(qIndex).isMultipleAnswers) {
