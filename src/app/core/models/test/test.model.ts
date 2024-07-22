@@ -1,6 +1,6 @@
 import { Question } from "./question.model";
 
-export interface Test {
+export interface CreateTestRequest {
   title: string;
   description: string;
   questions: Question[];

@@ -20,7 +20,7 @@ import {
 import { Router } from "@angular/router";
 import { Subject, takeUntil } from "rxjs";
 import { Question } from "src/app/core/models/test/question.model";
-import { Test } from "src/app/core/models/test/test.model";
+import { CreateTestRequest } from "src/app/core/models/test/test.model";
 import { TestService } from "src/app/core/services/test.service";
 import { ListErrorsComponent } from "src/app/shared/list-errors.component";
 import { QuestionType } from "./enum/QuestionType";
@@ -142,12 +142,11 @@ export class CreateTestComponent implements OnInit, OnDestroy {
     const title: string = this.testForm.value.title as string;
     const description: string = this.testForm.value.description as string;
     // create post request
-    const test: Test = {
+    const test: CreateTestRequest = {
       title: title,
       description: description,
       questions: questions,
     };
-    console.log(test);
     this.testService
       .create(test)
       .pipe(takeUntil(this.destroy$))
@@ -174,16 +173,12 @@ export class CreateTestComponent implements OnInit, OnDestroy {
     }
   }
 
-  focusLastAnswer() {}
-
   deleteAnswer(qIndex: number, aIndex: number) {
     this.getAnswerFormArr(qIndex).removeAt(aIndex);
   }
 
   isChoiceQuestion(qIndex: number): boolean {
-    const question = this.questionsFormArr.at(
-      qIndex
-    ) as FormGroup<QuestionForm>;
+    const question = this.questionsFormArr.at(qIndex) as FormGroup<QuestionForm>;
     if (question.value.questionType == QuestionType.CHOICE) {
       return true;
     }

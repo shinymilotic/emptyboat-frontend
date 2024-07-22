@@ -138,3 +138,22 @@ app-root {
   outline: none;
   min-height: 30vh;
 }
+
+.delete-btn {
+  background-color: white;
+  color: #b85c5c;
+  border-color: #b85c5c;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: .2s ease-in-out;
+}
+
+.delete-btn:hover {
+  background-color: #b85c5c;
+  color: white;
+}
+
+.edit-btn {
+  padding: 2px 16px;
+  border-radius: 8px;
+}

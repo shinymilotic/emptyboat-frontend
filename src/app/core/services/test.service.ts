@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { Test } from "../models/test/test.model";
+import { CreateTestRequest } from "../models/test/test.model";
 import { TestResponse } from "../models/test/test-response.model";
 import { RestResponse } from "../models/restresponse.model";
 import { SimpleTestResponse } from "src/app/features/test/test-list/simple-test-response.model";
@@ -30,7 +30,7 @@ export class TestService {
       .get<RestResponse<TestResponse>>(`/tests/${id}`);
   }
 
-  create(test: Partial<Test>): Observable<RestResponse<void>> {
+  create(test: Partial<CreateTestRequest>): Observable<RestResponse<void>> {
     return this.http.post<RestResponse<void>>("/test", test);
   }
 

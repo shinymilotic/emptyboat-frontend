@@ -1,5 +1,5 @@
 import { NgForOf, CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, computed, OnInit, Signal } from "@angular/core";
 import {
   FormArray,
   FormBuilder,
@@ -27,6 +27,7 @@ import { ChoiceQuestion } from "src/app/core/models/test/choicequestion.model";
 import { QuestionType } from "../create-test/enum/QuestionType";
 import { Question } from "src/app/core/models/test/question.model";
 import { ApiError } from "src/app/core/models/apierrors.model";
+import { TestResponse } from "src/app/core/models/test/test-response.model";
 
 @Component({
     selector: "app-test",
@@ -44,11 +45,28 @@ import { ApiError } from "src/app/core/models/apierrors.model";
 export class TestComponent implements OnInit {
   errors!: ApiError[];
   isSubmitting = false;
-  title: string = "";
+  test: TestResponse = {
+    id: "",
+    author: {
+      username: '',
+      bio: '',
+      image: '',
+      following: false
+    },
+    description: "",
+    questions: [],
+    title: "",
+  };
   questions: Question[] = [];
   destroy$ = new Subject<void>();
   questionForm: FormGroup = new FormGroup([]);
+  // canModify: Signal<boolean> = computed(() => {
+  //   if (this.userService.userSignal()?.username === this.article.author.username) {
+  //     return true;
+  //   }
 
+  //   return false;
+  // });
   constructor(
     private readonly route: ActivatedRoute,
     private readonly testService: TestService,
@@ -60,7 +78,7 @@ export class TestComponent implements OnInit {
 
   toFormGroup(questions: Question[]) {
     const group: any = {};
-
+    console.log(questions);
     questions.forEach((question) => {
       if (question.questionType == 1) {
           const choiceQuestion = question as ChoiceQuestion;
@@ -87,7 +105,7 @@ export class TestComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.params["id"];
-    console.log(id);
+
     this.testService.getOne(id)
       .pipe(
         catchError((err) => {
@@ -96,17 +114,8 @@ export class TestComponent implements OnInit {
         })
       )
       .subscribe(({data}) => {
-        data.questions.forEach((question) => {
-          this.title = data.title;
-          if (question.questionType == QuestionType.CHOICE) {
-            const choiceQuestion = question as ChoiceQuestion;
-            this.questions.push(choiceQuestion);
-          } else if (question.questionType == QuestionType.ESSAY) {
-            this.questions.push(question);
-          }
-        });
-
-        this.questionForm = this.toFormGroup(this.questions);
+        this.test = data;
+        this.questionForm = this.toFormGroup(this.test.questions);
       });
   }
 
@@ -152,12 +161,10 @@ export class TestComponent implements OnInit {
         });
       }
     });
-    console.log(practice);
     this.practiceService.createPractice(practice)
       .subscribe(({data}) => {
           this.router.navigate([`@${this.userService.userSignal()?.username}/practices/${data.practiceId}`]);
-        },
-      );
+      });
   }
 
   deleteTest() {
