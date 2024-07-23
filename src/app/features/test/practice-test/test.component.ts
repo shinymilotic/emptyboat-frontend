@@ -46,18 +46,17 @@ export class TestComponent implements OnInit {
   errors!: ApiError[];
   isSubmitting = false;
   test: TestResponse = {
-    id: "",
     author: {
+      id: '',
+      email: '',
       username: '',
       bio: '',
-      image: '',
-      following: false
+      image: ''
     },
     description: "",
     questions: [],
     title: "",
   };
-  questions: Question[] = [];
   destroy$ = new Subject<void>();
   questionForm: FormGroup = new FormGroup([]);
   // canModify: Signal<boolean> = computed(() => {
@@ -78,8 +77,9 @@ export class TestComponent implements OnInit {
 
   toFormGroup(questions: Question[]) {
     const group: any = {};
-    console.log(questions);
     questions.forEach((question) => {
+      console.log(question);
+
       if (question.questionType == 1) {
           const choiceQuestion = question as ChoiceQuestion;
           if (choiceQuestion.isMultipleAnswers) {
@@ -115,12 +115,13 @@ export class TestComponent implements OnInit {
       )
       .subscribe(({data}) => {
         this.test = data;
+        console.log(this.test);
         this.questionForm = this.toFormGroup(this.test.questions);
       });
   }
 
   asChoiceQuestion(qIndex: number): ChoiceQuestion {
-    const q = this.questions[qIndex] as ChoiceQuestion
+    const q = this.test.questions[qIndex] as ChoiceQuestion
     return q;
   }
 
@@ -131,7 +132,7 @@ export class TestComponent implements OnInit {
       essayAnswers: [],
     };
 
-    this.questions.forEach((question) => {
+    this.test.questions.forEach((question) => {
       const answerControl: FormControl = this.questionForm.controls[
         question.id
       ] as FormControl;

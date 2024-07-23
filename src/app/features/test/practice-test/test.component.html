@@ -20,7 +20,7 @@
     <form (ngSubmit)="createPractice()" [formGroup]="this.questionForm" class="flex flex-col items-center">
       <ol class="w-full">
         <li
-          *ngFor="let question of this.questions; let qIndex = index"
+          *ngFor="let question of this.test.questions; let qIndex = index"
           class="list-decimal p-3"
         >
           <div class="question m-2">{{ question.question }}</div>
