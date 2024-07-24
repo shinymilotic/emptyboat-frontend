@@ -59,13 +59,7 @@ export class TestComponent implements OnInit {
   };
   destroy$ = new Subject<void>();
   questionForm: FormGroup = new FormGroup([]);
-  // canModify: Signal<boolean> = computed(() => {
-  //   if (this.userService.userSignal()?.username === this.article.author.username) {
-  //     return true;
-  //   }
-
-  //   return false;
-  // });
+  
   constructor(
     private readonly route: ActivatedRoute,
     private readonly testService: TestService,
@@ -75,11 +69,12 @@ export class TestComponent implements OnInit {
     private readonly practiceService: PracticeService
   ) {}
 
+  canModify(): boolean {
+    return this.userService.userSignal()?.id == this.test.author.id;
+  }
   toFormGroup(questions: Question[]) {
     const group: any = {};
     questions.forEach((question) => {
-      console.log(question);
-
       if (question.questionType == 1) {
           const choiceQuestion = question as ChoiceQuestion;
           if (choiceQuestion.isMultipleAnswers) {
@@ -115,7 +110,6 @@ export class TestComponent implements OnInit {
       )
       .subscribe(({data}) => {
         this.test = data;
-        console.log(this.test);
         this.questionForm = this.toFormGroup(this.test.questions);
       });
   }

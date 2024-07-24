@@ -2,19 +2,23 @@
   <!-- <app-side-bar class="col-sm-0 col-s-0"></app-side-bar> -->
   
   <div class="w-full">
-    <div>
-      <a
-        class="overcloud-btn edit-btn"
-      >
-        Edit
-      </a>
-      <span>&nbsp;&nbsp;</span>
-      <button
-        class="delete-btn"
-      >
-        Delete
-      </button>
-    </div>
+    @if (canModify()) {
+      <div>
+        <a
+          class="overcloud-btn edit-btn"
+        >
+          Edit
+        </a>
+        <span>&nbsp;&nbsp;</span>
+        <button
+          class="delete-btn"
+          (click)="deleteTest()"
+        >
+          Delete
+        </button>
+      </div>
+    }
+    
     <h1>{{ this.test.title }}</h1>
     <!-- <button (click)="deleteTest()" class="overcloud-btn w-28">Xóa bài test</button> -->
     <form (ngSubmit)="createPractice()" [formGroup]="this.questionForm" class="flex flex-col items-center">
