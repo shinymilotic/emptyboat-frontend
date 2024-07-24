@@ -176,4 +176,8 @@ export class TestComponent implements OnInit {
         },
       });
   }
+
+  editTest() {
+    this.router.navigate(["/test", this.route.snapshot.params["id"], "update"]);
+  }
 }

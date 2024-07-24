@@ -38,7 +38,7 @@ export class TopBarComponent {
                 {
                     label: 'Write test',
                     icon: 'pi pi-file',
-                    routerLink: '/createTest'
+                    routerLink: '/test/create'
                 },
             ]
         }

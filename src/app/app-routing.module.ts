@@ -34,10 +34,17 @@ export const routes: Routes = [
           ),
       },
       {
-        path: "createTest",
+        path: "test/create",
         loadComponent: () =>
           import("./features/test/create-test/create-test.component").then(
             (m) => m.CreateTestComponent
+          ),
+      },
+      {
+        path: "test/:id/update",
+        loadComponent: () =>
+          import("./features/test/update-test/update-test.component").then(
+            (m) => m.UpdateTestComponent
           ),
       },
       {
