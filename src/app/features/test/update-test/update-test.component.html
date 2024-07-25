@@ -1,1 +1,35 @@
-<p>update-test works!</p>
+<div class="flex justify-center">
+
+    <div class="mt-3 w-full">
+      <app-list-errors [errors]="errors"></app-list-errors>
+        <h1>{{ this.test.title }}</h1>
+        <span>{{ this.test.description }}</span>
+        <ol>
+            @for (question of this.test.questions; track $index; let qIndex = $index) {
+                <li class="question">
+                    @if (question.questionType == 1) {
+                        <div>
+                            <div>{{question.question}}</div>
+                        </div>
+                        <ol>
+                        @for (answer of asChoiceQuestion($index).answers; track $index; let aIndex = $index) {
+                            <li>{{answer.answer}}</li>
+                        }
+                        </ol>
+                    } @else if (question.questionType == 2) {
+                        <div>{{question.question}}</div>
+                    }
+                    <div class="edit-menu">
+                        <i class="pi pi-pencil editBtn" style="font-size: 1.5rem"></i>&nbsp;&nbsp; 
+                        <i class="pi pi-times deleteBtn" style="font-size: 1.5rem"></i>    
+                    </div>
+                </li>
+            }
+        </ol>
+            
+        <button class="createTestBtn overcloud-btn float-right mt-2" type="submit">
+          Update test
+        </button>
+    </div>
+  </div>
+  

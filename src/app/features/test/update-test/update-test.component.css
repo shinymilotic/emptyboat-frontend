@@ -1,0 +1,36 @@
+.question {
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+    border: none;
+    margin-bottom: 10px;
+    padding-bottom: 2rem;
+    cursor: default;
+}
+.question:hover {
+    border-width: 1px;
+    border-style: solid;
+    border-color: lightgray;
+}
+
+.deleteBtn {
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.deleteBtn:hover {
+    color: #b85c5c;
+}
+
+.editBtn {
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.editBtn:hover {
+    color: #0084ff;
+}
+
+.edit-menu {
+    float: right;
+}
