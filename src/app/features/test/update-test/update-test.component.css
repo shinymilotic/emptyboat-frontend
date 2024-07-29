@@ -34,3 +34,10 @@
 .edit-menu {
     float: right;
 }
+
+.updateTestBtn {
+    border-radius: 8px;
+    padding: .3em 8px;
+    margin: 0 auto;
+    display: block;
+}
