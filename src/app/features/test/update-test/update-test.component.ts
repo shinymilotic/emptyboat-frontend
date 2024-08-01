@@ -6,33 +6,39 @@ import { TestService } from 'src/app/core/services/test.service';
 import { ListErrorsComponent } from "../../../shared/list-errors.component";
 import { ApiError } from 'src/app/core/models/apierrors.model';
 import { ChoiceQuestion } from 'src/app/core/models/test/choicequestion.model';
+import { DialogModule } from 'primeng/dialog';
+import { TestResponseUpd } from './test-response-update';
+import { QuestionType } from '../create-test/enum/QuestionType';
+import { QuestionUpd } from './question-update';
+import { Question } from 'src/app/core/models/test/question.model';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-update-test',
   standalone: true,
-  imports: [ListErrorsComponent],
+  imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule, ReactiveFormsModule],
   templateUrl: './update-test.component.html',
   styleUrl: './update-test.component.css'
 })
 export class UpdateTestComponent implements OnInit {
   errors!: ApiError;
-  test: TestResponse = {
-    author: {
-      id: '',
-      email: '',
-      username: '',
-      bio: '',
-      image: ''
-    },
+
+  testUpd: TestResponseUpd = {
     description: "",
     questions: [],
     title: "",
-  };
+    updateFlg: 0
+  }
+  visible: boolean = false;
+  questionForm: FormGroup = this.fb.group({});
   
   constructor(
     private readonly route: ActivatedRoute,
     private readonly testService: TestService,
     private readonly router: Router,
+    private readonly fb: FormBuilder
   ) { }
   ngOnInit(): void {
     const id = this.route.snapshot.params["id"];
@@ -45,7 +51,25 @@ export class UpdateTestComponent implements OnInit {
         })
       )
       .subscribe(({data}) => {
-        this.test = data;
+        this.testUpd.description = data.description;
+        this.testUpd.title = data.title;
+        data.questions.forEach((question) => {
+          if (question.questionType == QuestionType.CHOICE) {
+            const questionUpd: QuestionUpd = {
+              question: question as ChoiceQuestion,
+              updateFlg: 0
+            }
+            this.testUpd.questions.push(questionUpd);
+          }
+
+          if (question.questionType == QuestionType.ESSAY) {
+            const questionUpd: QuestionUpd = {
+              question: question,
+              updateFlg: 0
+            }
+            this.testUpd.questions.push(questionUpd);
+          }
+        })
       });
   }
 
@@ -69,7 +93,26 @@ export class UpdateTestComponent implements OnInit {
   }
 
   asChoiceQuestion(qIndex: number): ChoiceQuestion {
-    const q = this.test.questions[qIndex] as ChoiceQuestion
+    const q = this.testUpd.questions[qIndex].question as ChoiceQuestion
     return q;
+  }
+
+  toChoiceQuestion(question: Question): ChoiceQuestion {
+    return question as ChoiceQuestion;
+  }
+
+  showDiablog(qIndex: number) {
+    this.questionForm = this.fb.group({
+      question: this.testUpd.questions[qIndex].question
+    })
+    this.visible = true;
+  }
+
+  saveQuestion() {
+    this.visible = false;
+  }
+
+  closeDiablog() {
+    
   }
 }
