@@ -134,20 +134,17 @@ export class TestComponent implements OnInit {
         const choiceQuestion: ChoiceQuestion = question as ChoiceQuestion;
         if (!choiceQuestion.isMultipleAnswers) {
           practice.choiceAnswers.push({
-            questionId: question.id,
             answerId: [answerControl.value]
           });
         } else {
-          let selectedAnswers: string[] = [];
           answerControl.value.forEach((val : any) => {
             if (val.selected) {
-              selectedAnswers.push(val.answerId);
+              practice.choiceAnswers.push({
+                answerId: val.answerId
+              });
             }
           });
-          practice.choiceAnswers.push({
-            questionId: question.id,
-            answerId: selectedAnswers
-          });
+
         }
       } else if (question.questionType == QuestionType.ESSAY) {
         practice.essayAnswers.push({
