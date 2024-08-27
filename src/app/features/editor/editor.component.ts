@@ -54,7 +54,6 @@ interface ArticleForm {
 })
 export class EditorComponent implements OnInit, OnDestroy {
   articleForm: FormGroup<ArticleForm>;
-  tagField: FormControl<string>;
   errors!: ApiError;
   isSubmitting = false;
   destroy$ = new Subject<void>();
@@ -68,7 +67,6 @@ export class EditorComponent implements OnInit, OnDestroy {
   announcer = inject(LiveAnnouncer);
   isUpdate: boolean = false;
   isInputTag: boolean = true;
-  selectedTagIndex: number;
   activeElement: Element | null = null;
   editor!: Editor;
   items: Array<any> = [];
@@ -85,31 +83,10 @@ export class EditorComponent implements OnInit, OnDestroy {
       description: new FormControl("", { nonNullable: true }),
       body: new FormControl("", { nonNullable: true }),
     });
-    this.tagField = new FormControl<string>("", { nonNullable: true });
-    
-    this.selectedTagIndex = -1;
   }
 
-  remove(tag: string): void {
-    const index = this.inTags.indexOf(tag);
-
-    if (index >= 0) {
-      this.inTags.splice(index, 1);
-      this.announcer.announce(`Removed ${tag}`);
-    }
-  }
 
   ngOnInit() {
-    this.editor = new Editor({
-      element: document.querySelector('.tiptap-editor') as HTMLElement,
-      extensions: [
-        StarterKit,
-        
-      ],
-      content: '<div class="editor-content"></div>',
-
-    });
-
     this.items = [
       {
         icon: 'format_bold',
@@ -210,16 +187,35 @@ export class EditorComponent implements OnInit, OnDestroy {
           if (this.userService.userSignal()?.username === data.author.username) {
             this.inTags = data.tagList;
             this.articleForm.patchValue(data);
+            this.editor = new Editor({
+              element: document.querySelector('.tiptap-editor') as HTMLElement,
+              extensions: [
+                StarterKit,
+                
+              ],
+              content: data.body,
+        
+            });
             this.isUpdate = true;
+            console.log(data);
           } else {
             void this.router.navigate(["/"]);
           }
         });
+    } else {
+      this.editor = new Editor({
+        element: document.querySelector('.tiptap-editor') as HTMLElement,
+        extensions: [
+          StarterKit,
+          
+        ],
+        content: '<div class="editor-content"></div>',
+
+      });
     }
 
     this.tagsService.getAll().subscribe(({data}) => {
       this.filteredTags = data;
-      console.log(data);
     }
     );
   }
@@ -227,19 +223,6 @@ export class EditorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  addTag() {
-    const tag = this.tagField.value;
-    if (tag != null && tag.trim() !== "" && this.inTags.indexOf(tag) < 0) {
-      this.inTags.push(tag);
-    }
-
-    this.tagField.reset("");
-  }
-
-  removeTag(tagName: string): void {
-    this.inTags = this.inTags.filter((tag) => tag !== tagName);
   }
 
   submitForm(): void {
@@ -295,78 +278,6 @@ export class EditorComponent implements OnInit, OnDestroy {
           this.isSubmitting = false;
         },
       });
-  }
-
-  focusInputTag() {
-    this.isInputTag = false;
-  }
-
-  loseFocusInputTag() {
-    this.isInputTag = true;
-  }
-
-  changeInputTag() {}
-
-  selectTag($event: KeyboardEvent) {
-    if ($event.key === "ArrowDown") {
-      this.handleArrowDown();
-    } else if ($event.key === "ArrowUp") {
-      this.handleArrowUp();
-    } else if ($event.key === "Enter") {
-      this.handleEnter();
-    }
-  }
-
-  handleEnter() {
-    let element: Element | null = this.activeElement;
-
-    if (element != null && element.innerHTML != null) {
-      let tag: string = element.innerHTML;
-      if (tag != null && tag.trim() !== "" && this.inTags.indexOf(tag) < 0) {
-        this.inTags.push(tag);
-      }
-    }
-  }
-
-  handleArrowDown() {
-    if (this.activeElement == null) {
-      this.activeElement = this.tagInput.nativeElement.firstElementChild;
-      this.renderer.addClass(this.activeElement, "selectedTag");
-    } else if (
-      this.activeElement == this.tagInput.nativeElement.lastElementChild
-    ) {
-      this.renderer.removeClass(this.activeElement, "selectedTag");
-      this.activeElement = null;
-    } else {
-      this.renderer.removeClass(this.activeElement, "selectedTag");
-      this.activeElement = this.activeElement.nextElementSibling;
-      this.renderer.addClass(this.activeElement, "selectedTag");
-    }
-  }
-
-  handleArrowUp() {
-    if (this.activeElement == null) {
-      this.activeElement = this.tagInput.nativeElement.lastElementChild;
-      this.renderer.addClass(this.activeElement, "selectedTag");
-    } else if (
-      this.activeElement == this.tagInput.nativeElement.firstElementChild
-    ) {
-      this.renderer.removeClass(this.activeElement, "selectedTag");
-      this.activeElement = null;
-    } else {
-      this.renderer.removeClass(this.activeElement, "selectedTag");
-      this.activeElement = this.activeElement.previousElementSibling;
-      this.renderer.addClass(this.activeElement, "selectedTag");
-    }
-  }
-
-  mouseEnterTag($event: any) {
-    let target: Element = $event.target;
-    if (this.activeElement != null) {
-      this.renderer.removeClass(this.activeElement, "selectedTag");
-    }
-    this.activeElement = target;
-    this.renderer.addClass(this.activeElement, "selectedTag");
   }
 
   clickTag($event: any) {
