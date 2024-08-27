@@ -75,7 +75,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly userService: UserService,
-    private renderer: Renderer2,
     private readonly tagsService: TagsService
   ) {
     this.articleForm = new FormGroup<ArticleForm>({
@@ -84,7 +83,6 @@ export class EditorComponent implements OnInit, OnDestroy {
       body: new FormControl("", { nonNullable: true }),
     });
   }
-
 
   ngOnInit() {
     this.items = [
@@ -236,7 +234,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
   }
 
-
   updateArticle() {
     const article: Partial<Article> = {
       id: this.route.snapshot.params["id"],
@@ -245,6 +242,7 @@ export class EditorComponent implements OnInit, OnDestroy {
       body: this.editor.getHTML(),
       tagList: this.inTags,
     };
+
     this.articleService
       .update(article)
       .pipe(takeUntil(this.destroy$))
