@@ -195,7 +195,6 @@ export class EditorComponent implements OnInit, OnDestroy {
         
             });
             this.isUpdate = true;
-            console.log(data);
           } else {
             void this.router.navigate(["/"]);
           }
@@ -204,8 +203,7 @@ export class EditorComponent implements OnInit, OnDestroy {
       this.editor = new Editor({
         element: document.querySelector('.tiptap-editor') as HTMLElement,
         extensions: [
-          StarterKit,
-          
+          StarterKit,     
         ],
         content: '<div class="editor-content"></div>',
 
@@ -247,8 +245,8 @@ export class EditorComponent implements OnInit, OnDestroy {
       .update(article)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ({data}) => {
-          this.router.navigate(["/articles/", data]);
+        next: () => {
+          this.router.navigate(["/articles/", this.route.snapshot.params["id"]]);
         },
         error: (err) => {
           this.errors = err;
