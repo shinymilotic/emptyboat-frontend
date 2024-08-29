@@ -33,36 +33,4 @@
     </div>
   </div>
   
-<p-dialog 
-    header="Edit question" 
-    [(visible)]="visible" 
-    [modal]="true" 
-    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
-    [style]="{ width: '50vw' }" 
-    [draggable]="false" 
-    [resizable]="false"
-    (onHide)="closeDiablog()">
-
-    <form [formGroup]="this.questionForm" (ngSubmit)="saveQuestion()">
-
-        <div class="flex align-items-center gap-3 m-3">
-            <label for="question" class="font-semibold p-2">Question: </label>
-            <input pInputText id="question" class="flex-auto" />
-        </div>
-
-        <!-- @if (this.editableQuestion.question.questionType == 1) {
-            @for (answer of toChoiceQuestion(this.editableQuestion.question).answers; track $index) {
-
-            }
-        } -->
-
-        <!-- @if (this.editableQuestion.question.questionType == 2) {
-            
-        } -->
-        
-        <div class="flex justify-content-end gap-2 float-right">
-            <p-button label="Cancel" severity="secondary" (onClick)="visible = false" />
-            <p-button type="submit" label="Save"  />
-        </div>
-    </form>
-</p-dialog>
+<app-edit-test-dialog [visible]="this.visible"></app-edit-test-dialog>

@@ -1,0 +1,20 @@
+<p-dialog 
+    header="Edit question" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '50vw' }" 
+    [draggable]="false" 
+    [resizable]="false"
+    (onHide)="closeDiablog()">
+
+        <div class="flex align-items-center gap-3 m-3">
+            <label for="question" class="font-semibold p-2">Question: </label>
+            <input pInputText id="question" class="flex-auto"/>
+        </div>
+        
+        <!-- <div class="flex justify-content-end gap-2 float-right">
+            <p-button label="Cancel" severity="secondary" (onClick)="closeDiablog()" />
+            <p-button type="button" label="Save"  (onClick)="saveQuestion()" />
+        </div> -->
+</p-dialog>

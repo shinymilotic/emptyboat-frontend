@@ -13,12 +13,13 @@ import { QuestionUpd } from './question-update';
 import { Question } from 'src/app/core/models/test/question.model';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EditTestDialogComponent } from "./edit-test-dialog/edit-test-dialog.component";
 
 @Component({
   selector: 'app-update-test',
   standalone: true,
-  imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule, ReactiveFormsModule],
+  imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule, ReactiveFormsModule, FormsModule, EditTestDialogComponent],
   templateUrl: './update-test.component.html',
   styleUrl: './update-test.component.css'
 })
@@ -32,13 +33,12 @@ export class UpdateTestComponent implements OnInit {
     updateFlg: 0
   }
   visible: boolean = false;
-  questionForm: FormGroup = this.fb.group({});
+  questionForm: string = '';
   
   constructor(
     private readonly route: ActivatedRoute,
     private readonly testService: TestService,
     private readonly router: Router,
-    private readonly fb: FormBuilder
   ) { }
   ngOnInit(): void {
     const id = this.route.snapshot.params["id"];
@@ -102,9 +102,7 @@ export class UpdateTestComponent implements OnInit {
   }
 
   showDiablog(qIndex: number) {
-    this.questionForm = this.fb.group({
-      question: this.testUpd.questions[qIndex].question
-    })
+    this.questionForm = this.testUpd.questions[qIndex].question.question;
     this.visible = true;
   }
 
@@ -113,6 +111,7 @@ export class UpdateTestComponent implements OnInit {
   }
 
   closeDiablog() {
-    
+    this.questionForm = '';
+    this.visible = false;
   }
 }
