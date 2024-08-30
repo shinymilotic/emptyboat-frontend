@@ -13,13 +13,12 @@ import { QuestionUpd } from './question-update';
 import { Question } from 'src/app/core/models/test/question.model';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EditTestDialogComponent } from "./edit-test-dialog/edit-test-dialog.component";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-update-test',
   standalone: true,
-  imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule, ReactiveFormsModule, FormsModule, EditTestDialogComponent],
+  imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule, ReactiveFormsModule, FormsModule],
   templateUrl: './update-test.component.html',
   styleUrl: './update-test.component.css'
 })
