@@ -151,7 +151,7 @@ export class CreateTestComponent implements OnInit, OnDestroy {
       .create(test)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (data) => {
+        next: () => {
           void this.router.navigate(["/tests"]);
         },
         error: (errors) => {

@@ -27,8 +27,7 @@ export class PracticeResultComponent implements OnInit {
   };
 
   constructor(
-    private readonly practiceService: PracticeService,
-    private readonly fb: FormBuilder) {}
+    private readonly practiceService: PracticeService) {}
 
   ngOnInit(): void {
     this.practiceService.getPractice(this.id).subscribe((data: RestResponse<PracticeResult>) => {
