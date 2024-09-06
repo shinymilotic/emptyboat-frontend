@@ -5,11 +5,11 @@
       <div class="m-auto" *rxLet="tags$; let tags">
         <br>
         <div class="tag-list">
-          <a (click)="setListTo()" class="tag-default tag-pill"> Tất cả </a>
+          <a (click)="setListTo()" class="tag-pill"> Tất cả </a>
           @for (tag of tags; track $index) {
             <a
             (click)="setListTo({ tag: tag })"
-            class="tag-default tag-pill"
+            class="tag-pill"
           >
             {{ tag }}
           </a>

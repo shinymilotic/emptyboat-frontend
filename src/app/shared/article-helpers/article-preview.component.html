@@ -8,9 +8,9 @@
   <!-- <a class="preview-link"> -->
   <h1 class="font-bold mb-4 title">{{ article.title }}</h1>
   <p class="mb-4">{{ article.description }}</p>
-  <ul class="tag-list mb-4">
+  <ul class="article-tag-list mb-4">
     <li
-      class="tag-default tag-pill tag-outline"
+      class="article-tag-pill"
       *ngFor="let tag of article.tagList"
     >
       {{ tag }}
