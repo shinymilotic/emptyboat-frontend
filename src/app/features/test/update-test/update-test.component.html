@@ -6,7 +6,7 @@
         <span>{{ this.testUpd.description }}</span>
         <ol>
             @for (questionUpd of this.testUpd.questions; track $index; let qIndex = $index) {
-                <li class="question">
+                <li class="question {{this.background(qIndex)}}" (click)="showDiablog(qIndex)">
                     @if (questionUpd.question.questionType == 1) {
                         <div>
                             <div>{{questionUpd.question.question}}</div>
@@ -19,10 +19,10 @@
                     } @else if (questionUpd.question.questionType == 2) {
                         <div>{{questionUpd.question.question}}</div>
                     }
-                    <div class="edit-menu">
+                    <!-- <div class="edit-menu">
                         <i class="pi pi-pencil editBtn" style="font-size: 1.5rem" (click)="showDiablog(qIndex)" ></i>&nbsp;&nbsp; 
                         <i class="pi pi-times deleteBtn" style="font-size: 1.5rem"></i>    
-                    </div>
+                    </div> -->
                 </li>
             }
         </ol>
@@ -33,7 +33,7 @@
     </div>
   </div>
   
-  <p-dialog 
+<p-dialog 
   header="Edit question" 
   [(visible)]="visible" 
   [modal]="true" 
@@ -43,13 +43,16 @@
   [resizable]="false"
   (onHide)="closeDiablog()">
 
-      <div class="flex align-items-center gap-3 m-3">
-          <label for="question" class="font-semibold p-2">Question: </label>
-          <input pInputText id="question" class="flex-auto"/>
-      </div>
+
+    @if (this.questionOnEdit != undefined) {
+        <div class="flex align-items-center gap-3 m-3" [formGroup]="this.questionOnEdit">
+            <label for="question" class="font-semibold p-2">Question: </label>
+            <input pInputText id="question" class="flex-auto" formControlName="question"/>
+        </div>
+    }
       
-      <!-- <div class="flex justify-content-end gap-2 float-right">
+      <div class="flex justify-content-end gap-2 float-right">
           <p-button label="Cancel" severity="secondary" (onClick)="closeDiablog()" />
-          <p-button type="button" label="Save"  (onClick)="saveQuestion()" />
-      </div> -->
+          <p-button type="button" label="Save" (onClick)="saveQuestion()" />
+      </div>
 </p-dialog>

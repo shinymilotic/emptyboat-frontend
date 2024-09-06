@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
-import { TestResponse } from 'src/app/core/models/test/test-response.model';
 import { TestService } from 'src/app/core/services/test.service';
 import { ListErrorsComponent } from "../../../shared/list-errors.component";
 import { ApiError } from 'src/app/core/models/apierrors.model';
@@ -13,7 +12,7 @@ import { QuestionUpd } from './question-update';
 import { Question } from 'src/app/core/models/test/question.model';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-update-test',
@@ -32,12 +31,14 @@ export class UpdateTestComponent implements OnInit {
     updateFlg: 0
   }
   visible: boolean = false;
-  questionForm: string = '';
+  questionOnEdit!: FormGroup;
+  selectedQuestionIndex!: number;
   
   constructor(
     private readonly route: ActivatedRoute,
     private readonly testService: TestService,
     private readonly router: Router,
+    private readonly fb: FormBuilder
   ) { }
   ngOnInit(): void {
     const id = this.route.snapshot.params["id"];
@@ -72,25 +73,6 @@ export class UpdateTestComponent implements OnInit {
       });
   }
 
-  deleteQuestion(_t11: any) {
-    throw new Error('Method not implemented.');
-  }
-  isChoiceQuestion(_t11: any) {
-    throw new Error('Method not implemented.');
-  }
-  deleteAnswer(_t11: any,_t20: any) {
-    throw new Error('Method not implemented.');
-  }
-  addAnswer(_t11: any) {
-    throw new Error('Method not implemented.');
-  }
-  addEssayQuestion() {
-    throw new Error('Method not implemented.');
-  }
-  addQuestion() {
-    throw new Error('Method not implemented.');
-  }
-
   asChoiceQuestion(qIndex: number): ChoiceQuestion {
     const q = this.testUpd.questions[qIndex].question as ChoiceQuestion
     return q;
@@ -101,16 +83,56 @@ export class UpdateTestComponent implements OnInit {
   }
 
   showDiablog(qIndex: number) {
-    this.questionForm = this.testUpd.questions[qIndex].question.question;
+    // this.essayQuestionOnEdit.controls["question"].setValue(this.testUpd.questions[qIndex].question.question);
+    const question : QuestionUpd = this.testUpd.questions[qIndex];
+    this.questionOnEdit = this.toFormGroup(question);
+    this.selectedQuestionIndex = qIndex;
     this.visible = true;
   }
 
+  toFormGroup(updQuestion: QuestionUpd) : FormGroup {
+    const question: Question = updQuestion.question;
+    if (question?.questionType == QuestionType.ESSAY) {
+      return this.fb.group({
+        question: this.fb.control(question.question, Validators.required),
+      });
+    }
+
+    return this.fb.group({
+      question: this.fb.control(question.question, Validators.required),
+    });
+  } 
+
   saveQuestion() {
+    const oldQuestion: QuestionUpd = this.testUpd.questions[this.selectedQuestionIndex];
+    const question: string = this.questionOnEdit.value.question;
+    const updateQuestion : QuestionUpd = {
+      question: {
+        id: oldQuestion.question.id,
+        question: question,
+        questionType: oldQuestion.question.questionType
+      },
+      updateFlg: 2
+    };
+    this.testUpd.questions[this.selectedQuestionIndex] = updateQuestion;
     this.visible = false;
   }
 
   closeDiablog() {
-    this.questionForm = '';
     this.visible = false;
+  }
+
+  background(qIndex: number): string {
+    const question: QuestionUpd = this.testUpd.questions[qIndex];
+    
+    if (question.updateFlg == 1) {
+      return "newQuestion";
+    } else if (question.updateFlg == 2) {
+      return "updateQuestion";
+    } else if (question.updateFlg == 3) {
+      return "deleteQuestion";
+    }
+
+    return "";
   }
 }

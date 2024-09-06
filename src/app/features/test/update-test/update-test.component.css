@@ -5,7 +5,7 @@
     border: none;
     margin-bottom: 10px;
     padding-bottom: 2rem;
-    cursor: default;
+    cursor: pointer;
 }
 .question:hover {
     border-width: 1px;
@@ -40,4 +40,16 @@
     padding: .3em 8px;
     margin: 0 auto;
     display: block;
+}
+
+.updateQuestion {
+    background-color: aliceblue;
+}
+
+.newQuestion {
+    background-color: #E4F4DA;
+}
+
+.deleteQuestion {
+    background-color: #FF8383;
 }
