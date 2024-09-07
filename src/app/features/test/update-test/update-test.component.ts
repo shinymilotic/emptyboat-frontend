@@ -23,7 +23,6 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 })
 export class UpdateTestComponent implements OnInit {
   errors!: ApiError;
-
   testUpd: TestResponseUpd = {
     description: "",
     questions: [],
@@ -134,5 +133,11 @@ export class UpdateTestComponent implements OnInit {
     }
 
     return "";
+  }
+
+  deleteQuestion() {
+    const question: QuestionUpd = this.testUpd.questions[this.selectedQuestionIndex];
+    question.updateFlg = 3;
+    this.visible = false;
   }
 }

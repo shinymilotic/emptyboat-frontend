@@ -14,14 +14,24 @@
     background-color: aliceblue;
 }
 
-.deleteBtn {
-    cursor: pointer;
-    transition: 0.2s ease-in-out;
-}
 
-.deleteBtn:hover {
+
+.deleteQuestionBtn {
+    align-self: baseline;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 10px;
     color: #b85c5c;
-}
+    transition: .2s ease-in-out;
+  }
+  
+  .deleteQuestionBtn:hover {
+    color: white;
+    background-color: #b85c5c;
+  }
 
 .editBtn {
     cursor: pointer;

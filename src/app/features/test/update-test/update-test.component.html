@@ -43,13 +43,23 @@
   [resizable]="false"
   (onHide)="closeDiablog()">
 
-
+    <div class="flex">
+        <a
+        class="deleteQuestionBtn"
+        (click)="deleteQuestion()"
+        >
+            Delete
+        </a>
+    </div>
     @if (this.questionOnEdit != undefined) {
         <div class="flex align-items-center gap-3 m-3" [formGroup]="this.questionOnEdit">
             <label for="question" class="font-semibold p-2">Question: </label>
             <input pInputText id="question" class="flex-auto" formControlName="question"/>
         </div>
     }
+
+    
+    
       
       <div class="flex justify-content-end gap-2 float-right">
           <p-button label="Cancel" severity="secondary" (onClick)="closeDiablog()" />
