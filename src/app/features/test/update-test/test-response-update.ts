@@ -5,5 +5,4 @@ export interface TestResponseUpd {
     description: string,
     title: string,
     questions: QuestionUpd[],
-    updateFlg: number
 }

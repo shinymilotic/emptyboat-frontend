@@ -27,7 +27,7 @@
             }
         </ol>
             
-        <button class="updateTestBtn overcloud-btn mt-2" type="submit">
+        <button class="updateTestBtn overcloud-btn mt-2" type="submit" (click)="updateTest()">
           Update
         </button>
     </div>
@@ -57,9 +57,6 @@
             <input pInputText id="question" class="flex-auto" formControlName="question"/>
         </div>
     }
-
-    
-    
       
       <div class="flex justify-content-end gap-2 float-right">
           <p-button label="Cancel" severity="secondary" (onClick)="closeDiablog()" />

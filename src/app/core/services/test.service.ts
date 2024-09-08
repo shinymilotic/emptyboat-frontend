@@ -38,11 +38,10 @@ export class TestService {
     return this.http.delete<RestResponse<void>>(`/tests/${id}`);
   }
 
-  // update(article: Partial<Article>): Observable<Article> {
-  //   return this.http
-  //     .put<{ article: Article }>(`/articles/${article.slug}`, {
-  //       article: article,
-  //     })
-  //     .pipe(map((data) => data.article));
-  // }
+  update(testId: string): Observable<RestResponse<void>> {
+    return this.http
+      .put<RestResponse<void>>(`/tests/${testId}`, {
+       
+      });
+  }
 }

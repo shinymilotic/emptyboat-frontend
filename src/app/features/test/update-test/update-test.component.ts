@@ -26,8 +26,7 @@ export class UpdateTestComponent implements OnInit {
   testUpd: TestResponseUpd = {
     description: "",
     questions: [],
-    title: "",
-    updateFlg: 0
+    title: ""
   }
   visible: boolean = false;
   questionOnEdit!: FormGroup;
@@ -139,5 +138,9 @@ export class UpdateTestComponent implements OnInit {
     const question: QuestionUpd = this.testUpd.questions[this.selectedQuestionIndex];
     question.updateFlg = 3;
     this.visible = false;
+  }
+
+  updateTest() {
+    
   }
 }
