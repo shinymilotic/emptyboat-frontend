@@ -25,7 +25,7 @@
     </div>
     <!-- <button (click)="deleteTest()" class="overcloud-btn w-28">Xóa bài test</button> -->
     <form (ngSubmit)="createPractice()" [formGroup]="this.questionForm" class="flex flex-col items-center">
-      <ol class="w-full">
+      <ol class="question-list">
         <li
           *ngFor="let question of this.test.questions; let qIndex = index"
           class="list-decimal p-3"
