@@ -30,4 +30,5 @@ fieldset.form-group {
 .question-list {
   background-color: white;
   border-radius: 12px;
+  width: 100%;
 }
