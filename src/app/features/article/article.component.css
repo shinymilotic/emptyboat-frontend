@@ -30,6 +30,11 @@
 .article-content pre {
     background-color: aliceblue;
   }
+.article-actions {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+}
 .article-page .article-actions{
     text-align:center;
     margin:1.5rem 0 3rem
