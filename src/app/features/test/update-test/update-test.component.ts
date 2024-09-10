@@ -149,9 +149,13 @@ export class UpdateTestComponent implements OnInit {
     const testId = this.route.snapshot.params["id"];
     this.testService.update(testId, this.testUpd).subscribe({
       next: () => {
-        this.router.navigate(["/test", testId]);
+        this.router.navigateByUrl(`/`, { skipLocationChange: true }).then(() => {
+          console.log(testId);
+          this.router.navigate([`/test/${testId}/update`]);
+      }); 
       },
       error: (err) => {
+        console.log(err);
         this.errors = err;
       },
     });
