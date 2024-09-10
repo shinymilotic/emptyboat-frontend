@@ -3,7 +3,8 @@
 .banner{
     background:white;
     padding:2rem;
-    margin-bottom:2rem
+    margin-bottom:2rem;
+    border-radius:12px;
 }
 .container{
     margin-left:auto;

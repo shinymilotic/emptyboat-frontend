@@ -13,6 +13,7 @@ import { Question } from 'src/app/core/models/test/question.model';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChoiceQuestionUpd } from './choice-question-update';
 
 @Component({
   selector: 'app-update-test',
@@ -53,8 +54,12 @@ export class UpdateTestComponent implements OnInit {
         this.testUpd.title = data.title;
         data.questions.forEach((question) => {
           if (question.questionType == QuestionType.CHOICE) {
-            const questionUpd: QuestionUpd = {
-              question: question as ChoiceQuestion,
+            const choiceQuestion : ChoiceQuestion = question as ChoiceQuestion;
+
+            const questionUpd: ChoiceQuestionUpd = {
+              id: choiceQuestion.id,
+              question: choiceQuestion.question,
+              questionType: choiceQuestion.questionType,
               updateFlg: 0
             }
             this.testUpd.questions.push(questionUpd);
@@ -62,7 +67,9 @@ export class UpdateTestComponent implements OnInit {
 
           if (question.questionType == QuestionType.ESSAY) {
             const questionUpd: QuestionUpd = {
-              question: question,
+              id: question.id,
+              question: question.question,
+              questionType: question.questionType,
               updateFlg: 0
             }
             this.testUpd.questions.push(questionUpd);
@@ -71,10 +78,10 @@ export class UpdateTestComponent implements OnInit {
       });
   }
 
-  asChoiceQuestion(qIndex: number): ChoiceQuestion {
-    const q = this.testUpd.questions[qIndex].question as ChoiceQuestion
-    return q;
-  }
+  // asChoiceQuestion(qIndex: number): ChoiceQuestion {
+  //   const q = this.testUpd.questions[qIndex] as ChoiceQuestion
+  //   return q;
+  // }
 
   toChoiceQuestion(question: Question): ChoiceQuestion {
     return question as ChoiceQuestion;
@@ -89,7 +96,7 @@ export class UpdateTestComponent implements OnInit {
   }
 
   toFormGroup(updQuestion: QuestionUpd) : FormGroup {
-    const question: Question = updQuestion.question;
+    const question: Question = updQuestion;
     if (question?.questionType == QuestionType.ESSAY) {
       return this.fb.group({
         question: this.fb.control(question.question, Validators.required),
@@ -105,11 +112,9 @@ export class UpdateTestComponent implements OnInit {
     const oldQuestion: QuestionUpd = this.testUpd.questions[this.selectedQuestionIndex];
     const question: string = this.questionOnEdit.value.question;
     const updateQuestion : QuestionUpd = {
-      question: {
-        id: oldQuestion.question.id,
-        question: question,
-        questionType: oldQuestion.question.questionType
-      },
+      id: oldQuestion.id,
+      question: question,
+      questionType: oldQuestion.questionType,
       updateFlg: 2
     };
     this.testUpd.questions[this.selectedQuestionIndex] = updateQuestion;
@@ -141,6 +146,14 @@ export class UpdateTestComponent implements OnInit {
   }
 
   updateTest() {
-    
+    const testId = this.route.snapshot.params["id"];
+    this.testService.update(testId, this.testUpd).subscribe({
+      next: () => {
+        this.router.navigate(["/test", testId]);
+      },
+      error: (err) => {
+        this.errors = err;
+      },
+    });
   }
 }

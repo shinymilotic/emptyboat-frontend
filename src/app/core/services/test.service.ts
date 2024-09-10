@@ -5,6 +5,7 @@ import { CreateTestRequest } from "../models/test/test.model";
 import { TestResponse } from "../models/test/test-response.model";
 import { RestResponse } from "../models/restresponse.model";
 import { SimpleTestResponse } from "src/app/features/test/test-list/simple-test-response.model";
+import { TestResponseUpd } from "src/app/features/test/update-test/test-response-update";
 
 @Injectable({ providedIn: "root" })
 export class TestService {
@@ -38,10 +39,8 @@ export class TestService {
     return this.http.delete<RestResponse<void>>(`/tests/${id}`);
   }
 
-  update(testId: string): Observable<RestResponse<void>> {
+  update(testId: string, testUpd: TestResponseUpd): Observable<RestResponse<void>> {
     return this.http
-      .put<RestResponse<void>>(`/tests/${testId}`, {
-       
-      });
+      .put<RestResponse<void>>(`/test/${testId}/update`, testUpd);
   }
 }

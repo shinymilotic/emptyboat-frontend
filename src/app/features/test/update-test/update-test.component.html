@@ -7,17 +7,17 @@
         <ol>
             @for (questionUpd of this.testUpd.questions; track $index; let qIndex = $index) {
                 <li class="question {{this.background(qIndex)}}" (click)="showDiablog(qIndex)">
-                    @if (questionUpd.question.questionType == 1) {
+                    @if (questionUpd.questionType == 1) {
                         <div>
-                            <div>{{questionUpd.question.question}}</div>
+                            <div>{{questionUpd.question}}</div>
                         </div>
                         <ol>
-                        @for (answer of asChoiceQuestion($index).answers; track $index; let aIndex = $index) {
+                        <!-- @for (answer of asChoiceQuestion($index).answers; track $index; let aIndex = $index) {
                             <li>{{answer.answer}}</li>
-                        }
+                        } -->
                         </ol>
-                    } @else if (questionUpd.question.questionType == 2) {
-                        <div>{{questionUpd.question.question}}</div>
+                    } @else if (questionUpd.questionType == 2) {
+                        <div>{{questionUpd.question}}</div>
                     }
                     <!-- <div class="edit-menu">
                         <i class="pi pi-pencil editBtn" style="font-size: 1.5rem" (click)="showDiablog(qIndex)" ></i>&nbsp;&nbsp; 
