@@ -20,7 +20,9 @@
       </div>
     }
     
-    <h1>{{ this.test.title }}</h1>
+    <div class="header">
+      <h1>{{ this.test.title }}</h1>
+    </div>
     <!-- <button (click)="deleteTest()" class="overcloud-btn w-28">Xóa bài test</button> -->
     <form (ngSubmit)="createPractice()" [formGroup]="this.questionForm" class="flex flex-col items-center">
       <ol class="w-full">

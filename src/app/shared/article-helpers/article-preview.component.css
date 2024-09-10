@@ -1,17 +1,4 @@
 
 
 
-.article-tag-list {
-  display: flex;
-  flex-direction: row;
-  list-style: none;
-  padding: 0;
-}
 
-.article-tag-list li {
-  background-color: white;
-  text-decoration: none;
-  border-radius: 10px;
-  padding: 4px 16px;
-  margin-right: 12px;
-}
