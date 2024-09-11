@@ -12,17 +12,13 @@
                             <div>{{questionUpd.question}}</div>
                         </div>
                         <ol>
-                        <!-- @for (answer of asChoiceQuestion($index).answers; track $index; let aIndex = $index) {
+                        @for (answer of asChoiceQuestion($index).answers; track $index; let aIndex = $index) {
                             <li>{{answer.answer}}</li>
-                        } -->
+                        }
                         </ol>
                     } @else if (questionUpd.questionType == 2) {
                         <div>{{questionUpd.question}}</div>
                     }
-                    <!-- <div class="edit-menu">
-                        <i class="pi pi-pencil editBtn" style="font-size: 1.5rem" (click)="showDiablog(qIndex)" ></i>&nbsp;&nbsp; 
-                        <i class="pi pi-times deleteBtn" style="font-size: 1.5rem"></i>    
-                    </div> -->
                 </li>
             }
         </ol>
@@ -32,34 +28,56 @@
         </button>
     </div>
   </div>
-  
-<p-dialog 
-  header="Edit question" 
-  [(visible)]="visible" 
-  [modal]="true" 
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
-  [style]="{ width: '50vw' }" 
-  [draggable]="false" 
-  [resizable]="false"
-  (onHide)="closeDiablog()">
 
-    <div class="flex">
-        <a
-        class="deleteQuestionBtn"
-        (click)="deleteQuestion()"
-        >
-            Delete
-        </a>
-    </div>
-    @if (this.questionOnEdit != undefined) {
-        <div class="flex align-items-center gap-3 m-3" [formGroup]="this.questionOnEdit">
-            <label for="question" class="font-semibold p-2">Question: </label>
-            <input pInputText id="question" class="flex-auto" formControlName="question"/>
-        </div>
-    }
-      
-      <div class="flex justify-content-end gap-2 float-right">
-          <p-button label="Cancel" severity="secondary" (onClick)="closeDiablog()" />
-          <p-button type="button" label="Save" (onClick)="saveQuestion()" />
+@if (this.selectedQuestionIndex != null && this.testUpd != null && this.testUpd.questions[this.selectedQuestionIndex] != null) {
+    <p-dialog 
+    header="Edit question" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '50vw' }" 
+    [draggable]="false" 
+    [resizable]="false"
+    (onHide)="closeDiablog()">
+  
+      <div class="flex">
+          <a
+          class="deleteQuestionBtn"
+          (click)="deleteQuestion()"
+          >
+              Delete
+          </a>
       </div>
-</p-dialog>
+      @if (this.testUpd.questions[this.selectedQuestionIndex].questionType == 1) {
+            <div class="flex-col align-items-center gap-3 m-3" [formGroup]="this.questionForm">
+                <label for="question" class="font-semibold p-2">Question: </label>
+                <input pInputText id="question" class="flex-auto" formControlName="question"/>
+                <!-- <div
+                class="flex mb-2"
+                *ngFor="let answer of this.getAnswerFormArr().controls; let aIndex = index"
+              >
+                    <input pInputText type="text" class="flex-auto" />
+                     <div>{{answer.get("answer")?.value}}</div>
+                </div> -->
+                <div formArrayName="answers">
+                    <div formGroupName="{{aIndex}}" *ngFor="let answer of this.getAnswerFormArr().controls; let aIndex = index" class="mt-2">
+                        <input pInputText type="text" class="flex-auto" formControlName="answer"/>
+                    </div>
+                </div>
+            </div>
+
+      } @else if (this.testUpd.questions[this.selectedQuestionIndex].questionType == 2) {
+          <!-- @if (this.questionForm) { -->
+              <div class="flex align-items-center gap-3 m-3" [formGroup]="this.questionForm">
+                  <label for="question" class="font-semibold p-2">Question: </label>
+                  <input pInputText id="question" class="flex-auto" formControlName="question"/>
+              </div>
+          <!-- } -->
+      }
+        
+        <div class="flex justify-content-end gap-2 float-right">
+            <p-button label="Cancel" severity="secondary" (onClick)="closeDiablog()" />
+            <p-button type="button" label="Save" (onClick)="saveQuestion()" />
+        </div>
+  </p-dialog>
+}
