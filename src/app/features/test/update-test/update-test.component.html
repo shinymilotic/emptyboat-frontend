@@ -60,9 +60,10 @@
                      <div>{{answer.get("answer")?.value}}</div>
                 </div> -->
                 <div formArrayName="answers">
-                    <div formGroupName="{{aIndex}}" *ngFor="let answer of this.getAnswerFormArr().controls; let aIndex = index" class="mt-2">
-                        <input pInputText type="text" class="flex-auto" formControlName="answer"/>
-                    </div>
+                    <ol >
+                        <li formGroupName="{{aIndex}}" *ngFor="let answer of this.getAnswerFormArr().controls; let aIndex = index"
+                         class="mt-2"><input pInputText type="text" class="flex-auto" formControlName="answer"/></li>
+                    </ol>
                 </div>
             </div>
 
