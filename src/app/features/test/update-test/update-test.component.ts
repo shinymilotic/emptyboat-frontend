@@ -201,4 +201,11 @@ export class UpdateTestComponent implements OnInit {
       FormGroup
     >;
   }
+
+  deleteAnswer(aIndex: number) {
+
+  }
+  addAnswer() {
+  
+  }
 }

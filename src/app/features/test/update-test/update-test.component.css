@@ -18,8 +18,7 @@ input {
     border: 1px solid;
 }
 
-.deleteQuestionBtn {
-    align-self: baseline;
+.deleteBtn {
     padding: 8px;
     border-radius: 5px;
     cursor: pointer;
@@ -30,7 +29,7 @@ input {
     transition: .2s ease-in-out;
   }
   
-  .deleteQuestionBtn:hover {
+  .deleteBtn:hover {
     color: white;
     background-color: #b85c5c;
   }

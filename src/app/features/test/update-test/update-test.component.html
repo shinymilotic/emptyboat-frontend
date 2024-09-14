@@ -42,7 +42,7 @@
   
       <div class="flex">
           <a
-          class="deleteQuestionBtn"
+          class="deleteBtn"
           (click)="deleteQuestion()"
           >
               Delete
@@ -62,7 +62,43 @@
                 <div formArrayName="answers">
                     <ol >
                         <li formGroupName="{{aIndex}}" *ngFor="let answer of this.getAnswerFormArr().controls; let aIndex = index"
-                         class="mt-2"><input pInputText type="text" class="flex-auto" formControlName="answer"/></li>
+                         class="mt-2 flex items-center">
+                            <fieldset class="form-group mr-3">
+                                <!-- <input
+                                    pInputText
+                                  id="answer-{{ aIndex }}"
+                                  class="flex-auto form-control answer outline-none"
+                                  formControlName="answer"
+                                  type="text"
+                                  placeholder="Câu trả lời"
+                                /> -->
+                                <input type="hidden"  id="answer-{{ aIndex }}" formControlName="answer"/>
+                                <!-- <form formGroupName="{{aIndex}}"> -->
+                                  <div pInputText
+                                  id="content-answer-{{ aIndex }}"
+                                  class="flex-auto form-control answer outline-none"
+                                  type="text"
+                                  placeholder="Câu trả lời" contentEditable class="textbox" [innerHTML]="answer.get('answer')?.value"></div>
+                                <!-- </form> -->
+                              </fieldset>
+                              <fieldset class="form-group mr-3 truth-fieldset">
+                                <label class="checkmark-fieldset">
+                                  <input
+                                    class="form-control"
+                                    formControlName="truth"
+                                    type="checkbox"
+                                  />
+                                  <span class="checkmark border-solid border"></span>
+                                </label>  
+                              </fieldset>
+                                
+                              <a
+                                class="deleteBtn self-center"
+                                (click)="deleteAnswer(aIndex)"
+                              >
+                                Delete
+                              </a>
+                        </li>
                     </ol>
                 </div>
             </div>
