@@ -23,15 +23,12 @@ fieldset {
   width: 120px;
 }
 
-
-
 .login-panel {
   margin-top: 20px;
   width: 450px;
   text-align: center;
-  border-radius: 7px;
+  border-radius: 12px;
+  background-color: white;
+  padding: 2rem;
 }
 
-.auth-page {
-  height: 80vh;
-}

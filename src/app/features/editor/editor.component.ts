@@ -203,10 +203,9 @@ export class EditorComponent implements OnInit, OnDestroy {
       this.editor = new Editor({
         element: document.querySelector('.tiptap-editor') as HTMLElement,
         extensions: [
-          StarterKit,     
+          StarterKit,
         ],
         content: '<div class="editor-content"></div>',
-
       });
     }
 
