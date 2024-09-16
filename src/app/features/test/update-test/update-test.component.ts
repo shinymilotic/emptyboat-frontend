@@ -135,7 +135,10 @@ export class UpdateTestComponent implements OnInit {
 
   saveQuestion() {
 
-    if (!this.selectedQuestionIndex) {
+    // if (!this.selectedQuestionIndex) {
+    //   return;
+    // }
+    if (this.selectedQuestionIndex == null) {
       return;
     }
 
