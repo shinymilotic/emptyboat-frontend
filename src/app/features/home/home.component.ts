@@ -14,7 +14,7 @@ import { ArticleListComponent } from "../../shared/article-helpers/article-list.
 import { map, takeUntil, tap } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { UserService } from "../../core/services/user.service";
-import { ShowAuthedDirective } from "../../shared/show-authed.directive";
+import { ShowAuthedDirective } from "../../shared/directives/show-authed.directive";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 
 @Component({

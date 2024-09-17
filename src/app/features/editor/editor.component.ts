@@ -14,7 +14,7 @@ import {
   FormsModule,
 } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ListErrorsComponent } from "../../shared/list-errors.component";
+import { ListErrorsComponent } from "../../shared/list-errors/list-errors.component";
 import { NgForOf, NgFor, AsyncPipe } from "@angular/common";
 import { ArticlesService } from "../../core/services/articles.service";
 import { Observable, Subject, throwError } from "rxjs";

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, RouterLink } from "@angular/router";
-import { ListErrorsComponent } from "../../../shared/list-errors.component";
+import { ListErrorsComponent } from "../../../shared/list-errors/list-errors.component";
 import { UserService } from "src/app/core/services/user.service";
 import { ApiError } from "src/app/core/models/apierrors.model";
 @Component({

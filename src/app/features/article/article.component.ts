@@ -9,12 +9,12 @@ import { ArticleMetaComponent } from "../../shared/article-helpers/article-meta.
 import { AsyncPipe, NgClass, NgForOf } from "@angular/common";
 import { FollowButtonComponent } from "../../shared/buttons/follow-button.component";
 import { FavoriteButtonComponent } from "../../shared/buttons/favorite-button.component";
-import { ListErrorsComponent } from "../../shared/list-errors.component";
+import { ListErrorsComponent } from "../../shared/list-errors/list-errors.component";
 import { ArticleCommentComponent } from "./article-comment.component";
 import { catchError, takeUntil } from "rxjs/operators";
 import { Subject, combineLatest, throwError } from "rxjs";
 import { Comment } from "../../core/models/blog/comment.model";
-import { ShowAuthedDirective } from "../../shared/show-authed.directive";
+import { ShowAuthedDirective } from "../../shared/directives/show-authed.directive";
 import { ApiError } from "src/app/core/models/apierrors.model";
 import { DialogModule } from 'primeng/dialog';
 

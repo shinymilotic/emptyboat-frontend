@@ -22,7 +22,7 @@ import { Subject, takeUntil } from "rxjs";
 import { Question } from "src/app/core/models/test/question.model";
 import { CreateTestRequest } from "src/app/core/models/test/test.model";
 import { TestService } from "src/app/core/services/test.service";
-import { ListErrorsComponent } from "src/app/shared/list-errors.component";
+import { ListErrorsComponent } from "src/app/shared/list-errors/list-errors.component";
 import { QuestionType } from "./enum/QuestionType";
 import { ChoiceAnswerForm } from "./form-model/ChoiceAnswerForm";
 import { ChoiceQuestionForm } from "./form-model/ChoiceQuestionForm";

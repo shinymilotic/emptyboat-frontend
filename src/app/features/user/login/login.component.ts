@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
 } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { ListErrorsComponent } from "../../../shared/list-errors.component";
+import { ListErrorsComponent } from "../../../shared/list-errors/list-errors.component";
 import { ApiValidationError } from "../../../core/models/apivalidationerror.model";
 import { UserService } from "../../../core/services/user.service";
 import { catchError, takeUntil } from "rxjs/operators";

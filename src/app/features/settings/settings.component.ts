@@ -7,7 +7,7 @@ import {
 import { Router } from "@angular/router";
 import { User } from "../../core/models/auth/user.model";
 import { UserService } from "../../core/services/user.service";
-import { ListErrorsComponent } from "../../shared/list-errors.component";
+import { ListErrorsComponent } from "../../shared/list-errors/list-errors.component";
 import { SettingsForm } from "./SettingsForm";
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule} from 'primeng/floatlabel';

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { TestService } from 'src/app/core/services/test.service';
-import { ListErrorsComponent } from "../../../shared/list-errors.component";
+import { ListErrorsComponent } from "../../../shared/list-errors/list-errors.component";
 import { ApiError } from 'src/app/core/models/apierrors.model';
 import { ChoiceQuestion } from 'src/app/core/models/test/choicequestion.model';
 import { DialogModule } from 'primeng/dialog';
