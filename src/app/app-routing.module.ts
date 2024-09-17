@@ -4,8 +4,8 @@ import {
   RouterModule,
   UrlSegment,
 } from "@angular/router";
-import { UserService } from "./core/services/user.service";
-import { ProfileComponent } from "./features/profile/show-profile/profile.component";
+import { UserService } from "./services/user.service";
+import { ProfileComponent } from "./components/profile/show-profile/profile.component";
 import {QuicklinkStrategy, QuicklinkModule} from 'ngx-quicklink';
 import { LayoutComponent } from "./layout/layout.component";
 
@@ -17,40 +17,40 @@ export const routes: Routes = [
       {
         path: "",
         loadComponent: () =>
-          import("./features/home/home.component").then((m) => m.HomeComponent),
+          import("./components/home/home.component").then((m) => m.HomeComponent),
       },
       {
         path: "tests",
         loadComponent: () =>
-          import("./features/test/test-list/test-list.component").then(
+          import("./components/test/test-list/test-list.component").then(
             (m) => m.TestListComponent
           ),
       },
       {
         path: "practice/:id",
         loadComponent: () =>
-          import("./features/test/practice-test/test.component").then(
+          import("./components/test/practice-test/test.component").then(
             (m) => m.TestComponent
           ),
       },
       {
         path: "test/create",
         loadComponent: () =>
-          import("./features/test/create-test/create-test.component").then(
+          import("./components/test/create-test/create-test.component").then(
             (m) => m.CreateTestComponent
           ),
       },
       {
         path: "test/:id/update",
         loadComponent: () =>
-          import("./features/test/update-test/update-test.component").then(
+          import("./components/test/update-test/update-test.component").then(
             (m) => m.UpdateTestComponent
           ),
       },
       {
         path: "login",
         loadComponent: () =>
-          import("./features/user/login/login.component").then(
+          import("./components/user/login/login.component").then(
             (m) => m.LoginComponent
           ),
         canActivate: [
@@ -60,7 +60,7 @@ export const routes: Routes = [
       {
         path: "register",
         loadComponent: () =>
-          import("./features/user/register/register.component").then(
+          import("./components/user/register/register.component").then(
             (m) => m.RegisterComponent
           ),
         canActivate: [
@@ -70,7 +70,7 @@ export const routes: Routes = [
       {
         path: "settings",
         loadComponent: () =>
-          import("./features/settings/settings.component").then(
+          import("./components/settings/settings.component").then(
             (m) => m.SettingsComponent
           ),
         canActivate: [() => inject(UserService).userSignal()],
@@ -81,7 +81,7 @@ export const routes: Routes = [
           {
             path: "",
             loadComponent: () =>
-              import("./features/editor/editor.component").then(
+              import("./components/editor/editor.component").then(
                 (m) => m.EditorComponent
               ),
             canActivate: [() => inject(UserService).userSignal()],
@@ -89,7 +89,7 @@ export const routes: Routes = [
           {
             path: ":id",
             loadComponent: () =>
-              import("./features/editor/editor.component").then(
+              import("./components/editor/editor.component").then(
                 (m) => m.EditorComponent
               ),
             canActivate: [() => inject(UserService).userSignal()],
@@ -99,21 +99,21 @@ export const routes: Routes = [
       {
         path: "articles/:id",
         loadComponent: () =>
-          import("./features/article/article.component").then(
+          import("./components/article/article.component").then(
             (m) => m.ArticleComponent
           ),
       },
       {
         path: "search",
         loadComponent: () =>
-          import("./features/search-result/search-result.component").then(
+          import("./components/search-result/search-result.component").then(
             (m) => m.SearchResultComponent
           ),
         children: [
           {
             path: "articles",
             loadComponent: () =>
-              import("./features/search-result/search-articles/search-articles.component").then(
+              import("./components/search-result/search-articles/search-articles.component").then(
                 (m) => m.SearchArticlesComponent
               ),
             // canActivate: [() => inject(UserService).isAuthenticated],
@@ -121,7 +121,7 @@ export const routes: Routes = [
           {
             path: "users",
             loadComponent: () =>
-              import("./features/search-result/search-users/search-users.component").then(
+              import("./components/search-result/search-users/search-users.component").then(
                 (m) => m.SearchUsersComponent
               ),
             // canActivate: [() => inject(UserService).isAuthenticated],
@@ -129,7 +129,7 @@ export const routes: Routes = [
           {
             path: "tests",
             loadComponent: () =>
-              import("./features/search-result/search-tests/search-tests.component").then(
+              import("./components/search-result/search-tests/search-tests.component").then(
                 (m) => m.SearchTestsComponent
               ),
             // canActivate: [() => inject(UserService).isAuthenticated],
@@ -139,14 +139,14 @@ export const routes: Routes = [
       {
         path: "confirmEmail/:token",
         loadComponent: () =>
-          import("./features/user/confirm-email/confirm-email.component").then(
+          import("./components/user/confirm-email/confirm-email.component").then(
             (m) => m.ConfirmEmailComponent
           ),
       },
       {
         path: "tags",
         loadComponent: () =>
-              import("./features/tags/tags.component").then(
+              import("./components/tags/tags.component").then(
                 (m) => m.TagsComponent
               ),
       },
@@ -177,21 +177,21 @@ export const routes: Routes = [
             path: "",
             loadComponent: () =>
               import(
-                "./features/profile/profile-articles/profile-articles.component"
+                "./components/profile/profile-articles/profile-articles.component"
               ).then((m) => m.ProfileArticlesComponent),
           },
           {
             path: "favorites",
             loadComponent: () =>
               import(
-                "./features/profile/profile-favorites/profile-favorites.component"
+                "./components/profile/profile-favorites/profile-favorites.component"
               ).then((m) => m.ProfileFavoritesComponent),
           },
           {
             path: "practices",
             loadComponent: () =>
               import(
-                "./features/profile/user-practice/user-practice.component"
+                "./components/profile/user-practice/user-practice.component"
               ).then((m) => m.UserPracticeComponent),
           },
         ],
@@ -217,7 +217,7 @@ export const routes: Routes = [
         },
         loadComponent: () =>
           import(
-            "./features/profile/practice-result/practice-result.component"
+            "./components/profile/practice-result/practice-result.component"
           ).then((m) => m.PracticeResultComponent),
       }
     ]

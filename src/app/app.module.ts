@@ -3,11 +3,11 @@ import { BrowserModule, provideClientHydration, withHttpTransferCacheOptions } f
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
-import { UserService } from "./core/services/user.service";
+import { UserService } from "./services/user.service";
 import { EMPTY, Observable } from "rxjs";
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
-import { TokenInterceptor } from "./core/interceptors/token.interceptor";
-import { ApiInterceptor } from "./core/interceptors/api.interceptor";
+import { TokenInterceptor } from "./interceptors/token.interceptor";
+import { ApiInterceptor } from "./interceptors/api.interceptor";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import {
@@ -16,7 +16,7 @@ import {
   withRouterConfig,
 } from "@angular/router";
 import { routes } from "./app-routing.module";
-import { AuthCookieUtils } from "./core/utils/authCookie.utils";
+import { AuthCookieUtils } from "./utils/authCookie.utils";
 export function initAuth(authCookieUtils: AuthCookieUtils, userService: UserService) {
   let userId = authCookieUtils.getUserId();
 

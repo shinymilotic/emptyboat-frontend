@@ -7,7 +7,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { MenuModule } from 'primeng/menu';
-import { UserService } from '../core/services/user.service';
+import { UserService } from '../services/user.service';
 import { Router } from "@angular/router";
 
 @Component({
