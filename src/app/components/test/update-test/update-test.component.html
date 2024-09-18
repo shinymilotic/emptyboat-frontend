@@ -72,13 +72,13 @@
                                   type="text"
                                   placeholder="Câu trả lời"
                                 /> -->
-                                <input type="hidden"  id="answer-{{ aIndex }}" formControlName="answer"/>
+                                <!-- <input type="hidden"  id="answer-{{ aIndex }}" formControlName="answer"/> -->
                                 <!-- <form formGroupName="{{aIndex}}"> -->
                                   <div pInputText
                                   id="content-answer-{{ aIndex }}"
                                   class="flex-auto form-control answer outline-none"
                                   type="text"
-                                  placeholder="Câu trả lời" contentEditable class="textbox" [innerHTML]="answer.get('answer')?.value"></div>
+                                  placeholder="Câu trả lời" contenteditable class="textbox" formControlName="answer"></div>
                                 <!-- </form> -->
                               </fieldset>
                               <fieldset class="form-group mr-3 truth-fieldset">

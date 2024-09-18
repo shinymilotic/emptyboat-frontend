@@ -17,11 +17,12 @@ import { ChoiceQuestionUpd } from './choice-question-update';
 import { Answer } from 'src/app/models/test/answer.model';
 import { ChoiceAnswerUpd } from './choice-answer-update';
 import { NgFor, NgForOf } from '@angular/common';
+import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
 
 @Component({
   selector: 'app-update-test',
   standalone: true,
-  imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule, ReactiveFormsModule, FormsModule, NgFor, NgForOf],
+  imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule, ReactiveFormsModule, FormsModule, NgFor, NgForOf, ContenteditableValueAccessor],
   templateUrl: './update-test.component.html',
   styleUrl: './update-test.component.css'
 })
