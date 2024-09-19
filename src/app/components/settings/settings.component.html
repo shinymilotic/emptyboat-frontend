@@ -10,14 +10,14 @@
       <fieldset [disabled]="isSubmitting">
         <fieldset class="form-group mb-8">
           <p-floatLabel>
-            <input pInputText class="form-control w-full" formControlName="image" />
+            <input pInputText class="form-border w-full" formControlName="image" />
             <label>Image:</label>
           </p-floatLabel>
         </fieldset>
         
         <fieldset class="form-group mb-8">
           <p-floatLabel>
-            <input pInputText class="form-control w-full" formControlName="username" />
+            <input pInputText class="w-full form-border" formControlName="username" />
             <label>Username:</label>
           </p-floatLabel>
         </fieldset>
@@ -28,7 +28,7 @@
                   pInputText
                   id="bio" 
                   rows="5" cols="30"
-                  class="form-control form-control-lg outline-none w-full" 
+                  class="w-full form-border" 
                   formControlName="bio"    
                   >
               </textarea>

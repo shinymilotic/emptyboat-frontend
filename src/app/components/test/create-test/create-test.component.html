@@ -5,7 +5,7 @@
 
     <form [formGroup]="testForm" (ngSubmit)="submitForm()">
       <fieldset class="flex flex-col border-none" [disabled]="isSubmitting">
-        <fieldset class="form-group mb-3">
+        <fieldset class="form-group mb-3 form-border">
           <input
             id="title"
             class="form-control form-control-lg w-full outline-none"
@@ -15,7 +15,7 @@
           />
         </fieldset>
 
-        <fieldset class="form-group mb-3">
+        <fieldset class="form-group mb-3 form-border">
           <input
             id="description"
             class="form-control form-control-lg w-full outline-none"
@@ -32,7 +32,7 @@
             [formGroupName]="qIndex"
           >
           <div class="flex">
-            <fieldset class="form-group mb-3 w-full">
+            <fieldset class="form-group mb-3 w-full form-border">
               <textarea
                 id="question-{{ qIndex }}"
                 class="form-control form-control-lg w-full outline-none"
@@ -58,7 +58,7 @@
                 "
                 [formGroupName]="aIndex"
               >
-                <fieldset class="form-group mr-3">
+                <fieldset class="form-group mr-3 form-border">
                   <input
                     id="{{ aIndex }}"
                     class="form-control answer outline-none"
@@ -67,10 +67,10 @@
                     placeholder="Câu trả lời"
                   />
                 </fieldset>
-                <fieldset class="form-group mr-3 truth-fieldset">
+                <fieldset class="form-group mr-3 truth-fieldset ">
                   <label class="checkmark-fieldset">
                     <input
-                      class="form-control outline-none border-none"
+                      class="form-control form-border"
                       formControlName="truth"
                       type="checkbox"
                     />

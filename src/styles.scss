@@ -17,10 +17,10 @@ fieldset, input {
   border: none;
 }
 body {
-  background-color: #f2f2f2;
+  background-color: white;
   // margin: 0px;
   // font-size: 20px;
-  background: url(https://startbootstrap.github.io/startbootstrap-landing-page/assets/img/bg-masthead.jpg);
+  // background: url(https://startbootstrap.github.io/startbootstrap-landing-page/assets/img/bg-masthead.jpg);
   background-repeat: no-repeat;
   /* background-size: cover; */
   /* background-size: 100% 100%; */
@@ -89,12 +89,6 @@ body {
   border-radius: 12px;
 }
 
-.article-preview:hover {
-  border-width: 1px;
-  border-style: solid;
-  border-color: lightgray;
-}
-
 .title {
   font-size: 24px !important;
 }
@@ -117,8 +111,8 @@ app-root {
   cursor: pointer;
   border: 0 solid transparent;
   transition: .2s ease-in-out;
-  background-color: #0084ff;
-  color: white;
+  background-color: white;
+  color: #0084ff;
   outline: none;
   white-space:nowrap;
 }
@@ -157,4 +151,8 @@ app-root {
 .edit-btn {
   padding: 2px 16px;
   border-radius: 8px;
+}
+
+.form-border {
+  border: 1px solid var(--surface-border);
 }

@@ -29,6 +29,8 @@
     width: 25px;
     background-color: white;
     border-radius: 8px;
+    border: 1px solid;
+    border-color: var(--surface-border);
   }
   
   /* On mouse-over, add a grey background color */
