@@ -3,15 +3,13 @@
 
 .form-control {
     border: 1px solid;
+    border-color: var(--surface-border);
     border-radius: 10px;
     padding: 8px;
     width: 100%;
 }
   
-fieldset {
-border: none;
-margin-bottom: 20px;
-}
+
 
 .btn-register {
   background-color: #0084ff;
@@ -21,12 +19,15 @@ margin-bottom: 20px;
   cursor: pointer;
   border-radius: 12px;
   width: 120px;
+  margin-top: 2rem;
 }
 
 .register-panel {
   margin-top: 20px;
   width: 450px;
   text-align: center;
+  border: 1px solid;
+  border-color: var(--surface-border);
   border-radius: 12px;
   background-color: white;
   padding: 2rem;
