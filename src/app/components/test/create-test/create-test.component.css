@@ -4,11 +4,7 @@
   border-radius: 10px;
 }
 
-fieldset.form-group {
-  padding: 5px;
-  border-radius: 10px;
-  background: white;
-}
+
 input,
 textarea {
   border: none;

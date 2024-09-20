@@ -137,15 +137,16 @@ app-root {
 .delete-btn {
   background-color: white;
   color: #b85c5c;
-  border-color: #b85c5c;
   cursor: pointer;
   border-radius: 8px;
   transition: .2s ease-in-out;
+  border: none;
 }
 
 .delete-btn:hover {
-  background-color: #b85c5c;
-  color: white;
+  // background-color: #b85c5c;
+  // color: white;
+  filter: brightness(120%);
 }
 
 .edit-btn {
