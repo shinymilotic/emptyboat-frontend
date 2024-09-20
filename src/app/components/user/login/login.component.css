@@ -1,16 +1,10 @@
 
 
 .form-control {
-    border: 1px solid;
     border-radius: 10px;
     padding: 8px;
     width: 100%;
-    /* width: 70%; */
-}
-  
-fieldset {
-    border: none;
-    margin-bottom: 20px;
+    outline: none;
 }
 
 .btn-login {
@@ -21,6 +15,7 @@ fieldset {
   border: none;
   cursor: pointer;
   width: 120px;
+  margin-top: 2rem;
 }
 
 .login-panel {
@@ -30,5 +25,7 @@ fieldset {
   border-radius: 12px;
   background-color: white;
   padding: 2rem;
+  border: 1px solid;
+  border-color: var(--surface-border);
 }
 

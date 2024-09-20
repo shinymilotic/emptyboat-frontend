@@ -9,19 +9,19 @@
       <app-list-errors [errors]="errors"></app-list-errors>
       <form [formGroup]="authForm" (ngSubmit)="submitForm()">
         <fieldset [disabled]="isSubmitting">
-          <fieldset class="form-group">
+          <fieldset >
             <input
               formControlName="email"
               placeholder="Email"
-              class="form-control"
+              class="form-control form-border"
               type="text"
             />
           </fieldset>
-          <fieldset class="form-group">
+          <fieldset >
             <input
               formControlName="password"
               placeholder="Mật khẩu"
-              class="form-control"
+              class="form-control form-border"
               type="password"
             />
           </fieldset>
