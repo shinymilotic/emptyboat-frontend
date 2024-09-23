@@ -86,7 +86,13 @@ body {
   cursor: pointer;
   background-color: white;
   padding: 15px;
-  border-radius: 12px;
+  border-left: 0.2rem solid;
+  border-color: var(--surface-border);
+}
+
+.article-preview:hover {
+  border-right: 0.2rem solid;
+  border-color: var(--surface-border);
 }
 
 .title {
