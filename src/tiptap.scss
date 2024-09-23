@@ -86,7 +86,7 @@
   .tiptap-editor {
     background-color: #fff;
     // border: 3px solid #0d0d0d;
-    border: 1px solid gray;
+    border: 2px solid var(--surface-border);
     border-radius: 0.75rem;
     color: #0d0d0d;
     display: flex;
@@ -95,7 +95,7 @@
     .editor-header {
       align-items: center;
       border: 3px solid #0d0d0d;
-      border-radius: 0.75rem;
+      border-radius: 0.4rem;
     //   background: #0d0d0d;
       border-bottom: 3px solid #0d0d0d;
       display: flex;
