@@ -3,6 +3,9 @@
 
     <div class="justify-center register-panel">
       <h1 class="text-xs-center">{{ title }}</h1>
+      <p class="text-xs-center">
+        <a [routerLink]="['/login']">Sign in</a>
+      </p>
       <app-list-errors [errors]="errors"></app-list-errors>
       @if (this.isRegisterSuccess) {
         <div>Register success, please check email.</div>
