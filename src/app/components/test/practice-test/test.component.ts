@@ -146,7 +146,7 @@ export class TestComponent implements OnInit {
           });
 
         }
-      } else if (question.questionType == QuestionType.ESSAY) {
+      } else if (question.questionType == QuestionType.OPEN) {
         practice.essayAnswers.push({
           questionId: question.id,
           answer: answerControl.value,

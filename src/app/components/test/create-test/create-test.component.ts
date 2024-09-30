@@ -26,7 +26,7 @@ import { ListErrorsComponent } from "src/app/shared-components/list-errors/list-
 import { QuestionType } from "./enum/QuestionType";
 import { ChoiceAnswerForm } from "./form-model/ChoiceAnswerForm";
 import { ChoiceQuestionForm } from "./form-model/ChoiceQuestionForm";
-import { EssayQuestionForm } from "./form-model/EssayQuestionForm";
+import { OpenQuestionForm } from "./form-model/OpenQuestionForm";
 import { QuestionForm } from "./form-model/QuestionForm";
 import { ApiError } from "src/app/models/apierrors.model";
 
@@ -74,9 +74,9 @@ export class CreateTestComponent implements OnInit, OnDestroy {
     >;
   }
 
-  get essayQuestionsFormArr(): FormArray<FormGroup<EssayQuestionForm>> {
+  get openQuestionsFormArr(): FormArray<FormGroup<OpenQuestionForm>> {
     return this.testForm.get("questions") as FormArray<
-      FormGroup<EssayQuestionForm>
+      FormGroup<OpenQuestionForm>
     >;
   }
 
@@ -121,12 +121,12 @@ export class CreateTestComponent implements OnInit, OnDestroy {
     );
   }
 
-  addEssayQuestion() {
-    this.essayQuestionsFormArr.push(
-      this.fb.group<EssayQuestionForm>({
+  addOpenQuestion() {
+    this.openQuestionsFormArr.push(
+      this.fb.group<OpenQuestionForm>({
         question: this.fb.nonNullable.control("", Validators.required),
         questionType: this.fb.nonNullable.control(
-          QuestionType.ESSAY,
+          QuestionType.OPEN,
           Validators.required,
         ),
       })

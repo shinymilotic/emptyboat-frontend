@@ -78,7 +78,7 @@ export class UpdateTestComponent implements OnInit {
             this.testUpd.questions.push(questionUpd);
           }
 
-          if (question.questionType == QuestionType.ESSAY) {
+          if (question.questionType == QuestionType.OPEN) {
             const questionUpd: QuestionUpd = {
               id: question.id,
               question: question.question,
@@ -110,7 +110,7 @@ export class UpdateTestComponent implements OnInit {
 
   toFormGroup(updQuestion: QuestionUpd) : FormGroup {
     const question: Question = updQuestion;
-    if (question?.questionType == QuestionType.ESSAY) {
+    if (question?.questionType == QuestionType.OPEN) {
       return this.fb.group({
         question: this.fb.control(question.question, Validators.required),
       });

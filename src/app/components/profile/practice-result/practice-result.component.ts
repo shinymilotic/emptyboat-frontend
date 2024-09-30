@@ -6,8 +6,8 @@ import { Question } from "./Question";
 import { ChoiceResult } from "./ChoiceQuestion";
 import { Answer } from "./Answer";
 import { ChoiceAnswer } from "./ChoiceAnswer";
-import { EssayAnswer } from "./EssayAnswer";
-import { EssayResult } from "./EssayQuestion";
+import { OpenAnswer } from "./OpenAnswer";
+import { OpenAnswerResult } from "./OpenAnswerResult";
 import { RestResponse } from "src/app/models/restresponse.model";
 
 @Component({
@@ -39,8 +39,8 @@ export class PracticeResultComponent implements OnInit {
     return question as ChoiceResult;
   }
 
-  asEssayQuestion(question: Question): EssayResult {
-    return question as EssayResult;
+  asOpenQuestion(question: Question): OpenAnswerResult {
+    return question as OpenAnswerResult;
   }
 
   paintColor(answer: ChoiceAnswer): string {
