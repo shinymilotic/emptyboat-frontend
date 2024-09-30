@@ -101,7 +101,6 @@ export class UpdateTestComponent implements OnInit {
   }
 
   showDiablog(qIndex: number) {
-    // this.essayQuestionOnEdit.controls["question"].setValue(this.testUpd.questions[qIndex].question.question);
     const question : QuestionUpd = this.testUpd.questions[qIndex];
     this.questionForm = this.toFormGroup(question);
     this.selectedQuestionIndex = qIndex;

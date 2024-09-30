@@ -1,8 +1,8 @@
 import { ChoiceAnswer } from "./choiceanswer.model";
-import { EssayAnswer } from "./essayanswer.model";
+import { OpenAnswer } from "./openanswer.model";
 
 export interface Practice {
   id: string;
   choiceAnswers: ChoiceAnswer[];
-  essayAnswers: EssayAnswer[];
+  openAnswers: OpenAnswer[];
 }

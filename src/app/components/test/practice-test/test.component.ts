@@ -123,7 +123,7 @@ export class TestComponent implements OnInit {
     const practice: Practice = {
       id: this.route.snapshot.params["id"],
       choiceAnswers: [],
-      essayAnswers: [],
+      openAnswers: [],
     };
 
     this.test.questions.forEach((question) => {
@@ -147,7 +147,7 @@ export class TestComponent implements OnInit {
 
         }
       } else if (question.questionType == QuestionType.OPEN) {
-        practice.essayAnswers.push({
+        practice.openAnswers.push({
           questionId: question.id,
           answer: answerControl.value,
         });

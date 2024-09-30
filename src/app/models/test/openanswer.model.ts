@@ -1,4 +1,4 @@
-export interface EssayAnswer {
+export interface OpenAnswer {
   questionId: string;
   answer: string;
 }
