@@ -29,87 +29,66 @@
     </div>
   </div>
 
-@if (this.selectedQuestionIndex != null && this.testUpd != null && this.testUpd.questions[this.selectedQuestionIndex] != null) {
+@if (this.isQuestionSelected()) {
     <p-dialog 
-    header="Edit question" 
-    [(visible)]="visible" 
-    [modal]="true" 
-    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
-    [style]="{ width: '50vw' }" 
-    [draggable]="false" 
-    [resizable]="false"
-    (onHide)="closeDiablog()">
+      header="Edit question" 
+      [(visible)]="visible" 
+      [modal]="true" 
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+      [style]="{ width: '50vw' }" 
+      [draggable]="false" 
+      [resizable]="false"
+      (onHide)="closeDiablog()">
   
       <div class="flex">
-          <a
-          class="deleteBtn"
-          (click)="deleteQuestion()"
-          >
+          <a class="deleteBtn"
+            (click)="deleteQuestion()">
               Delete
           </a>
       </div>
+
       @if (this.testUpd.questions[this.selectedQuestionIndex].questionType == 1) {
             <div class="flex-col align-items-center gap-3 m-3" [formGroup]="this.questionForm">
                 <label for="question" class="font-semibold p-2">Question: </label>
                 <input pInputText id="question" class="flex-auto" formControlName="question"/>
-                <!-- <div
-                class="flex mb-2"
-                *ngFor="let answer of this.getAnswerFormArr().controls; let aIndex = index"
-              >
-                    <input pInputText type="text" class="flex-auto" />
-                     <div>{{answer.get("answer")?.value}}</div>
-                </div> -->
+
                 <div formArrayName="answers">
-                    <ol >
+                    <ol>
                         <li formGroupName="{{aIndex}}" *ngFor="let answer of this.getAnswerFormArr().controls; let aIndex = index"
                          class="mt-2 flex items-center">
                             <fieldset class="form-group mr-3">
-                                <!-- <input
-                                    pInputText
-                                  id="answer-{{ aIndex }}"
-                                  class="flex-auto form-control answer outline-none"
-                                  formControlName="answer"
-                                  type="text"
-                                  placeholder="Câu trả lời"
-                                /> -->
-                                <!-- <input type="hidden"  id="answer-{{ aIndex }}" formControlName="answer"/> -->
-                                <!-- <form formGroupName="{{aIndex}}"> -->
                                   <div pInputText
                                   id="content-answer-{{ aIndex }}"
                                   class="flex-auto form-control answer outline-none"
                                   type="text"
                                   placeholder="Câu trả lời" contenteditable class="textbox" formControlName="answer"></div>
-                                <!-- </form> -->
-                              </fieldset>
-                              <fieldset class="form-group mr-3 truth-fieldset">
-                                <label class="checkmark-fieldset">
-                                  <input
-                                    class="form-control"
-                                    formControlName="truth"
-                                    type="checkbox"
-                                  />
-                                  <span class="checkmark border-solid border"></span>
-                                </label>  
-                              </fieldset>
+                            </fieldset>
+
+                            <fieldset class="form-group mr-3 truth-fieldset">
+                              <label class="checkmark-fieldset">
+                                <input
+                                  class="form-control"
+                                  formControlName="truth"
+                                  type="checkbox"
+                                />
+                                <span class="checkmark border-solid border"></span>
+                              </label>  
+                            </fieldset>
                                 
-                              <a
-                                class="deleteBtn self-center"
-                                (click)="deleteAnswer(aIndex)"
-                              >
-                                Delete
-                              </a>
+                            <a class="deleteBtn self-center"
+                              (click)="deleteAnswer(aIndex)" >
+                              Delete
+                            </a>
                         </li>
                     </ol>
                 </div>
             </div>
 
       } @else if (this.testUpd.questions[this.selectedQuestionIndex].questionType == 2) {
-          <!-- @if (this.questionForm) { -->
               <div class="flex align-items-center gap-3 m-3" [formGroup]="this.questionForm">
                   <label for="question" class="font-semibold p-2">Question: </label>
                   <input pInputText id="question" class="flex-auto" formControlName="question"/>
               </div>
-          <!-- } -->
       }
         
         <div class="flex justify-content-end gap-2 float-right">

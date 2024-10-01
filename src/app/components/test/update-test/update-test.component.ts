@@ -14,7 +14,6 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ChoiceQuestionUpd } from './choice-question-update';
-import { Answer } from 'src/app/models/test/answer.model';
 import { ChoiceAnswerUpd } from './choice-answer-update';
 import { NgFor, NgForOf } from '@angular/common';
 import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
@@ -35,7 +34,7 @@ export class UpdateTestComponent implements OnInit {
   }
   visible: boolean = false;
   questionForm!: FormGroup;
-  selectedQuestionIndex!: number | null;
+  selectedQuestionIndex!: number;
   
   constructor(
     private readonly route: ActivatedRoute,
@@ -92,8 +91,7 @@ export class UpdateTestComponent implements OnInit {
   }
 
   asChoiceQuestion(qIndex: number): ChoiceQuestionUpd {
-    const q = this.testUpd.questions[qIndex] as ChoiceQuestionUpd;
-    return q;
+    return this.testUpd.questions[qIndex] as ChoiceQuestionUpd;
   }
 
   toChoiceQuestion(question: Question): ChoiceQuestion {
@@ -101,10 +99,23 @@ export class UpdateTestComponent implements OnInit {
   }
 
   showDiablog(qIndex: number) {
-    const question : QuestionUpd = this.testUpd.questions[qIndex];
-    this.questionForm = this.toFormGroup(question);
+    if (this.isQuestionSelected() === true && this.testUpd.questions[qIndex] != null) {
+      return;
+    }
+
+    this.questionForm = this.toFormGroup(this.testUpd.questions[qIndex] as QuestionUpd);
     this.selectedQuestionIndex = qIndex;
     this.visible = true;
+  }
+
+  isQuestionSelected(): boolean {
+    if (this.selectedQuestionIndex != -1 && 
+          this.testUpd != null && 
+          this.testUpd.questions[this.selectedQuestionIndex] != null) {
+      return true;
+    }
+
+    return false;
   }
 
   toFormGroup(updQuestion: QuestionUpd) : FormGroup {
@@ -134,11 +145,7 @@ export class UpdateTestComponent implements OnInit {
   } 
 
   saveQuestion() {
-
-    // if (!this.selectedQuestionIndex) {
-    //   return;
-    // }
-    if (this.selectedQuestionIndex == null) {
+    if (this.selectedQuestionIndex == -1) {
       return;
     }
 
@@ -156,7 +163,7 @@ export class UpdateTestComponent implements OnInit {
 
   closeDiablog() {
     this.visible = false;
-    this.selectedQuestionIndex = null;
+    this.selectedQuestionIndex = -1;
   }
 
   background(qIndex: number): string {
