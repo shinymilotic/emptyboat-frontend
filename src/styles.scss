@@ -86,13 +86,16 @@ body {
   cursor: pointer;
   background-color: white;
   padding: 15px;
-  border-left: 0.2rem solid;
+  border: 0.2rem solid;
+  border-radius: 12px;
   border-color: var(--surface-border);
+  margin-bottom: 20px;
 }
 
 .article-preview:hover {
   border-right: 0.2rem solid;
   border-color: var(--surface-border);
+  background-color:  #ffffda;
 }
 
 .title {

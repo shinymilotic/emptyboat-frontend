@@ -3,7 +3,7 @@
 .btn-favorite {
   padding: 3px;
   border: none;
-  background-color: white;
+  background-color: transparent;
   cursor: pointer;
 }
 
@@ -13,7 +13,7 @@
 }
 
 .pi-heart-fill {
-  background-color: white;
+  background-color: transparent;
 }
 
 .pi-heart {

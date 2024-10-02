@@ -141,6 +141,7 @@ export class UpdateTestComponent implements OnInit {
     if (this.testUpd.questions[this.selectedQuestionIndex].questionType == QuestionType.CHOICE) {
       const choiceQuestion : ChoiceQuestionUpd = this.testUpd.questions[this.selectedQuestionIndex] as ChoiceQuestionUpd;
       const question: string = this.questionForm.value.question;
+      console.log(this.getAnswerFormArr());
       
     } else if (this.testUpd.questions[this.selectedQuestionIndex].questionType == QuestionType.OPEN) {
       const openQuestion: QuestionUpd = this.testUpd.questions[this.selectedQuestionIndex] as QuestionUpd;
@@ -191,10 +192,10 @@ export class UpdateTestComponent implements OnInit {
     this.testService.update(testId, this.testUpd).subscribe({
       next: () => {
         this.router.navigateByUrl(`/`, { skipLocationChange: true }).then(() => {
-          console.log(testId);
           this.router.navigate([`/test/${testId}/update`]);
-      }); 
+        }); 
       },
+
       error: (err) => {
         this.errors = err;
       },
