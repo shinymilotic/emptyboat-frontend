@@ -56,11 +56,9 @@
                     <ol>
                         <li formGroupName="{{aIndex}}" *ngFor="let answer of this.getAnswerFormArr().controls; let aIndex = index"
                          class="mt-2 flex items-center">
-                            <fieldset class="form-group mr-3">
+                            <fieldset class="form-group mr-3 flex-1">
                                   <div pInputText
                                   id="content-answer-{{ aIndex }}"
-                                  class="flex-auto form-control answer outline-none"
-                                  type="text"
                                   placeholder="Câu trả lời" contenteditable class="textbox" formControlName="answer"></div>
                             </fieldset>
 

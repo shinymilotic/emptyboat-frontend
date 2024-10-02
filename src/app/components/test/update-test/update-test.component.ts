@@ -21,7 +21,8 @@ import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable
 @Component({
   selector: 'app-update-test',
   standalone: true,
-  imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule, ReactiveFormsModule, FormsModule, NgFor, NgForOf, ContenteditableValueAccessor],
+  imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule, 
+    ReactiveFormsModule, FormsModule, NgFor, NgForOf, ContenteditableValueAccessor],
   templateUrl: './update-test.component.html',
   styleUrl: './update-test.component.css'
 })
@@ -42,6 +43,7 @@ export class UpdateTestComponent implements OnInit {
     private readonly router: Router,
     private readonly fb: FormBuilder
   ) { }
+
   ngOnInit(): void {
     const id = this.route.snapshot.params["id"];
     
@@ -57,34 +59,21 @@ export class UpdateTestComponent implements OnInit {
         this.testUpd.title = data.title;
         data.questions.forEach((question) => {
           if (question.questionType == QuestionType.CHOICE) {
-            const choiceQuestion : ChoiceQuestion = question as ChoiceQuestion;
-            const updAnswers: ChoiceAnswerUpd[] = [];
+            const choiceQuestion : ChoiceQuestionUpd = question as ChoiceQuestionUpd;
+            choiceQuestion.updateFlg = 0;
             choiceQuestion.answers.forEach((answer) => {
-              updAnswers.push({
-                id: answer.id,
-                answer: answer.answer,
-                truth: answer.truth,
-                updateFlg: 0
-              })
+              answer.updateFlg = 0;
             });
-            const questionUpd: ChoiceQuestionUpd = {
-              id: choiceQuestion.id,
-              question: choiceQuestion.question,
-              questionType: choiceQuestion.questionType,
-              answers: updAnswers,
-              updateFlg: 0
-            }
-            this.testUpd.questions.push(questionUpd);
+            this.testUpd.questions.push(choiceQuestion);
           }
 
           if (question.questionType == QuestionType.OPEN) {
-            const questionUpd: QuestionUpd = {
-              id: question.id,
-              question: question.question,
-              questionType: question.questionType,
-              updateFlg: 0
-            }
-            this.testUpd.questions.push(questionUpd);
+            this.testUpd.questions.push({
+                id: question.id,
+                question: question.question,
+                questionType: question.questionType,
+                updateFlg: 0
+            });
           }
         })
       });
@@ -149,15 +138,22 @@ export class UpdateTestComponent implements OnInit {
       return;
     }
 
-    const oldQuestion: QuestionUpd = this.testUpd.questions[this.selectedQuestionIndex];
-    const question: string = this.questionForm.value.question;
-    const updateQuestion : QuestionUpd = {
-      id: oldQuestion.id,
-      question: question,
-      questionType: oldQuestion.questionType,
-      updateFlg: 2
-    };
-    this.testUpd.questions[this.selectedQuestionIndex] = updateQuestion;
+    if (this.testUpd.questions[this.selectedQuestionIndex].questionType == QuestionType.CHOICE) {
+      const choiceQuestion : ChoiceQuestionUpd = this.testUpd.questions[this.selectedQuestionIndex] as ChoiceQuestionUpd;
+      const question: string = this.questionForm.value.question;
+      
+    } else if (this.testUpd.questions[this.selectedQuestionIndex].questionType == QuestionType.OPEN) {
+      const openQuestion: QuestionUpd = this.testUpd.questions[this.selectedQuestionIndex] as QuestionUpd;
+      const question: string = this.questionForm.value.question;
+      const updateQuestion: QuestionUpd = {
+        id: openQuestion.id,
+        question: question,
+        questionType: openQuestion.questionType,
+        updateFlg: 2
+      };
+      this.testUpd.questions[this.selectedQuestionIndex] = updateQuestion;
+    }
+
     this.visible = false;
   }
 
@@ -184,6 +180,7 @@ export class UpdateTestComponent implements OnInit {
     if (!this.selectedQuestionIndex) {
       return;
     }
+
     const question: QuestionUpd = this.testUpd.questions[this.selectedQuestionIndex];
     question.updateFlg = 3;
     this.visible = false;
@@ -199,14 +196,12 @@ export class UpdateTestComponent implements OnInit {
       }); 
       },
       error: (err) => {
-        console.log(err);
         this.errors = err;
       },
     });
   }
 
   getAnswerFormArr(): FormArray<FormGroup> {
-
     return this.questionForm.get("answers") as FormArray<
       FormGroup
     >;
@@ -215,6 +210,7 @@ export class UpdateTestComponent implements OnInit {
   deleteAnswer(aIndex: number) {
 
   }
+
   addAnswer() {
   
   }

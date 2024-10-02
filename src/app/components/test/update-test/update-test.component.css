@@ -65,3 +65,8 @@ input {
 .deleteQuestion {
     background-color: #FF8383;
 }
+
+div.p-inputtext {
+    outline: none!important;
+    overflow-wrap: anywhere;
+}
