@@ -29,10 +29,10 @@
                 @if (!canModify()) {
                 <app-follow-button
                   [profile]="article.author"
+                  class="mr-3"
                 >
                 </app-follow-button>
                 }
-                &nbsp;&nbsp;
                 <app-favorite-button
                   [article]="article"
                   (toggle)="onToggleFavorite($event)"

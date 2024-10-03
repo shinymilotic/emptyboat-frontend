@@ -95,7 +95,6 @@ body {
 .article-preview:hover {
   border-right: 0.2rem solid;
   border-color: var(--surface-border);
-  background-color:  #ffffda;
 }
 
 .title {
@@ -120,17 +119,15 @@ app-root {
   cursor: pointer;
   border: 1px solid transparent;
   transition: .1s ease-in-out;
-  background-color: white;
-  color: #0084ff;
+  background-color: #0084ff;
+  color: white;
   outline: none;
   white-space:nowrap;
   border-color: #0084ff!important;
 }
 
 .overcloud-btn:hover {
-  // filter: brightness(120%);
-  background-color: #0084ff;
-  color: white;
+  filter: brightness(60%);
 }
 
 .article-meta img {
@@ -147,24 +144,24 @@ app-root {
 }
 
 .delete-btn {
-  background-color: white;
   border-color: #b85c5c;
   color: #b85c5c;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 4px;
   transition: .1s ease-in-out;
   border: none;
+  color: white;
+  background-color: #b85c5c;
+  padding: 3px;
 }
 
 .delete-btn:hover {
-  background-color: #b85c5c;
-  color: white;
-  // filter: brightness(120%);
+  filter: brightness(60%);
 }
 
 .edit-btn {
   padding: 2px 16px;
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
 .form-border {
