@@ -162,15 +162,16 @@ export class CreateTestComponent implements OnInit, OnDestroy {
   }
 
   addAnswer(qIndex: number, event?: KeyboardEvent) {
-    // If the tabbed element is the last answer element
-    if (event == null) {
-      this.getAnswerFormArr(qIndex).push(
-        this.fb.group<ChoiceAnswerForm>({
-          answer: this.fb.nonNullable.control("", Validators.required),
-          truth: this.fb.nonNullable.control(false, Validators.required),
-        })
-      );
+    if (event != null) {
+      return;
     }
+
+    this.getAnswerFormArr(qIndex).push(
+      this.fb.group<ChoiceAnswerForm>({
+        answer: this.fb.nonNullable.control("", Validators.required),
+        truth: this.fb.nonNullable.control(false, Validators.required),
+      })
+    );
   }
 
   deleteAnswer(qIndex: number, aIndex: number) {
