@@ -178,7 +178,7 @@ export class UpdateTestComponent implements OnInit {
   }
 
   deleteQuestion() {
-    if (!this.selectedQuestionIndex) {
+    if (this.selectedQuestionIndex == -1) {
       return;
     }
 
