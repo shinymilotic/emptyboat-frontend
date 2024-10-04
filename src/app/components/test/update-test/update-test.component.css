@@ -2,7 +2,9 @@
     background-color: white;
     border-radius: 8px;
     padding: 10px;
-    border: none;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--surface-border);
     margin-bottom: 10px;
     padding-bottom: 2rem;
     cursor: pointer;
@@ -10,8 +12,8 @@
 .question:hover {
     border-width: 1px;
     border-style: solid;
-    border-color: lightgray;
-    background-color: aliceblue;
+    border-color: var(--surface-border);
+    background-color: white;
 }
 
 input {

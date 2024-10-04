@@ -3,8 +3,11 @@
 
 .test {
     background-color: white;
+    border: 1px solid;
+    border-color: var(--surface-border);
     padding: 15px;
-    border-radius: 12px;  
+    border-radius: 12px;
+    margin-bottom: 16px;  
 }
 
 .test:hover {
