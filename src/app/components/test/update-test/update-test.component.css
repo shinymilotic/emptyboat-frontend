@@ -71,3 +71,7 @@ div.p-inputtext {
     outline: none!important;
     overflow-wrap: anywhere;
 }
+
+.choice-answer-list {
+    list-style-type: upper-latin;
+}

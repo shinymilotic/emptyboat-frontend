@@ -7,16 +7,23 @@
         <ol>
             @for (questionUpd of this.testUpd.questions; track $index; let qIndex = $index) {
                 <li class="question {{this.background(qIndex)}}" (click)="showDiablog(qIndex)">
-                    @if (questionUpd.questionType == 1) {
+                    @if (questionUpd.questionType === 1) {
                         <div>
                             <div>{{questionUpd.question}}</div>
                         </div>
-                        <ol>
+                        <ol class="choice-answer-list">
                         @for (answer of asChoiceQuestion($index).answers; track $index; let aIndex = $index) {
-                            <li>{{answer.answer}}</li>
+                            <li>{{answer.answer}}
+                              @if (answer.truth === true) {
+                                <i class="pi pi-check"></i>
+                              } @else {
+                                <i class="pi pi-times"></i>
+                              }
+                            </li>
+                            
                         }
                         </ol>
-                    } @else if (questionUpd.questionType == 2) {
+                    } @else if (questionUpd.questionType === 2) {
                         <div>{{questionUpd.question}}</div>
                     }
                 </li>
@@ -54,29 +61,30 @@
 
                 <div formArrayName="answers">
                     <ol>
-                        <li formGroupName="{{aIndex}}" *ngFor="let answer of this.getAnswerFormArr().controls; let aIndex = index"
-                         class="mt-2 flex items-center">
-                            <fieldset class="form-group mr-3 flex-1">
-                                  <div pInputText
-                                  id="content-answer-{{ aIndex }}"
-                                  placeholder="Câu trả lời" contenteditable class="textbox" formControlName="answer"></div>
-                            </fieldset>
+                      @for (answer of this.getAnswerFormArr(); track $index) {
+                        <li formGroupName="{{$index}}" class="mt-2 flex items-center">
+                          <fieldset class="form-group mr-3 flex-1">
+                                <div pInputText
+                                id="content-answer-{{ $index }}"
+                                placeholder="Câu trả lời" contenteditable class="textbox" formControlName="answer"></div>
+                          </fieldset>
 
-                            <fieldset class="form-group mr-3 truth-fieldset">
-                              <label class="checkmark-fieldset">
-                                <input
-                                  class="form-control"
-                                  formControlName="truth"
-                                  type="checkbox" />
-                                <span class="checkmark border-solid border"></span>
-                              </label>  
-                            </fieldset>
-                                
-                            <a class="deleteBtn self-center"
-                              (click)="deleteAnswer(aIndex)" >
-                              Delete
-                            </a>
-                        </li>
+                          <fieldset class="form-group mr-3 truth-fieldset">
+                            <label class="checkmark-fieldset">
+                              <input
+                                class="form-control"
+                                formControlName="truth"
+                                type="checkbox" />
+                              <span class="checkmark border-solid border"></span>
+                            </label>  
+                          </fieldset>
+                              
+                          <a class="deleteBtn self-center"
+                            (click)="deleteAnswer($index)" >
+                            Delete
+                          </a>
+                      </li>
+                      }  
                     </ol>
                 </div>
             </div>

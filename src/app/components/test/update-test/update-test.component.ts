@@ -12,7 +12,7 @@ import { QuestionUpd } from './question-update';
 import { Question } from 'src/app/models/test/question.model';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ChoiceQuestionUpd } from './choice-question-update';
 import { ChoiceAnswerUpd } from './choice-answer-update';
 import { NgFor, NgForOf } from '@angular/common';
@@ -92,7 +92,7 @@ export class UpdateTestComponent implements OnInit {
       return;
     }
 
-    this.questionForm = this.toFormGroup(this.testUpd.questions[qIndex] as QuestionUpd);
+    this.questionForm = this.toFormGroup(this.testUpd.questions[qIndex]);
     this.selectedQuestionIndex = qIndex;
     this.visible = true;
   }
@@ -107,27 +107,32 @@ export class UpdateTestComponent implements OnInit {
     return false;
   }
 
-  toFormGroup(updQuestion: QuestionUpd) : FormGroup {
-    const question: Question = updQuestion;
-    if (question?.questionType == QuestionType.OPEN) {
+  toFormGroup(updQuestion: QuestionUpd | ChoiceQuestionUpd) : FormGroup {
+    if (updQuestion?.questionType == QuestionType.OPEN) {
       return this.fb.group({
-        question: this.fb.control(question.question, Validators.required),
+        id: updQuestion.id,
+        question: this.fb.control(updQuestion.question, Validators.required),
+        updateFlg: this.fb.control(updQuestion.updateFlg, Validators.required)
       });
-    } else if (question?.questionType == QuestionType.CHOICE) {
-      const choiceQuestion: ChoiceQuestionUpd = question as ChoiceQuestionUpd;
+    } else if (updQuestion?.questionType == QuestionType.CHOICE) {
+      const choiceQuestion: ChoiceQuestionUpd = updQuestion as ChoiceQuestionUpd;
       const answers: ChoiceAnswerUpd[] = choiceQuestion.answers;
       const answersFormArray: FormArray<FormGroup> = new FormArray<FormGroup>([]);
       answers.forEach((answer) => {
         answersFormArray.push(this.fb.group({
+          id: answer.id,
           answer: this.fb.control(answer.answer, Validators.required),
-          truth: this.fb.control(answer.truth, Validators.required)
+          truth: this.fb.control(answer.truth, Validators.required),
+          updateFlg: this.fb.control(updQuestion.updateFlg, Validators.required)
         }));
       });
 
       return this.fb.group({
+        id: choiceQuestion.id,
         question: this.fb.control(choiceQuestion.question, Validators.required),
-        answers: answersFormArray
-      })
+        answers: answersFormArray,
+        updateFlg: this.fb.control(updQuestion.updateFlg, Validators.required)
+      });
     }
 
     return this.fb.group({});
@@ -138,21 +143,27 @@ export class UpdateTestComponent implements OnInit {
       return;
     }
 
-    if (this.testUpd.questions[this.selectedQuestionIndex].questionType == QuestionType.CHOICE) {
-      const choiceQuestion : ChoiceQuestionUpd = this.testUpd.questions[this.selectedQuestionIndex] as ChoiceQuestionUpd;
-      const question: string = this.questionForm.value.question;
-      console.log(this.getAnswerFormArr());
+    const question : (QuestionUpd | ChoiceQuestionUpd) = this.testUpd.questions[this.selectedQuestionIndex];
+    const questionFormValue : any = this.questionForm.value;
+
+    if (question.questionType == QuestionType.CHOICE) {
+      const choiceQuestionUpd : ChoiceQuestionUpd = question as ChoiceQuestionUpd;
       
-    } else if (this.testUpd.questions[this.selectedQuestionIndex].questionType == QuestionType.OPEN) {
-      const openQuestion: QuestionUpd = this.testUpd.questions[this.selectedQuestionIndex] as QuestionUpd;
-      const question: string = this.questionForm.value.question;
-      const updateQuestion: QuestionUpd = {
-        id: openQuestion.id,
-        question: question,
-        questionType: openQuestion.questionType,
-        updateFlg: 2
+      this.testUpd.questions[this.selectedQuestionIndex] = {
+        id: questionFormValue.id,
+        question: questionFormValue.question,
+        questionType: QuestionType.CHOICE,
+        answers: this.answerFormToAnswersUpdate(choiceQuestionUpd.answers),
+        updateFlg: questionFormValue.updateFlg
       };
-      this.testUpd.questions[this.selectedQuestionIndex] = updateQuestion;
+      console.log(this.testUpd.questions[this.selectedQuestionIndex]);
+    } else if (question.questionType == QuestionType.OPEN) {
+      this.testUpd.questions[this.selectedQuestionIndex] = {
+        id: questionFormValue.id,
+        question: questionFormValue.question,
+        questionType: QuestionType.OPEN,
+        updateFlg: questionFormValue.updateFlg
+      };
     }
 
     this.visible = false;
@@ -184,6 +195,7 @@ export class UpdateTestComponent implements OnInit {
 
     const question: QuestionUpd = this.testUpd.questions[this.selectedQuestionIndex];
     question.updateFlg = 3;
+    
     this.visible = false;
   }
 
@@ -202,10 +214,26 @@ export class UpdateTestComponent implements OnInit {
     });
   }
 
-  getAnswerFormArr(): FormArray<FormGroup> {
-    return this.questionForm.get("answers") as FormArray<
-      FormGroup
-    >;
+  answerFormToAnswersUpdate(choiceAnswersUpd : ChoiceAnswerUpd[]) : ChoiceAnswerUpd[]{
+    let result : ChoiceAnswerUpd[] = [];
+
+    this.getAnswerFormArr().map((group: any) => (result.push({
+        id: group.id,
+        answer: group.answer,
+        truth: group.truth,
+        updateFlg: group.updateFlg
+      }))
+    );
+
+    return result;
+  }
+
+  getAnswerFormArr(): ChoiceAnswerUpd[] {
+    return this.questionForm.value.answers;
+  }
+
+  changeAnswerUpdateFlg() {
+    
   }
 
   deleteAnswer(aIndex: number) {
