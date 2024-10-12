@@ -13,6 +13,7 @@
                         </div>
                         <ol class="choice-answer-list">
                         @for (answer of asChoiceQuestion($index).answers; track $index; let aIndex = $index) {
+                          @if (answer.updateFlg != 3) {
                             <li>{{answer.answer}}
                               @if (answer.truth === true) {
                                 <i class="pi pi-check"></i>
@@ -20,7 +21,7 @@
                                 <i class="pi pi-times"></i>
                               }
                             </li>
-                            
+                          }  
                         }
                         </ol>
                     } @else if (questionUpd.questionType === 2) {
@@ -62,10 +63,11 @@
                 <div formArrayName="answers">
                     <ol>
                       @for (answer of this.getAnswerFormArr(); track $index) {
-                        <li formGroupName="{{$index}}" class="mt-2 flex items-center">
+                        <li formGroupName="{{$index}}" class="mt-2 flex items-center {{this.answerBackground(answer)}}">
                           <fieldset class="form-group mr-3 flex-1">
                                 <div pInputText
-                                id="content-answer-{{ $index }}"
+                                id="content-answer-{{ $index }}" class="{{this.answerBackground(answer)}}"
+                                (input)="this.answerChange(answer)"
                                 placeholder="Câu trả lời" contenteditable class="textbox" formControlName="answer"></div>
                           </fieldset>
 
@@ -74,13 +76,14 @@
                               <input
                                 class="form-control"
                                 formControlName="truth"
+                                (change)="this.answerChange(answer)"
                                 type="checkbox" />
                               <span class="checkmark border-solid border"></span>
                             </label>  
                           </fieldset>
                               
                           <a class="deleteBtn self-center"
-                            (click)="deleteAnswer($index)" >
+                            (click)="deleteAnswer(answer)" >
                             Delete
                           </a>
                       </li>

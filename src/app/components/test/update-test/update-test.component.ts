@@ -27,6 +27,7 @@ import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable
   styleUrl: './update-test.component.css'
 })
 export class UpdateTestComponent implements OnInit {
+
   errors!: ApiError;
   testUpd: TestResponseUpd = {
     description: "",
@@ -91,7 +92,6 @@ export class UpdateTestComponent implements OnInit {
     if (this.isQuestionSelected() === true && this.testUpd.questions[qIndex] != null) {
       return;
     }
-
     this.questionForm = this.toFormGroup(this.testUpd.questions[qIndex]);
     this.selectedQuestionIndex = qIndex;
     this.visible = true;
@@ -116,14 +116,13 @@ export class UpdateTestComponent implements OnInit {
       });
     } else if (updQuestion?.questionType == QuestionType.CHOICE) {
       const choiceQuestion: ChoiceQuestionUpd = updQuestion as ChoiceQuestionUpd;
-      const answers: ChoiceAnswerUpd[] = choiceQuestion.answers;
       const answersFormArray: FormArray<FormGroup> = new FormArray<FormGroup>([]);
-      answers.forEach((answer) => {
+      choiceQuestion.answers.forEach((answer) => {
         answersFormArray.push(this.fb.group({
           id: answer.id,
           answer: this.fb.control(answer.answer, Validators.required),
           truth: this.fb.control(answer.truth, Validators.required),
-          updateFlg: this.fb.control(updQuestion.updateFlg, Validators.required)
+          updateFlg: this.fb.control(answer.updateFlg, Validators.required)
         }));
       });
 
@@ -146,17 +145,14 @@ export class UpdateTestComponent implements OnInit {
     const question : (QuestionUpd | ChoiceQuestionUpd) = this.testUpd.questions[this.selectedQuestionIndex];
     const questionFormValue : any = this.questionForm.value;
 
-    if (question.questionType == QuestionType.CHOICE) {
-      const choiceQuestionUpd : ChoiceQuestionUpd = question as ChoiceQuestionUpd;
-      
+    if (question.questionType == QuestionType.CHOICE) {      
       this.testUpd.questions[this.selectedQuestionIndex] = {
         id: questionFormValue.id,
         question: questionFormValue.question,
         questionType: QuestionType.CHOICE,
-        answers: this.answerFormToAnswersUpdate(choiceQuestionUpd.answers),
+        answers: this.answerFormToAnswersUpdate(),
         updateFlg: questionFormValue.updateFlg
       };
-      console.log(this.testUpd.questions[this.selectedQuestionIndex]);
     } else if (question.questionType == QuestionType.OPEN) {
       this.testUpd.questions[this.selectedQuestionIndex] = {
         id: questionFormValue.id,
@@ -214,7 +210,7 @@ export class UpdateTestComponent implements OnInit {
     });
   }
 
-  answerFormToAnswersUpdate(choiceAnswersUpd : ChoiceAnswerUpd[]) : ChoiceAnswerUpd[]{
+  answerFormToAnswersUpdate() : ChoiceAnswerUpd[]{
     let result : ChoiceAnswerUpd[] = [];
 
     this.getAnswerFormArr().map((group: any) => (result.push({
@@ -236,11 +232,31 @@ export class UpdateTestComponent implements OnInit {
     
   }
 
-  deleteAnswer(aIndex: number) {
+  deleteAnswer(choiceAnswerUpd: ChoiceAnswerUpd) {
+    choiceAnswerUpd.updateFlg = 3;
+  }
 
+  answerBackground(choiceAnswerUpd: ChoiceAnswerUpd): string {
+    if (choiceAnswerUpd.updateFlg == 1) {
+      return "newAnswer";
+    } else if (choiceAnswerUpd.updateFlg == 2) {
+      return "changeAnswer";
+    } else if (choiceAnswerUpd.updateFlg == 3) {
+      return "deleteAnswer";
+    }
+
+    return "";
   }
 
   addAnswer() {
   
+  }
+
+  answerChange(answer: ChoiceAnswerUpd) {
+    if (answer.updateFlg == 3) {
+      return;
+    }
+
+    answer.updateFlg = 2;
   }
 }

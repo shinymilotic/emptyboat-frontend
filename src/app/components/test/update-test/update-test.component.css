@@ -75,3 +75,15 @@ div.p-inputtext {
 .choice-answer-list {
     list-style-type: upper-latin;
 }
+
+.changeAnswer {
+    background-color: aliceblue;
+}
+
+.deleteAnswer {
+    background-color: #FF8383;
+}
+
+.newAnswer {
+    background-color: #E4F4DA;
+}
