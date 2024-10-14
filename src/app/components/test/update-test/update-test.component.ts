@@ -12,7 +12,7 @@ import { QuestionUpd } from './question-update';
 import { Question } from 'src/app/models/test/question.model';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ChoiceQuestionUpd } from './choice-question-update';
 import { ChoiceAnswerUpd } from './choice-answer-update';
 import { NgFor, NgForOf } from '@angular/common';
@@ -27,7 +27,6 @@ import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable
   styleUrl: './update-test.component.css'
 })
 export class UpdateTestComponent implements OnInit {
-
   errors!: ApiError;
   testUpd: TestResponseUpd = {
     description: "",
@@ -122,7 +121,8 @@ export class UpdateTestComponent implements OnInit {
           id: answer.id,
           answer: this.fb.control(answer.answer, Validators.required),
           truth: this.fb.control(answer.truth, Validators.required),
-          updateFlg: this.fb.control(answer.updateFlg, Validators.required)
+          // updateFlg: this.fb.control(answer.updateFlg, Validators.required)
+          updateFlg: this.fb.control(2, Validators.required)
         }));
       });
 
@@ -239,8 +239,6 @@ export class UpdateTestComponent implements OnInit {
   answerBackground(choiceAnswerUpd: ChoiceAnswerUpd): string {
     if (choiceAnswerUpd.updateFlg == 1) {
       return "newAnswer";
-    } else if (choiceAnswerUpd.updateFlg == 2) {
-      return "changeAnswer";
     } else if (choiceAnswerUpd.updateFlg == 3) {
       return "deleteAnswer";
     }
