@@ -121,8 +121,7 @@ export class UpdateTestComponent implements OnInit {
           id: answer.id,
           answer: this.fb.control(answer.answer, Validators.required),
           truth: this.fb.control(answer.truth, Validators.required),
-          // updateFlg: this.fb.control(answer.updateFlg, Validators.required)
-          updateFlg: this.fb.control(2, Validators.required)
+          updateFlg: this.fb.control(answer.updateFlg, Validators.required)
         }));
       });
 
@@ -151,14 +150,14 @@ export class UpdateTestComponent implements OnInit {
         question: questionFormValue.question,
         questionType: QuestionType.CHOICE,
         answers: this.answerFormToAnswersUpdate(),
-        updateFlg: questionFormValue.updateFlg
+        updateFlg: 2
       };
     } else if (question.questionType == QuestionType.OPEN) {
       this.testUpd.questions[this.selectedQuestionIndex] = {
         id: questionFormValue.id,
         question: questionFormValue.question,
         questionType: QuestionType.OPEN,
-        updateFlg: questionFormValue.updateFlg
+        updateFlg: 2
       };
     }
 
@@ -213,12 +212,18 @@ export class UpdateTestComponent implements OnInit {
   answerFormToAnswersUpdate() : ChoiceAnswerUpd[]{
     let result : ChoiceAnswerUpd[] = [];
 
-    this.getAnswerFormArr().map((group: any) => (result.push({
+    this.getAnswerFormArr().map((group: any) => {
+      if (group.updateFlg == 0) {
+        group.updateFlg = 2;
+      }
+
+      result.push({
         id: group.id,
         answer: group.answer,
         truth: group.truth,
         updateFlg: group.updateFlg
-      }))
+      })
+    }
     );
 
     return result;
