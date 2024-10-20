@@ -81,7 +81,7 @@ export class TestComponent implements OnInit {
             let array: FormArray = this.fb.array([]);
             choiceQuestion.answers.forEach(answer => {
               array.push(this.fb.group({
-                answerId: answer.id,
+                answerId: answer.answerId,
                 selected: false
               }));
             });

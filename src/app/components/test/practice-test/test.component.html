@@ -38,8 +38,8 @@
                   <input
                   class="cursor-pointer"
                   type="radio"
-                  id="{{ answer.id }}"
-                  value="{{ answer.id }}"
+                  id="{{ answer.answerId }}"
+                  value="{{ answer.answerId }}"
                   formControlName="{{ question.id }}"
                 />
               }
@@ -50,14 +50,14 @@
                     <input 
                     class="cursor-pointer"
                     type="checkbox"
-                    id="{{ answer.id }}"
+                    id="{{ answer.answerId }}"
                     formControlName="selected"
                   />
                     </span>
                 </span>  
               }
               
-              <label for="{{ answer.id }}" class="cursor-pointer">
+              <label for="{{ answer.answerId }}" class="cursor-pointer">
                 <div class="inline-block m-2">{{ answer.answer }}</div></label
               >
             </li>
