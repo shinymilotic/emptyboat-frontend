@@ -1,7 +1,7 @@
 
 
 export interface ChoiceAnswerUpd {
-    answerId: string;
+    id: string;
     answer: string;
     truth: boolean;
     updateFlg: number;

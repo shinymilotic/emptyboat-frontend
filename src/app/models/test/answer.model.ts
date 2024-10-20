@@ -1,5 +1,5 @@
 export interface Answer {
-  answerId: string;
+  id: string;
   answer: string;
   truth: boolean;
 }

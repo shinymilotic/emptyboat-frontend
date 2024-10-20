@@ -118,7 +118,7 @@ export class UpdateTestComponent implements OnInit {
       const answersFormArray: FormArray<FormGroup> = new FormArray<FormGroup>([]);
       choiceQuestion.answers.forEach((answer) => {
         answersFormArray.push(this.fb.group({
-          answerId: answer.answerId,
+          id: answer.id,
           answer: this.fb.control(answer.answer, Validators.required),
           truth: this.fb.control(answer.truth, Validators.required),
           updateFlg: this.fb.control(answer.updateFlg, Validators.required)
@@ -218,7 +218,7 @@ export class UpdateTestComponent implements OnInit {
       }
 
       result.push({
-        answerId: group.answerId,
+        id: group.id,
         answer: group.answer,
         truth: group.truth,
         updateFlg: group.updateFlg
