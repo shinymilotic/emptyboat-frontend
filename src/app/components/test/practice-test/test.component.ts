@@ -72,24 +72,21 @@ export class TestComponent implements OnInit {
   canModify(): boolean {
     return this.userService.userSignal()?.id == this.test.author.id;
   }
+  
   toFormGroup(questions: Question[]) {
     const group: any = {};
     questions.forEach((question) => {
       if (question.questionType === QuestionType.CHOICE) {
           const choiceQuestion = question as ChoiceQuestion;
-          if (choiceQuestion.isMultipleAnswers) {
-            let array: FormArray = this.fb.array([]);
-            choiceQuestion.answers.forEach(answer => {
-              array.push(this.fb.group({
-                answerId: answer.id,
-                selected: false
-              }));
-            });
+          let array: FormArray = this.fb.array([]);
+          choiceQuestion.answers.forEach(answer => {
+            array.push(this.fb.group({
+              answerId: answer.id,
+              selected: false
+            }));
+          });
 
-            group[question.id] = array;
-          } else {
-            group[question.id] = this.fb.control("");
-          }
+          group[question.id] = array;
       } else {
         group[question.id] = this.fb.control("");
       }
@@ -127,26 +124,16 @@ export class TestComponent implements OnInit {
     };
 
     this.test.questions.forEach((question) => {
-      const answerControl: FormControl = this.questionForm.controls[
-        question.id
-      ] as FormControl;
-      if (question.questionType == QuestionType.CHOICE) {
-        const choiceQuestion: ChoiceQuestion = question as ChoiceQuestion;
-        if (!choiceQuestion.isMultipleAnswers) {
-          practice.choiceAnswers.push({
-            answerId: [answerControl.value]
-          });
-        } else {
-          answerControl.value.forEach((val : any) => {
-            if (val.selected) {
-              practice.choiceAnswers.push({
-                answerId: val.answerId
-              });
-            }
-          });
-
-        }
-      } else if (question.questionType == QuestionType.OPEN) {
+      const answerControl: FormControl = this.questionForm.controls[question.id] as FormControl;
+      if (question.questionType === QuestionType.CHOICE) {        
+        answerControl.value.forEach((val : any) => {
+          if (val.selected) {
+            practice.choiceAnswers.push({
+              answerId: val.answerId
+            });
+          }
+        });
+      } else if (question.questionType === QuestionType.OPEN) {
         practice.openAnswers.push({
           questionId: question.id,
           answer: answerControl.value,
