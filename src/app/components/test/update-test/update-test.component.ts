@@ -7,7 +7,7 @@ import { ApiError } from 'src/app/models/apierrors.model';
 import { ChoiceQuestion } from 'src/app/models/test/choicequestion.model';
 import { DialogModule } from 'primeng/dialog';
 import { TestResponseUpd } from './test-response-update';
-import { QuestionType } from '../create-test/enum/QuestionType';
+import { QuestionType } from '../../../models/test/QuestionType';
 import { QuestionUpd } from './question-update';
 import { Question } from 'src/app/models/test/question.model';
 import { ButtonModule } from 'primeng/button';
@@ -17,6 +17,7 @@ import { ChoiceQuestionUpd } from './choice-question-update';
 import { ChoiceAnswerUpd } from './choice-answer-update';
 import { NgFor, NgForOf } from '@angular/common';
 import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
+import { UpdateFlg } from 'src/app/models/update-flg.enum';
 
 @Component({
   selector: 'app-update-test',
@@ -36,7 +37,7 @@ export class UpdateTestComponent implements OnInit {
   visible: boolean = false;
   questionForm!: FormGroup;
   selectedQuestionIndex!: number;
-  
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly testService: TestService,
@@ -60,9 +61,9 @@ export class UpdateTestComponent implements OnInit {
         data.questions.forEach((question) => {
           if (question.questionType == QuestionType.CHOICE) {
             const choiceQuestion : ChoiceQuestionUpd = question as ChoiceQuestionUpd;
-            choiceQuestion.updateFlg = 0;
+            choiceQuestion.updateFlg = UpdateFlg.NOCHANGE;
             choiceQuestion.answers.forEach((answer) => {
-              answer.updateFlg = 0;
+              answer.updateFlg = UpdateFlg.NOCHANGE;
             });
             this.testUpd.questions.push(choiceQuestion);
           }
@@ -72,7 +73,7 @@ export class UpdateTestComponent implements OnInit {
                 id: question.id,
                 question: question.question,
                 questionType: question.questionType,
-                updateFlg: 0
+                updateFlg: UpdateFlg.NOCHANGE
             });
           }
         })
@@ -172,11 +173,11 @@ export class UpdateTestComponent implements OnInit {
   background(qIndex: number): string {
     const question: QuestionUpd = this.testUpd.questions[qIndex];
     
-    if (question.updateFlg == 1) {
+    if (question.updateFlg === UpdateFlg.NEW) {
       return "newQuestion";
-    } else if (question.updateFlg == 2) {
+    } else if (question.updateFlg == UpdateFlg.CHANGE) {
       return "updateQuestion";
-    } else if (question.updateFlg == 3) {
+    } else if (question.updateFlg == UpdateFlg.DELETE) {
       return "deleteQuestion";
     }
 
@@ -189,7 +190,7 @@ export class UpdateTestComponent implements OnInit {
     }
 
     const question: QuestionUpd = this.testUpd.questions[this.selectedQuestionIndex];
-    question.updateFlg = 3;
+    question.updateFlg = UpdateFlg.DELETE;
     
     this.visible = false;
   }
@@ -213,8 +214,8 @@ export class UpdateTestComponent implements OnInit {
     let result : ChoiceAnswerUpd[] = [];
 
     this.getAnswerFormArr().map((group: any) => {
-      if (group.updateFlg == 0) {
-        group.updateFlg = 2;
+      if (group.updateFlg === UpdateFlg.NOCHANGE) {
+        group.updateFlg = UpdateFlg.CHANGE;
       }
 
       result.push({
@@ -238,13 +239,13 @@ export class UpdateTestComponent implements OnInit {
   }
 
   deleteAnswer(choiceAnswerUpd: ChoiceAnswerUpd) {
-    choiceAnswerUpd.updateFlg = 3;
+    choiceAnswerUpd.updateFlg = UpdateFlg.DELETE;
   }
 
   answerBackground(choiceAnswerUpd: ChoiceAnswerUpd): string {
-    if (choiceAnswerUpd.updateFlg == 1) {
+    if (choiceAnswerUpd.updateFlg === UpdateFlg.NEW) {
       return "newAnswer";
-    } else if (choiceAnswerUpd.updateFlg == 3) {
+    } else if (choiceAnswerUpd.updateFlg == UpdateFlg.DELETE) {
       return "deleteAnswer";
     }
 
@@ -256,10 +257,14 @@ export class UpdateTestComponent implements OnInit {
   }
 
   answerChange(answer: ChoiceAnswerUpd) {
-    if (answer.updateFlg == 3) {
+    if (answer.updateFlg === UpdateFlg.DELETE) {
       return;
     }
 
-    answer.updateFlg = 2;
+    answer.updateFlg = UpdateFlg.CHANGE;
+  }
+
+  public get QuestionType() {
+    return QuestionType; 
   }
 }

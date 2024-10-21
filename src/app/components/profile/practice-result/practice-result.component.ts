@@ -9,6 +9,7 @@ import { ChoiceAnswer } from "./ChoiceAnswer";
 import { OpenAnswer } from "./OpenAnswer";
 import { OpenAnswerResult } from "./OpenAnswerResult";
 import { RestResponse } from "src/app/models/restresponse.model";
+import { QuestionType } from "src/app/models/test/QuestionType";
 
 @Component({
     selector: "app-practice-result",
@@ -53,5 +54,9 @@ export class PracticeResultComponent implements OnInit {
     }
 
     return "";
+  }
+
+  public get QuestionType() {
+    return QuestionType;
   }
 }

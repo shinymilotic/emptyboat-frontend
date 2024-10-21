@@ -23,7 +23,7 @@ import { Question } from "src/app/models/test/question.model";
 import { CreateTestRequest } from "src/app/models/test/test.model";
 import { TestService } from "src/app/services/test.service";
 import { ListErrorsComponent } from "src/app/shared-components/list-errors/list-errors.component";
-import { QuestionType } from "./enum/QuestionType";
+import { QuestionType } from "../../../models/test/QuestionType";
 import { ChoiceAnswerForm } from "./form-model/ChoiceAnswerForm";
 import { ChoiceQuestionForm } from "./form-model/ChoiceQuestionForm";
 import { OpenQuestionForm } from "./form-model/OpenQuestionForm";

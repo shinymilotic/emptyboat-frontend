@@ -24,7 +24,7 @@ import { UserService } from "src/app/services/user.service";
 import { PracticeService } from "src/app/services/practice.service";
 import { Practice } from "src/app/models/test/practice.model";
 import { ChoiceQuestion } from "src/app/models/test/choicequestion.model";
-import { QuestionType } from "../create-test/enum/QuestionType";
+import { QuestionType } from "../../../models/test/QuestionType";
 import { Question } from "src/app/models/test/question.model";
 import { ApiError } from "src/app/models/apierrors.model";
 import { TestResponse } from "src/app/models/test/test-response.model";
@@ -75,7 +75,7 @@ export class TestComponent implements OnInit {
   toFormGroup(questions: Question[]) {
     const group: any = {};
     questions.forEach((question) => {
-      if (question.questionType == 1) {
+      if (question.questionType === QuestionType.CHOICE) {
           const choiceQuestion = question as ChoiceQuestion;
           if (choiceQuestion.isMultipleAnswers) {
             let array: FormArray = this.fb.array([]);
@@ -176,5 +176,9 @@ export class TestComponent implements OnInit {
 
   editTest() {
     this.router.navigate(["/test", this.route.snapshot.params["id"], "update"]);
+  }
+
+  public get QuestionType() {
+    return QuestionType;
   }
 }

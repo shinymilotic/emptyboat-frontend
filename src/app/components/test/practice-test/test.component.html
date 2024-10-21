@@ -31,7 +31,7 @@
           class="list-decimal p-3"
         >
           <div class="question m-2">{{ question.question }}</div>
-          @if (question.questionType == 1) {
+          @if (question.questionType === QuestionType.CHOICE) {
           <ol class="answers-list">
             <li *ngFor="let answer of asChoiceQuestion(qIndex).answers; let aIndex = index">
               @if (!asChoiceQuestion(qIndex).isMultipleAnswers) {
@@ -63,7 +63,7 @@
             </li>
           </ol>
         }
-        @if (question.questionType == 2) {
+        @if (question.questionType === QuestionType.OPEN) {
           <fieldset class="form-border">
             <textarea type="text" class="border-none outline-none w-full" formControlName="{{ question.id }}"></textarea>
           </fieldset>

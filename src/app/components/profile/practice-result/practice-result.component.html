@@ -8,7 +8,7 @@
           <li
           class="list-decimal p-3">
           <div class="question m-2">{{ question.question }}</div>
-          @if (question.questionType == 1) {
+          @if (question.questionType == QuestionType.CHOICE) {
             <ol class="answers-list">
               @for (answer of asChoiceQuestion(question).answers; track $index) {
                 <li>        
@@ -18,7 +18,7 @@
             </ol>
           }
           
-          @if (question.questionType == 2) {
+          @if (question.questionType === QuestionType.OPEN) {
               <div type="text" class="border-none outline-none w-full">
                 {{asOpenQuestion(question).answer}}
               </div>
