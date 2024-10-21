@@ -72,13 +72,13 @@ export class TestComponent implements OnInit {
   canModify(): boolean {
     return this.userService.userSignal()?.id == this.test.author.id;
   }
-  
+
   toFormGroup(questions: Question[]) {
     const group: any = {};
     questions.forEach((question) => {
       if (question.questionType === QuestionType.CHOICE) {
           const choiceQuestion = question as ChoiceQuestion;
-          let array: FormArray = this.fb.array([]);
+          const array: FormArray = this.fb.array([]);
           choiceQuestion.answers.forEach(answer => {
             array.push(this.fb.group({
               answerId: answer.id,
@@ -128,9 +128,7 @@ export class TestComponent implements OnInit {
       if (question.questionType === QuestionType.CHOICE) {        
         answerControl.value.forEach((val : any) => {
           if (val.selected) {
-            practice.choiceAnswers.push({
-              answerId: val.answerId
-            });
+            practice.choiceAnswers.push(val.answerId);
           }
         });
       } else if (question.questionType === QuestionType.OPEN) {
@@ -140,9 +138,11 @@ export class TestComponent implements OnInit {
         });
       }
     });
+
     this.practiceService.createPractice(practice)
       .subscribe(({data}) => {
-          this.router.navigate([`@${this.userService.userSignal()?.username}/practices/${data.practiceId}`]);
+          this.router.navigate(
+            [`@${this.userService.userSignal()?.username}/practices/${data.practiceId}`]);
       });
   }
 
