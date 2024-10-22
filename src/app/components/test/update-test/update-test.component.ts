@@ -151,14 +151,14 @@ export class UpdateTestComponent implements OnInit {
         question: questionFormValue.question,
         questionType: QuestionType.CHOICE,
         answers: this.answerFormToAnswersUpdate(),
-        updateFlg: 2
+        updateFlg: UpdateFlg.CHANGE
       };
     } else if (question.questionType == QuestionType.OPEN) {
       this.testUpd.questions[this.selectedQuestionIndex] = {
         id: questionFormValue.id,
         question: questionFormValue.question,
         questionType: QuestionType.OPEN,
-        updateFlg: 2
+        updateFlg: UpdateFlg.CHANGE
       };
     }
 
