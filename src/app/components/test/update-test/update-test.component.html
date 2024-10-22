@@ -13,7 +13,7 @@
                         </div>
                         <ol class="choice-answer-list">
                         @for (answer of asChoiceQuestion($index).answers; track $index; let aIndex = $index) {
-                          @if (answer.updateFlg != 3) {
+                          @if (answer.updateFlg !== UpdateFlg.DELETE) {
                             <li>{{answer.answer}}
                               @if (answer.truth === true) {
                                 <i class="pi pi-check"></i>

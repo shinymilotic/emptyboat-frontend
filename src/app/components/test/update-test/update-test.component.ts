@@ -145,7 +145,7 @@ export class UpdateTestComponent implements OnInit {
     const question : (QuestionUpd | ChoiceQuestionUpd) = this.testUpd.questions[this.selectedQuestionIndex];
     const questionFormValue : any = this.questionForm.value;
 
-    if (question.questionType == QuestionType.CHOICE) {      
+    if (question.questionType === QuestionType.CHOICE) {      
       this.testUpd.questions[this.selectedQuestionIndex] = {
         id: questionFormValue.id,
         question: questionFormValue.question,
@@ -153,7 +153,7 @@ export class UpdateTestComponent implements OnInit {
         answers: this.answerFormToAnswersUpdate(),
         updateFlg: UpdateFlg.CHANGE
       };
-    } else if (question.questionType == QuestionType.OPEN) {
+    } else if (question.questionType === QuestionType.OPEN) {
       this.testUpd.questions[this.selectedQuestionIndex] = {
         id: questionFormValue.id,
         question: questionFormValue.question,
@@ -266,5 +266,9 @@ export class UpdateTestComponent implements OnInit {
 
   public get QuestionType() {
     return QuestionType; 
+  }
+
+  public get UpdateFlg() {
+    return UpdateFlg;
   }
 }
