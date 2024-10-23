@@ -118,27 +118,34 @@ export class TestComponent implements OnInit {
 
   createPractice() {
     const practice: Practice = {
-      id: this.route.snapshot.params["id"],
-      choiceAnswers: [],
-      openAnswers: [],
+        testId: this.route.snapshot.params["id"],
+        practices: []
     };
 
     this.test.questions.forEach((question) => {
       const answerControl: FormControl = this.questionForm.controls[question.id] as FormControl;
-      if (question.questionType === QuestionType.CHOICE) {        
+      if (question.questionType === QuestionType.CHOICE) {     
+        const answers : Array<string> = [];
         answerControl.value.forEach((val : any) => {
           if (val.selected) {
-            practice.choiceAnswers.push(val.answerId);
+            answers.push(val.answerId)
           }
         });
-      } else if (question.questionType === QuestionType.OPEN) {
-        practice.openAnswers.push({
+
+        practice.practices.push({
           questionId: question.id,
+          questionType: QuestionType.CHOICE,
+          answer: answers
+        });
+      } else if (question.questionType === QuestionType.OPEN) {
+        practice.practices.push({
+          questionId: question.id,
+          questionType: QuestionType.OPEN,
           answer: answerControl.value,
         });
       }
     });
-
+    console.log(practice);
     this.practiceService.createPractice(practice)
       .subscribe(({data}) => {
           this.router.navigate(
