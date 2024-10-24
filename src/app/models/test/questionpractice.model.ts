@@ -2,6 +2,6 @@
 export interface QuestionPractice {
     questionId: string,
     questionType: number,
-    answer: any
+    answer: Array<string> | string
 }
   
