@@ -271,7 +271,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   clickTag($event: any) {
-    if ($event == null && $event.value != null) {
+    if ($event != null && $event.value != null) {
       this.inTags.push($event.value);
     }
   }
