@@ -283,6 +283,4 @@ export class EditorComponent implements OnInit, OnDestroy {
   getTagIdFromTag(tags: Tag[]) : string[] {
     return tags.map((tag) => tag.id);
   }
-
-
 }
