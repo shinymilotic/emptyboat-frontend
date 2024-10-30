@@ -1,7 +1,7 @@
 <div class="tag-container">
     @for (item of this.tags; track $index) {
         <div class="tag-panel">
-            <p>#{{item}}</p>
+            <p>#{{item.name}}</p>
             <button class="follow-tag-btn" (click)="followTag(item)">Follow</button>
         </div>
     }
