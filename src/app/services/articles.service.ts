@@ -5,6 +5,7 @@ import { ArticleListConfig } from "../models/blog/article-list-config.model";
 import { Article } from "../models/blog/article.model";
 import { RestResponse } from "../models/restresponse.model";
 import { ArticleList } from "../models/blog/article-list.model";
+import { SubmitArticle } from "../components/editor/submit-article.model";
 
 @Injectable({ providedIn: "root" })
 export class ArticlesService {
@@ -35,14 +36,14 @@ export class ArticlesService {
     return this.http.delete<RestResponse<void>>(`/articles/${id}`);
   }
 
-  create(article: Partial<Article>): Observable<RestResponse<string>> {
+  create(article: Partial<SubmitArticle>): Observable<RestResponse<string>> {
     return this.http
       .post<RestResponse<string>>("/articles", article);
   }
 
-  update(article: Partial<Article>): Observable<RestResponse<string>> {
+  update(article: Partial<SubmitArticle>, id: string): Observable<RestResponse<string>> {
     return this.http
-      .put<RestResponse<string>>(`/articles/${article.id}`, article);
+      .put<RestResponse<string>>(`/articles/${id}`, article);
   }
 
   favorite(id: string): Observable<RestResponse<void>> {

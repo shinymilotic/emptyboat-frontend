@@ -29,6 +29,7 @@ import { Article } from "src/app/models/blog/article.model";
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { Tag } from "src/app/models/blog/tag.model";
+import { SubmitArticle } from "./submit-article.model";
 
 interface ArticleForm {
   title: FormControl<string>;
@@ -225,17 +226,22 @@ export class EditorComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateArticle() {
-    const article: Partial<Article> = {
-      id: this.route.snapshot.params["id"],
+  articleForSubmit() : Partial<SubmitArticle> {
+    const article: Partial<SubmitArticle> = {
       title: this.articleForm.value.title,
       description: this.articleForm.value.description,
       body: this.editor.getHTML(),
-      tagList: this.inTags,
+      tagList: this.getTagIdFromTag(this.inTags),
     };
 
+    return article;
+  }
+
+  updateArticle() : void {
+    const article : Partial<SubmitArticle> = this.articleForSubmit();
+    console.log(article);
     this.articleService
-      .update(article)
+      .update(article, this.route.snapshot.params["id"])
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -249,12 +255,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   createArticle() {
-    const article: Partial<Article> = {
-      title: this.articleForm.value.title,
-      description: this.articleForm.value.description,
-      body: this.editor.getHTML(),
-      tagList: this.inTags,
-    };
+    const article : Partial<SubmitArticle> = this.articleForSubmit();
     this.articleService
       .create(article)
       .pipe(takeUntil(this.destroy$))
@@ -270,14 +271,8 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   clickTag($event: any) {
-    if ($event == null) {
-      return;
-    }
-    if ($event.value != null) {
-      let tag: Tag = $event.value;
-      if (tag != null) {
-        this.inTags.push(tag);
-      }
+    if ($event == null && $event.value != null) {
+      this.inTags.push($event.value);
     }
   }
 
@@ -285,7 +280,9 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.inTags = this.inTags.filter((item) => item !== tag);
   }
 
-  getTagNamesFromTag(tags: Tag[]) : string[] {
-    return tags.map((tag) => tag.name);
+  getTagIdFromTag(tags: Tag[]) : string[] {
+    return tags.map((tag) => tag.id);
   }
+
+
 }
