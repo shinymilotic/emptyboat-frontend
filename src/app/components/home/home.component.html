@@ -8,10 +8,10 @@
           <a (click)="setListTo()" class="tag-pill"> Tất cả </a>
           @for (tag of tags; track $index) {
             <a
-            (click)="setListTo({ tag: tag })"
+            (click)="setListTo({ tag: tag.id })"
             class="tag-pill"
           >
-            {{ tag }}
+            {{ tag.name }}
           </a>
           }
         </div>

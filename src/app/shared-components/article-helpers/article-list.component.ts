@@ -55,7 +55,7 @@ export class ArticleListComponent implements OnDestroy {
       this.query.filters.size = this.limit;
       this.query.filters.lastArticleId = this.lastArticleId;
     }
-  
+    console.log(this.query);
     this.articlesService
       .query(this.query)
       .pipe(takeUntil(this.destroy$))

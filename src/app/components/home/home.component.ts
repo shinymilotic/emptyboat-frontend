@@ -1,17 +1,15 @@
 import { RxLet } from "@rx-angular/template/let";
 import {
-  ChangeDetectionStrategy,
   Component,
   inject,
   OnDestroy,
   OnInit,
 } from "@angular/core";
-import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import { TagsService } from "../../services/tags.service";
 import { ArticleListConfig } from "../../models/blog/article-list-config.model";
 import { AsyncPipe, NgClass, NgForOf } from "@angular/common";
 import { ArticleListComponent } from "../../shared-components/article-helpers/article-list.component";
-import { map, takeUntil, tap } from "rxjs/operators";
+import { map, tap } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { UserService } from "../../services/user.service";
 import { ShowAuthedDirective } from "../../directives/show-authed.directive";
@@ -74,7 +72,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     //   return;
     // }
 
-    // Otherwise, set the list object
     this.listConfig = { filters: filters };
   }
 }

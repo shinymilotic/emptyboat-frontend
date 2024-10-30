@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Tag } from 'src/app/models/blog/tag.model';
 import { TagsService } from 'src/app/services/tags.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { TagsService } from 'src/app/services/tags.service';
 })
 export class TagsComponent implements OnInit{
 
-  tags: string[] = [];
+  tags: Tag[] = [];
 
   constructor(private readonly tagService: TagsService) {
 
@@ -20,5 +21,9 @@ export class TagsComponent implements OnInit{
     this.tagService.getAll().subscribe(({data}) => {
       this.tags = data;
     });
+  }
+
+  followTag(tag: Tag): void {
+    
   }
 }

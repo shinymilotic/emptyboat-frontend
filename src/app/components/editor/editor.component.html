@@ -26,6 +26,7 @@
           <p-dropdown #tagInputTextElement
             [options]="filteredTags" 
             placeholder="Select a Tag. . ." 
+            optionLabel="name"
             [filter]="true"
             [showClear]="true" 
             (onChange)="clickTag($event)">
@@ -35,7 +36,7 @@
         <div class="inTag">
           @for (tag of inTags; track $index) {
           <div class="cursor-pointer relative tag"
-            id="{{ tag }}">{{ tag }}
+            id="{{ tag.name }}">{{ tag.name }}
             <span
               class="material-symbols-outlined cancel-tag"
               (click)="deleteTag(tag)"

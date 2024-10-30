@@ -28,6 +28,7 @@ import { ApiError } from "src/app/models/apierrors.model";
 import { Article } from "src/app/models/blog/article.model";
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
+import { Tag } from "src/app/models/blog/tag.model";
 
 interface ArticleForm {
   title: FormControl<string>;
@@ -57,19 +58,12 @@ export class EditorComponent implements OnInit, OnDestroy {
   errors!: ApiError;
   isSubmitting = false;
   destroy$ = new Subject<void>();
-  filteredTags: string[] = [];
-  inTags: string[] = [];
-  allTags!: string[];
-  tagsLoaded = false;
-  @ViewChild("tagInput") tagInput!: ElementRef<HTMLInputElement>;
-  @ViewChild("tagInputTextElement")
-  tagInputTextElement!: ElementRef<HTMLInputElement>;
-  announcer = inject(LiveAnnouncer);
+  filteredTags: Tag[] = [];
+  inTags: Tag[] = [];
   isUpdate: boolean = false;
-  isInputTag: boolean = true;
-  activeElement: Element | null = null;
   editor!: Editor;
   items: Array<any> = [];
+
   constructor(
     private readonly articleService: ArticlesService,
     private readonly route: ActivatedRoute,
@@ -280,14 +274,18 @@ export class EditorComponent implements OnInit, OnDestroy {
       return;
     }
     if ($event.value != null) {
-      let tag: string = $event.value;
-      if (tag != null && tag.trim() !== "" && this.inTags.indexOf(tag) < 0) {
+      let tag: Tag = $event.value;
+      if (tag != null) {
         this.inTags.push(tag);
       }
     }
   }
 
-  deleteTag(tag: string) {
+  deleteTag(tag: Tag) {
     this.inTags = this.inTags.filter((item) => item !== tag);
+  }
+
+  getTagNamesFromTag(tags: Tag[]) : string[] {
+    return tags.map((tag) => tag.name);
   }
 }
