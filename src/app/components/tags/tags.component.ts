@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Tag } from 'src/app/models/blog/tag.model';
 import { TagsService } from 'src/app/services/tags.service';
+import { TagFollowing } from './tag-following.model';
 
 @Component({
   selector: 'app-tags',
@@ -9,9 +9,9 @@ import { TagsService } from 'src/app/services/tags.service';
   templateUrl: './tags.component.html',
   styleUrl: './tags.component.css'
 })
-export class TagsComponent implements OnInit{
+export class TagsComponent implements OnInit {
 
-  tags: Tag[] = [];
+  tags: TagFollowing[] = [];
 
   constructor(private readonly tagService: TagsService) {
 
@@ -19,11 +19,11 @@ export class TagsComponent implements OnInit{
   
   ngOnInit(): void {
     this.tagService.getAll().subscribe(({data}) => {
-      this.tags = data;
+      this.tags = data as TagFollowing[];
     });
   }
 
-  followTag(tag: Tag): void {
-    
+  followTag(tag: TagFollowing): void {
+    this.tagService.followTag(tag.id).subscribe();
   }
 }

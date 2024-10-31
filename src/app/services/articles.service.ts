@@ -30,7 +30,7 @@ export class ArticlesService {
   get(id: string): Observable<RestResponse<Article>> {
     return this.http
       .get<RestResponse<Article>>(`/articles/${id}`);
-      }
+  }
 
   delete(id: string): Observable<RestResponse<void>> {
     return this.http.delete<RestResponse<void>>(`/articles/${id}`);

@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { RestResponse } from "../models/restresponse.model";
 import { Tag } from "../models/blog/tag.model";
+import { TagFollowing } from "../components/tags/tag-following.model";
 
 @Injectable({ providedIn: "root" })
 export class TagsService {
