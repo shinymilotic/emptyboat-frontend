@@ -7,6 +7,7 @@ import { TagFollowing } from "../components/tags/tag-following.model";
 
 @Injectable({ providedIn: "root" })
 export class TagService {
+  
   constructor(private readonly http: HttpClient) {}
 
   getAll(following: boolean): Observable<RestResponse<Tag[]>> {
@@ -14,8 +15,13 @@ export class TagService {
       .get<RestResponse<Tag[]>>("/tags", { params: { following } });
   }
 
-  followTag(tag: string): Observable<RestResponse<void>> {
+  followTag(tagId: string): Observable<RestResponse<void>> {
     return this.http
-      .post<RestResponse<void>>(`/tag/${tag}/follow`, {});
+      .post<RestResponse<void>>(`/tag/${tagId}/follow`, {});
+  }
+
+  unfollowTag(tagId: string) : Observable<RestResponse<void>> {
+    return this.http
+      .post<RestResponse<void>>(`/tag/${tagId}/unfollow`, {});
   }
 }

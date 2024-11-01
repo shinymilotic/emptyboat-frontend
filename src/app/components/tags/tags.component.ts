@@ -20,11 +20,26 @@ export class TagsComponent implements OnInit {
   ngOnInit(): void {
     this.tagService.getAll(true).subscribe(({data}) => {
       this.tags = data as TagFollowing[];
-      console.log(this.tags);
     });
   }
 
   followTag(tag: TagFollowing): void {
-    this.tagService.followTag(tag.id).subscribe();
+    this.tagService.followTag(tag.id).subscribe(() => {
+      this.tags.forEach(item => {
+        if (item.id === tag.id) {
+          tag.following = true;
+        }
+      });
+    });
+  }
+
+  unfollowTag(tag: TagFollowing): void {
+    this.tagService.unfollowTag(tag.id).subscribe(() => {
+      this.tags.forEach(item => {
+        if (item.id === tag.id) {
+          tag.following = false;
+        }
+      });
+    });
   }
 }

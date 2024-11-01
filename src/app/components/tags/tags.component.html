@@ -3,7 +3,7 @@
         <div class="tag-panel">
             <p>#{{item.name}}</p>
             @if (item.following) {
-                <button class="following-tag-btn" (click)="followTag(item)">Following</button>
+                <button class="following-tag-btn" (click)="unfollowTag(item)">Following</button>
             } @else {
                 <button class="follow-tag-btn" (click)="followTag(item)">Follow</button>
             }
