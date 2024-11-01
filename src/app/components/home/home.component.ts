@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit,
 } from "@angular/core";
-import { TagsService } from "../../services/tags.service";
+import { TagService } from "../../services/tags.service";
 import { ArticleListConfig } from "../../models/blog/article-list-config.model";
 import { AsyncPipe, NgClass, NgForOf } from "@angular/common";
 import { ArticleListComponent } from "../../shared-components/article-helpers/article-list.component";
@@ -35,8 +35,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   listConfig: ArticleListConfig = {
     filters: {},
   };
-  tags$ = inject(TagsService)
-    .getAll()
+  tags$ = inject(TagService)
+    .getAll(false)
     .pipe(
       map((data) => data.data),
       tap(() => (this.tagsLoaded = true))

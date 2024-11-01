@@ -15,10 +15,6 @@
     border-color: var(--surface-border);
 }
 
-.tag-panel:hover {
-    background-color: gainsboro;
-}
-
 .tag-container {
     display: flex;
     justify-content: space-around;
@@ -50,6 +46,35 @@
 }
   
 .follow-tag-btn:hover {
+    filter: brightness(60%);
+}
+
+.following-tag-btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 10px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: .1s ease-in-out;
+    background-color: white;
+    color: white;
+    outline: none;
+    white-space:nowrap;
+    color: black;
+    border-color: var(--surface-border)!important;
+    border-radius: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.following-tag-btn:hover {
     filter: brightness(60%);
 }
 

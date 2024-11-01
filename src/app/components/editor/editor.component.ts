@@ -21,7 +21,7 @@ import { Observable, Subject, throwError } from "rxjs";
 import { catchError, map, takeUntil, tap } from "rxjs/operators";
 import { UserService } from "../../services/user.service";
 import { LiveAnnouncer } from "@angular/cdk/a11y";
-import { TagsService } from "src/app/services/tags.service";
+import { TagService } from "src/app/services/tags.service";
 import { Editor } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import { ApiError } from "src/app/models/apierrors.model";
@@ -70,7 +70,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly userService: UserService,
-    private readonly tagsService: TagsService
+    private readonly tagService: TagService
   ) {
     this.articleForm = new FormGroup<ArticleForm>({
       title: new FormControl("", { nonNullable: true }),
@@ -204,7 +204,7 @@ export class EditorComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.tagsService.getAll().subscribe(({data}) => {
+    this.tagService.getAll(false).subscribe(({data}) => {
       this.filteredTags = data;
     }
     );

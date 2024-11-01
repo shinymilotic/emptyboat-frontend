@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TagsService } from 'src/app/services/tags.service';
+import { TagService } from 'src/app/services/tags.service';
 import { TagFollowing } from './tag-following.model';
 
 @Component({
@@ -13,13 +13,14 @@ export class TagsComponent implements OnInit {
 
   tags: TagFollowing[] = [];
 
-  constructor(private readonly tagService: TagsService) {
+  constructor(private readonly tagService: TagService) {
 
   }
   
   ngOnInit(): void {
-    this.tagService.getAll().subscribe(({data}) => {
+    this.tagService.getAll(true).subscribe(({data}) => {
       this.tags = data as TagFollowing[];
+      console.log(this.tags);
     });
   }
 

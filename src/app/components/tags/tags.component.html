@@ -2,7 +2,11 @@
     @for (item of this.tags; track $index) {
         <div class="tag-panel">
             <p>#{{item.name}}</p>
-            <button class="follow-tag-btn" (click)="followTag(item)">Follow</button>
+            @if (item.following) {
+                <button class="following-tag-btn" (click)="followTag(item)">Following</button>
+            } @else {
+                <button class="follow-tag-btn" (click)="followTag(item)">Follow</button>
+            }
         </div>
     }
 </div>
