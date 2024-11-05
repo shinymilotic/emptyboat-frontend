@@ -29,3 +29,6 @@
   border-color: var(--surface-border);
 }
 
+.space {
+  height: 25vh;
+}
