@@ -3,7 +3,6 @@ import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { RestResponse } from "../models/restresponse.model";
 import { Tag } from "../models/blog/tag.model";
-import { TagFollowing } from "../components/tags/tag-following.model";
 
 @Injectable({ providedIn: "root" })
 export class TagService {
@@ -13,6 +12,11 @@ export class TagService {
   getAll(following: boolean): Observable<RestResponse<Tag[]>> {
     return this.http
       .get<RestResponse<Tag[]>>("/tags", { params: { following } });
+  }
+
+  getFollowingTags() : Observable<RestResponse<Tag[]>> {
+    return this.http
+      .get<RestResponse<Tag[]>>("/followingTags");
   }
 
   followTag(tagId: string): Observable<RestResponse<void>> {
