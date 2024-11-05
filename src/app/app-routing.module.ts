@@ -8,8 +8,29 @@ import { UserService } from "./services/user.service";
 import { ProfileComponent } from "./components/profile/show-profile/profile.component";
 import {QuicklinkStrategy, QuicklinkModule} from 'ngx-quicklink';
 import { LayoutComponent } from "./layout/layout.component";
+import { AuthGuard } from "./auth-guard";
 
 export const routes: Routes = [
+  {
+    path: "register",
+    loadComponent: () =>
+      import("./components/user/register/register.component").then(
+        (m) => m.RegisterComponent
+      ),
+    canActivate: [
+      () => !inject(UserService).userSignal(),
+    ],
+  },
+  {
+    path: "login",
+    loadComponent: () =>
+      import("./components/user/login/login.component").then(
+        (m) => m.LoginComponent
+      ),
+    canActivate: [
+      () => !inject(UserService).userSignal(),
+    ],
+  },
   {
     path: "",
     component: LayoutComponent,
@@ -18,6 +39,9 @@ export const routes: Routes = [
         path: "",
         loadComponent: () =>
           import("./components/home/home.component").then((m) => m.HomeComponent),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
       },
       {
         path: "tests",
@@ -47,26 +71,26 @@ export const routes: Routes = [
             (m) => m.UpdateTestComponent
           ),
       },
-      {
-        path: "login",
-        loadComponent: () =>
-          import("./components/user/login/login.component").then(
-            (m) => m.LoginComponent
-          ),
-        canActivate: [
-          () => !inject(UserService).userSignal(),
-        ],
-      },
-      {
-        path: "register",
-        loadComponent: () =>
-          import("./components/user/register/register.component").then(
-            (m) => m.RegisterComponent
-          ),
-        canActivate: [
-          () => !inject(UserService).userSignal(),
-        ],
-      },
+      // {
+      //   path: "login",
+      //   loadComponent: () =>
+      //     import("./components/user/login/login.component").then(
+      //       (m) => m.LoginComponent
+      //     ),
+      //   canActivate: [
+      //     () => !inject(UserService).userSignal(),
+      //   ],
+      // },
+      // {
+      //   path: "register",
+      //   loadComponent: () =>
+      //     import("./components/user/register/register.component").then(
+      //       (m) => m.RegisterComponent
+      //     ),
+      //   canActivate: [
+      //     () => !inject(UserService).userSignal(),
+      //   ],
+      // },
       {
         path: "settings",
         loadComponent: () =>
@@ -236,5 +260,6 @@ export const routes: Routes = [
     }),
   ],
   exports: [RouterModule],
+  providers: [AuthGuard],
 })
 export class AppRoutingModule {}

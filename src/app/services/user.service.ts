@@ -8,7 +8,6 @@ import { RestResponse } from "../models/restresponse.model";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
-
   public userSignal = signal<User | null>(null);
 
   constructor(
