@@ -49,6 +49,9 @@ export const routes: Routes = [
           import("./components/test/test-list/test-list.component").then(
             (m) => m.TestListComponent
           ),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
       },
       {
         path: "practice/:id",
@@ -56,6 +59,9 @@ export const routes: Routes = [
           import("./components/test/practice-test/test.component").then(
             (m) => m.TestComponent
           ),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
       },
       {
         path: "test/create",
@@ -63,6 +69,9 @@ export const routes: Routes = [
           import("./components/test/create-test/create-test.component").then(
             (m) => m.CreateTestComponent
           ),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
       },
       {
         path: "test/:id/update",
@@ -70,27 +79,10 @@ export const routes: Routes = [
           import("./components/test/update-test/update-test.component").then(
             (m) => m.UpdateTestComponent
           ),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
       },
-      // {
-      //   path: "login",
-      //   loadComponent: () =>
-      //     import("./components/user/login/login.component").then(
-      //       (m) => m.LoginComponent
-      //     ),
-      //   canActivate: [
-      //     () => !inject(UserService).userSignal(),
-      //   ],
-      // },
-      // {
-      //   path: "register",
-      //   loadComponent: () =>
-      //     import("./components/user/register/register.component").then(
-      //       (m) => m.RegisterComponent
-      //     ),
-      //   canActivate: [
-      //     () => !inject(UserService).userSignal(),
-      //   ],
-      // },
       {
         path: "settings",
         loadComponent: () =>
@@ -126,6 +118,9 @@ export const routes: Routes = [
           import("./components/article/article.component").then(
             (m) => m.ArticleComponent
           ),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
       },
       {
         path: "search",
@@ -140,7 +135,9 @@ export const routes: Routes = [
               import("./components/search-result/search-articles/search-articles.component").then(
                 (m) => m.SearchArticlesComponent
               ),
-            // canActivate: [() => inject(UserService).isAuthenticated],
+            canActivate: [
+              () => inject(AuthGuard).canActivate(),
+            ],          
           },
           {
             path: "users",
@@ -148,7 +145,9 @@ export const routes: Routes = [
               import("./components/search-result/search-users/search-users.component").then(
                 (m) => m.SearchUsersComponent
               ),
-            // canActivate: [() => inject(UserService).isAuthenticated],
+              canActivate: [
+                () => inject(AuthGuard).canActivate(),
+              ],
           },
           {
             path: "tests",
@@ -156,7 +155,9 @@ export const routes: Routes = [
               import("./components/search-result/search-tests/search-tests.component").then(
                 (m) => m.SearchTestsComponent
               ),
-            // canActivate: [() => inject(UserService).isAuthenticated],
+              canActivate: [
+                () => inject(AuthGuard).canActivate(),
+              ],
           }
         ]
       },
@@ -166,6 +167,9 @@ export const routes: Routes = [
           import("./components/user/confirm-email/confirm-email.component").then(
             (m) => m.ConfirmEmailComponent
           ),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
       },
       {
         path: "tags",
@@ -173,6 +177,9 @@ export const routes: Routes = [
               import("./components/tags/tags.component").then(
                 (m) => m.TagsComponent
               ),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
       },
       {
         // path: ":username",
@@ -203,6 +210,9 @@ export const routes: Routes = [
               import(
                 "./components/profile/profile-articles/profile-articles.component"
               ).then((m) => m.ProfileArticlesComponent),
+            canActivate: [
+              () => inject(AuthGuard).canActivate(),
+            ],
           },
           {
             path: "favorites",
@@ -210,6 +220,9 @@ export const routes: Routes = [
               import(
                 "./components/profile/profile-favorites/profile-favorites.component"
               ).then((m) => m.ProfileFavoritesComponent),
+            canActivate: [
+              () => inject(AuthGuard).canActivate(),
+            ],
           },
           {
             path: "practices",
@@ -217,6 +230,9 @@ export const routes: Routes = [
               import(
                 "./components/profile/user-practice/user-practice.component"
               ).then((m) => m.UserPracticeComponent),
+            canActivate: [
+              () => inject(AuthGuard).canActivate(),
+            ],
           },
         ],
       },
@@ -243,6 +259,9 @@ export const routes: Routes = [
           import(
             "./components/profile/practice-result/practice-result.component"
           ).then((m) => m.PracticeResultComponent),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
       }
     ]
   },
