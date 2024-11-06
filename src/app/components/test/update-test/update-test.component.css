@@ -83,3 +83,8 @@ div.p-inputtext {
 .newAnswer {
     background-color: #E4F4DA;
 }
+
+.add-question-btn {
+    border-radius: 15px;
+    margin-left: 15px;
+}
