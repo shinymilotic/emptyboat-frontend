@@ -36,7 +36,9 @@ export class UpdateTestComponent implements OnInit {
   }
   visible: boolean = false;
   questionForm!: FormGroup;
+  newQuestion!: QuestionUpd | ChoiceQuestionUpd | null;
   selectedQuestionIndex!: number;
+  newQuestionFormVisible: boolean = true;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -112,6 +114,7 @@ export class UpdateTestComponent implements OnInit {
       return this.fb.group({
         id: updQuestion.id,
         question: this.fb.control(updQuestion.question, Validators.required),
+        questionType: updQuestion.questionType,
         updateFlg: this.fb.control(updQuestion.updateFlg, Validators.required)
       });
     } else if (updQuestion?.questionType == QuestionType.CHOICE) {
@@ -129,6 +132,7 @@ export class UpdateTestComponent implements OnInit {
       return this.fb.group({
         id: choiceQuestion.id,
         question: this.fb.control(choiceQuestion.question, Validators.required),
+        questionType: updQuestion.questionType,
         answers: answersFormArray,
         updateFlg: this.fb.control(updQuestion.updateFlg, Validators.required)
       });
@@ -149,7 +153,7 @@ export class UpdateTestComponent implements OnInit {
       this.testUpd.questions[this.selectedQuestionIndex] = {
         id: questionFormValue.id,
         question: questionFormValue.question,
-        questionType: QuestionType.CHOICE,
+        questionType: questionFormValue.questionType,
         answers: this.answerFormToAnswersUpdate(),
         updateFlg: UpdateFlg.CHANGE
       };
@@ -157,7 +161,7 @@ export class UpdateTestComponent implements OnInit {
       this.testUpd.questions[this.selectedQuestionIndex] = {
         id: questionFormValue.id,
         question: questionFormValue.question,
-        questionType: QuestionType.OPEN,
+        questionType: questionFormValue.questionType,
         updateFlg: UpdateFlg.CHANGE
       };
     }
@@ -175,9 +179,9 @@ export class UpdateTestComponent implements OnInit {
     
     if (question.updateFlg === UpdateFlg.NEW) {
       return "newQuestion";
-    } else if (question.updateFlg == UpdateFlg.CHANGE) {
+    } else if (question.updateFlg === UpdateFlg.CHANGE) {
       return "updateQuestion";
-    } else if (question.updateFlg == UpdateFlg.DELETE) {
+    } else if (question.updateFlg === UpdateFlg.DELETE) {
       return "deleteQuestion";
     }
 
@@ -270,5 +274,79 @@ export class UpdateTestComponent implements OnInit {
 
   public get UpdateFlg() {
     return UpdateFlg;
+  }
+
+  toNewQuestionForm(newQuestion: QuestionUpd | ChoiceQuestionUpd) : FormGroup {
+    if (newQuestion.questionType === QuestionType.OPEN) {
+      return this.fb.group({
+        id: "",
+        question: this.fb.control(newQuestion.question, Validators.required),
+        updateFlg: this.fb.control(UpdateFlg.NEW, Validators.required)
+      });
+    } else if (newQuestion.questionType === QuestionType.CHOICE) {
+      const choiceQuestion: ChoiceQuestionUpd = newQuestion as ChoiceQuestionUpd;
+      const answersFormArray: FormArray<FormGroup> = new FormArray<FormGroup>([]);
+      choiceQuestion.answers.forEach((answer) => {
+        answersFormArray.push(this.fb.group({
+          id: answer.id,
+          answer: this.fb.control(answer.answer, Validators.required),
+          truth: this.fb.control(answer.truth, Validators.required),
+          updateFlg: this.fb.control(answer.updateFlg, Validators.required)
+        }));
+      });
+
+      return this.fb.group({
+        id: choiceQuestion.id,
+        question: this.fb.control(choiceQuestion.question, Validators.required),
+        answers: answersFormArray,
+        updateFlg: this.fb.control(newQuestion.updateFlg, Validators.required)
+      });
+    }
+
+    return this.fb.group({});
+  }
+
+  addQuestion(questionType: number) : void {
+    
+    if (questionType === QuestionType.OPEN) {
+      this.newQuestion = {
+        id: "",
+        question: "",
+        questionType: QuestionType.OPEN,
+        updateFlg: UpdateFlg.NEW
+      };
+    } else if (questionType === QuestionType.CHOICE) {
+      this.newQuestion = {
+        id: "",
+        question: "",
+        questionType: QuestionType.CHOICE,
+        answers: [],
+        updateFlg: UpdateFlg.NEW
+      }
+      this.newQuestionFormVisible = true;
+    }
+
+    if (this.newQuestion != null) {
+      this.questionForm = this.toNewQuestionForm(this.newQuestion);
+    }
+  }
+
+  isNewQuestionDialogOpen() : boolean {
+    if (this.newQuestion != null) {
+      return true;
+    }
+
+    return false;
+  }
+
+  saveNewQuestion() {
+    this.newQuestionFormVisible = false;
+    this.newQuestion = null;
+  }
+
+  closeNewQuestionDiablog() {
+    this.newQuestionFormVisible = false;
+    this.newQuestion = null;
+    // this.questionForm = null;
   }
 }

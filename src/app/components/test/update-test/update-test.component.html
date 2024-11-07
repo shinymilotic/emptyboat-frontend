@@ -30,7 +30,8 @@
                 </li>
             }
         </ol>
-        <button class="overcloud-btn add-question-btn">Add question</button>
+        <button class="overcloud-btn add-question-btn" (click)="this.addQuestion(QuestionType.OPEN)">Add open question</button>
+        <button class="overcloud-btn add-question-btn" (click)="this.addQuestion(QuestionType.CHOICE)">Add choice question</button>
         <button class="updateTestBtn overcloud-btn mt-2" type="submit" (click)="updateTest()">
           Update
         </button>
@@ -54,8 +55,72 @@
               Delete
           </a>
       </div>
+      <div class="flex align-items-center gap-3 m-3" [formGroup]="this.questionForm">
+      @if (this.questionForm.value.questionType === QuestionType.CHOICE) {
+          <label for="question" class="font-semibold p-2">Question: </label>
+          <input pInputText id="question" class="flex-auto" formControlName="question"/>
 
-      @if (this.testUpd.questions[this.selectedQuestionIndex].questionType == QuestionType.CHOICE) {
+          <div formArrayName="answers">
+              <ol>
+                @for (answer of this.getAnswerFormArr(); track $index) {
+                  <li formGroupName="{{$index}}" class="mt-2 flex items-center {{this.answerBackground(answer)}}">
+                    <fieldset class="form-group mr-3 flex-1">
+                          <div pInputText
+                          id="content-answer-{{ $index }}" class="{{this.answerBackground(answer)}}"
+                          (input)="this.answerChange(answer)"
+                          placeholder="Câu trả lời" contenteditable class="textbox" formControlName="answer"></div>
+                    </fieldset>
+
+                    <fieldset class="form-group mr-3 truth-fieldset">
+                      <label class="checkmark-fieldset">
+                        <input
+                          class="form-control"
+                          formControlName="truth"
+                          (change)="this.answerChange(answer)"
+                          type="checkbox" />
+                        <span class="checkmark border-solid border"></span>
+                      </label>  
+                    </fieldset>
+                        
+                    <a class="deleteBtn self-center"
+                      (click)="deleteAnswer(answer)" >
+                      Delete
+                    </a>
+                </li>
+                }  
+              </ol>
+          </div>
+      } @else if (this.questionForm.value.questionType === QuestionType.OPEN) {
+          <label for="question" class="font-semibold p-2">Question: </label>
+          <input pInputText id="question" class="flex-auto" formControlName="question"/>
+      }
+    </div>
+        <div class="flex justify-content-end gap-2 float-right">
+            <p-button label="Cancel" severity="secondary" (onClick)="closeDiablog()" />
+            <p-button type="button" label="Save" (onClick)="saveQuestion()" />
+        </div>
+  </p-dialog>
+}
+
+@if (this.isNewQuestionDialogOpen()) {
+  <p-dialog 
+      header="Add question" 
+      [(visible)]="this.newQuestionFormVisible" 
+      [modal]="true" 
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+      [style]="{ width: '50vw' }" 
+      [draggable]="false" 
+      [resizable]="false"
+      (onHide)="closeNewQuestionDiablog()">
+  
+      <div class="flex">
+          <a class="deleteBtn"
+            (click)="deleteQuestion()">
+              Delete
+          </a>
+      </div>
+
+      @if (this.newQuestion?.questionType === QuestionType.CHOICE) {
             <div class="flex-col align-items-center gap-3 m-3" [formGroup]="this.questionForm">
                 <label for="question" class="font-semibold p-2">Question: </label>
                 <input pInputText id="question" class="flex-auto" formControlName="question"/>
@@ -92,7 +157,7 @@
                 </div>
             </div>
 
-      } @else if (this.testUpd.questions[this.selectedQuestionIndex].questionType === QuestionType.OPEN) {
+      } @else if (this.newQuestion?.questionType === QuestionType.OPEN) {
               <div class="flex align-items-center gap-3 m-3" [formGroup]="this.questionForm">
                   <label for="question" class="font-semibold p-2">Question: </label>
                   <input pInputText id="question" class="flex-auto" formControlName="question"/>
@@ -100,8 +165,9 @@
       }
         
         <div class="flex justify-content-end gap-2 float-right">
-            <p-button label="Cancel" severity="secondary" (onClick)="closeDiablog()" />
-            <p-button type="button" label="Save" (onClick)="saveQuestion()" />
+            <p-button label="Cancel" severity="secondary" (onClick)="closeNewQuestionDiablog()" />
+            <p-button type="button" label="Save" (onClick)="saveNewQuestion()" />
         </div>
   </p-dialog>
 }
+
