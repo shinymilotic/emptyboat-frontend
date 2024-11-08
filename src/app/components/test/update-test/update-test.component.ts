@@ -36,9 +36,8 @@ export class UpdateTestComponent implements OnInit {
   }
   visible: boolean = false;
   questionForm!: FormGroup;
-  newQuestion!: QuestionUpd | ChoiceQuestionUpd | null;
   selectedQuestionIndex!: number;
-  newQuestionFormVisible: boolean = true;
+  newQuestionForm!: FormGroup;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -91,112 +90,7 @@ export class UpdateTestComponent implements OnInit {
   }
 
   showDiablog(qIndex: number) {
-    if (this.isQuestionSelected() === true && this.testUpd.questions[qIndex] != null) {
-      return;
-    }
-    this.questionForm = this.toFormGroup(this.testUpd.questions[qIndex]);
-    this.selectedQuestionIndex = qIndex;
-    this.visible = true;
-  }
-
-  isQuestionSelected(): boolean {
-    if (this.selectedQuestionIndex != -1 && 
-          this.testUpd != null && 
-          this.testUpd.questions[this.selectedQuestionIndex] != null) {
-      return true;
-    }
-
-    return false;
-  }
-
-  toFormGroup(updQuestion: QuestionUpd | ChoiceQuestionUpd) : FormGroup {
-    if (updQuestion?.questionType == QuestionType.OPEN) {
-      return this.fb.group({
-        id: updQuestion.id,
-        question: this.fb.control(updQuestion.question, Validators.required),
-        questionType: updQuestion.questionType,
-        updateFlg: this.fb.control(updQuestion.updateFlg, Validators.required)
-      });
-    } else if (updQuestion?.questionType == QuestionType.CHOICE) {
-      const choiceQuestion: ChoiceQuestionUpd = updQuestion as ChoiceQuestionUpd;
-      const answersFormArray: FormArray<FormGroup> = new FormArray<FormGroup>([]);
-      choiceQuestion.answers.forEach((answer) => {
-        answersFormArray.push(this.fb.group({
-          id: answer.id,
-          answer: this.fb.control(answer.answer, Validators.required),
-          truth: this.fb.control(answer.truth, Validators.required),
-          updateFlg: this.fb.control(answer.updateFlg, Validators.required)
-        }));
-      });
-
-      return this.fb.group({
-        id: choiceQuestion.id,
-        question: this.fb.control(choiceQuestion.question, Validators.required),
-        questionType: updQuestion.questionType,
-        answers: answersFormArray,
-        updateFlg: this.fb.control(updQuestion.updateFlg, Validators.required)
-      });
-    }
-
-    return this.fb.group({});
-  } 
-
-  saveQuestion() {
-    if (this.selectedQuestionIndex == -1) {
-      return;
-    }
-
-    const question : (QuestionUpd | ChoiceQuestionUpd) = this.testUpd.questions[this.selectedQuestionIndex];
-    const questionFormValue : any = this.questionForm.value;
-
-    if (question.questionType === QuestionType.CHOICE) {      
-      this.testUpd.questions[this.selectedQuestionIndex] = {
-        id: questionFormValue.id,
-        question: questionFormValue.question,
-        questionType: questionFormValue.questionType,
-        answers: this.answerFormToAnswersUpdate(),
-        updateFlg: UpdateFlg.CHANGE
-      };
-    } else if (question.questionType === QuestionType.OPEN) {
-      this.testUpd.questions[this.selectedQuestionIndex] = {
-        id: questionFormValue.id,
-        question: questionFormValue.question,
-        questionType: questionFormValue.questionType,
-        updateFlg: UpdateFlg.CHANGE
-      };
-    }
-
-    this.visible = false;
-  }
-
-  closeDiablog() {
-    this.visible = false;
-    this.selectedQuestionIndex = -1;
-  }
-
-  background(qIndex: number): string {
-    const question: QuestionUpd = this.testUpd.questions[qIndex];
     
-    if (question.updateFlg === UpdateFlg.NEW) {
-      return "newQuestion";
-    } else if (question.updateFlg === UpdateFlg.CHANGE) {
-      return "updateQuestion";
-    } else if (question.updateFlg === UpdateFlg.DELETE) {
-      return "deleteQuestion";
-    }
-
-    return "";
-  }
-
-  deleteQuestion() {
-    if (this.selectedQuestionIndex == -1) {
-      return;
-    }
-
-    const question: QuestionUpd = this.testUpd.questions[this.selectedQuestionIndex];
-    question.updateFlg = UpdateFlg.DELETE;
-    
-    this.visible = false;
   }
 
   updateTest() {
@@ -212,60 +106,6 @@ export class UpdateTestComponent implements OnInit {
         this.errors = err;
       },
     });
-  }
-
-  answerFormToAnswersUpdate() : ChoiceAnswerUpd[]{
-    let result : ChoiceAnswerUpd[] = [];
-
-    this.getAnswerFormArr().map((group: any) => {
-      if (group.updateFlg === UpdateFlg.NOCHANGE) {
-        group.updateFlg = UpdateFlg.CHANGE;
-      }
-
-      result.push({
-        id: group.id,
-        answer: group.answer,
-        truth: group.truth,
-        updateFlg: group.updateFlg
-      })
-    }
-    );
-
-    return result;
-  }
-
-  getAnswerFormArr(): ChoiceAnswerUpd[] {
-    return this.questionForm.value.answers;
-  }
-
-  changeAnswerUpdateFlg() {
-    
-  }
-
-  deleteAnswer(choiceAnswerUpd: ChoiceAnswerUpd) {
-    choiceAnswerUpd.updateFlg = UpdateFlg.DELETE;
-  }
-
-  answerBackground(choiceAnswerUpd: ChoiceAnswerUpd): string {
-    if (choiceAnswerUpd.updateFlg === UpdateFlg.NEW) {
-      return "newAnswer";
-    } else if (choiceAnswerUpd.updateFlg == UpdateFlg.DELETE) {
-      return "deleteAnswer";
-    }
-
-    return "";
-  }
-
-  addAnswer() {
-  
-  }
-
-  answerChange(answer: ChoiceAnswerUpd) {
-    if (answer.updateFlg === UpdateFlg.DELETE) {
-      return;
-    }
-
-    answer.updateFlg = UpdateFlg.CHANGE;
   }
 
   public get QuestionType() {
@@ -307,32 +147,30 @@ export class UpdateTestComponent implements OnInit {
   }
 
   addQuestion(questionType: number) : void {
-    
     if (questionType === QuestionType.OPEN) {
-      this.newQuestion = {
+      this.newQuestionForm = this.fb.group({
         id: "",
         question: "",
         questionType: QuestionType.OPEN,
         updateFlg: UpdateFlg.NEW
-      };
+      });
     } else if (questionType === QuestionType.CHOICE) {
-      this.newQuestion = {
+      this.newQuestionForm = this.fb.group({
         id: "",
         question: "",
         questionType: QuestionType.CHOICE,
         answers: [],
         updateFlg: UpdateFlg.NEW
-      }
-      this.newQuestionFormVisible = true;
+      });
     }
 
-    if (this.newQuestion != null) {
-      this.questionForm = this.toNewQuestionForm(this.newQuestion);
+    if (this.newQuestionForm != null) {
+      this.testUpd.questions.push(this.newQuestionForm.value);
     }
   }
 
   isNewQuestionDialogOpen() : boolean {
-    if (this.newQuestion != null) {
+    if (this.newQuestionForm?.value != null) {
       return true;
     }
 
@@ -340,13 +178,24 @@ export class UpdateTestComponent implements OnInit {
   }
 
   saveNewQuestion() {
-    this.newQuestionFormVisible = false;
-    this.newQuestion = null;
+    this.newQuestionForm = this.fb.group({});
   }
 
   closeNewQuestionDiablog() {
-    this.newQuestionFormVisible = false;
-    this.newQuestion = null;
-    // this.questionForm = null;
+    this.newQuestionForm = this.fb.group({});
+  }
+
+  background(qIndex: number): string {
+    const question: QuestionUpd = this.testUpd.questions[qIndex];
+    
+    if (question.updateFlg === UpdateFlg.NEW) {
+      return "newQuestion";
+    } else if (question.updateFlg === UpdateFlg.CHANGE) {
+      return "updateQuestion";
+    } else if (question.updateFlg === UpdateFlg.DELETE) {
+      return "deleteQuestion";
+    }
+
+    return "";
   }
 }

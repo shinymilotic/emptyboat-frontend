@@ -42,7 +42,6 @@ import { DialogModule } from 'primeng/dialog';
 export class ArticleComponent implements OnInit, OnDestroy {
   article!: Article;
   comments: Comment[] = [];
-
   canModify: Signal<boolean> = computed(() => {
     if (this.userService.userSignal()?.username === this.article.author.username) {
       return true;
@@ -50,7 +49,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
     return false;
   });  
-
   commentControl: FormControl<string>;
   commentFormErrors!: ApiError;
   bodyAsHtml!: string;
@@ -58,7 +56,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
   isDeleting = false;
   destroy$ = new Subject<void>();
   visible: boolean = false;
-
   
   constructor(
     private readonly route: ActivatedRoute,
