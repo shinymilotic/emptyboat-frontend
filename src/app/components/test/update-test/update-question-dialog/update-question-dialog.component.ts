@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { TestService } from 'src/app/services/test.service';
@@ -20,17 +20,17 @@ import { QuestionUpd } from '../question-update';
 import { TestResponseUpd } from '../test-response-update';
 
 @Component({
-  selector: 'app-update-test',
+  selector: 'app-update-question-dialog',
   standalone: true,
   imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule, 
     ReactiveFormsModule, FormsModule, NgFor, NgForOf, ContenteditableValueAccessor],
   templateUrl: './update-question-dialog.component.html',
   styleUrl: './update-question-dialog.component.css'
 })
-export class UpdateQuestionDialogComponent implements OnInit {
+export class UpdateQuestionDialogComponent implements OnInit, OnChanges {
   visible: boolean = false;
   questionForm!: FormGroup;
-  @Input() updateQuestion!: QuestionUpd | ChoiceQuestionUpd;
+  @Input() updateQuestion?: QuestionUpd | ChoiceQuestionUpd;
   @Output() updateQuestionChange = new EventEmitter<QuestionUpd | ChoiceQuestionUpd>();
 
   constructor(
@@ -44,7 +44,11 @@ export class UpdateQuestionDialogComponent implements OnInit {
     this.questionForm = this.toFormGroup(this.updateQuestion);
   }
 
-  toFormGroup(updQuestion: QuestionUpd | ChoiceQuestionUpd) : FormGroup {
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+  }
+
+  toFormGroup(updQuestion?: QuestionUpd | ChoiceQuestionUpd) : FormGroup {
     if (updQuestion?.questionType == QuestionType.OPEN) {
       return this.fb.group({
         id: updQuestion.id,
@@ -93,16 +97,15 @@ export class UpdateQuestionDialogComponent implements OnInit {
       });   
     } else if (questionFormValue.questionType === QuestionType.OPEN) {
       this.updateQuestionChange.emit({
-          id: questionFormValue.id,
-          question: questionFormValue.question,
-          questionType: questionFormValue.questionType,
-          updateFlg: UpdateFlg.CHANGE
+        id: questionFormValue.id,
+        question: questionFormValue.question,
+        questionType: questionFormValue.questionType,
+        updateFlg: UpdateFlg.CHANGE
       });
     }
   }
 
   closeDiablog() {
-    
   }
 
   deleteQuestion() {
@@ -161,5 +164,10 @@ export class UpdateQuestionDialogComponent implements OnInit {
     }
 
     return "";
+  }
+
+  setUpdateQuestion(question: QuestionUpd | ChoiceQuestionUpd) : void {
+    this.updateQuestion = question;
+    this.updateQuestionChange.emit(this.updateQuestion);
   }
 }

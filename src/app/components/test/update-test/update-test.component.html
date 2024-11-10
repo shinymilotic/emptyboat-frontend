@@ -5,9 +5,9 @@
         <h1>{{ this.testUpd.title }}</h1>
         <span>{{ this.testUpd.description }}</span>
         <ol>
-            @for (questionUpd of this.testUpd.questions; track $index; let qIndex = $index) {
-                <li class="question {{this.background(qIndex)}}" (click)="showDiablog(qIndex)">
-                    @if (questionUpd.questionType === QuestionType.CHOICE) {
+            @for (questionUpd of this.testUpd.questions; track $index;) {
+                <li class="question {{this.background(questionUpd)}}" (click)="showUpdateQuestionDialog(questionUpd)">
+                    @if (questionUpd.questionType === QuestionType.CHOICE) { 
                         <div>
                             <div>{{questionUpd.question}}</div>
                         </div>
@@ -30,11 +30,13 @@
                 </li>
             }
         </ol>
-        <button class="overcloud-btn add-question-btn" (click)="this.addQuestion(QuestionType.OPEN)">Add open question</button>
-        <button class="overcloud-btn add-question-btn" (click)="this.addQuestion(QuestionType.CHOICE)">Add choice question</button>
+        <button class="overcloud-btn add-question-btn" (click)="this.showAddQuestionDialog(QuestionType.OPEN)">Add open question</button>
+        <button class="overcloud-btn add-question-btn" (click)="this.showAddQuestionDialog(QuestionType.CHOICE)">Add choice question</button>
         <button class="updateTestBtn overcloud-btn mt-2" type="submit" (click)="updateTest()">
           Update
         </button>
     </div>
   </div>
 
+<app-update-question-dialog [(updateQuestion)]="this.updateQuestion"></app-update-question-dialog>
+<app-add-question-dialog [(newQuestion)]="this.newQuestion" ></app-add-question-dialog>

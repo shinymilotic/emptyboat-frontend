@@ -1,20 +1,12 @@
-@if (this.isNewQuestionDialogOpen()) {
 <p-dialog 
     header="Add question" 
-    [(visible)]="this.newQuestionForm.value" 
+    [(visible)]="this.visible" 
     [modal]="true" 
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
     [style]="{ width: '50vw' }" 
     [draggable]="false" 
     [resizable]="false"
     (onHide)="closeNewQuestionDiablog()">
-
-    <div class="flex">
-        <a class="deleteBtn"
-            (click)="deleteQuestion()">
-            Delete
-        </a>
-    </div>
 
     @if (this.newQuestionForm.value.questionType === QuestionType.CHOICE) {
             <div class="flex-col align-items-center gap-3 m-3" [formGroup]="this.newQuestionForm">
@@ -24,11 +16,10 @@
                 <div formArrayName="answers">
                     <ol>
                     @for (answer of this.getAnswerFormArr(); track $index) {
-                        <li formGroupName="{{$index}}" class="mt-2 flex items-center {{this.answerBackground(answer)}}">
+                        <li formGroupName="{{$index}}" class="mt-2 flex items-center">
                         <fieldset class="form-group mr-3 flex-1">
                                 <div pInputText
-                                id="content-answer-{{ $index }}" class="{{this.answerBackground(answer)}}"
-                                (input)="this.answerChange(answer)"
+                                id="content-answer-{{ $index }}"
                                 placeholder="Câu trả lời" contenteditable class="textbox" formControlName="answer"></div>
                         </fieldset>
 
@@ -37,14 +28,13 @@
                             <input
                                 class="form-control"
                                 formControlName="truth"
-                                (change)="this.answerChange(answer)"
                                 type="checkbox" />
                             <span class="checkmark border-solid border"></span>
                             </label>  
                         </fieldset>
                             
                         <a class="deleteBtn self-center"
-                            (click)="deleteAnswer(answer)" >
+                            (click)="this.deleteAnswer(answer)" >
                             Delete
                         </a>
                     </li>
@@ -65,4 +55,3 @@
             <p-button type="button" label="Save" (onClick)="saveNewQuestion()" />
         </div>
 </p-dialog>
-}

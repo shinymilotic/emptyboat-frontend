@@ -18,12 +18,14 @@ import { ChoiceAnswerUpd } from './choice-answer-update';
 import { NgFor, NgForOf } from '@angular/common';
 import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
 import { UpdateFlg } from 'src/app/models/update-flg.enum';
+import { UpdateQuestionDialogComponent } from "./update-question-dialog/update-question-dialog.component";
+import { AddQuestionDialogComponent } from "./add-question-dialog/add-question-dialog.component";
 
 @Component({
   selector: 'app-update-test',
   standalone: true,
-  imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule, 
-    ReactiveFormsModule, FormsModule, NgFor, NgForOf, ContenteditableValueAccessor],
+  imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule,
+    ReactiveFormsModule, FormsModule, NgFor, NgForOf, ContenteditableValueAccessor, UpdateQuestionDialogComponent, AddQuestionDialogComponent],
   templateUrl: './update-test.component.html',
   styleUrl: './update-test.component.css'
 })
@@ -35,9 +37,8 @@ export class UpdateTestComponent implements OnInit {
     title: ""
   }
   visible: boolean = false;
-  questionForm!: FormGroup;
-  selectedQuestionIndex!: number;
-  newQuestionForm!: FormGroup;
+  updateQuestion?: QuestionUpd | ChoiceQuestionUpd;
+  newQuestion?: QuestionUpd | ChoiceQuestionUpd;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -89,8 +90,8 @@ export class UpdateTestComponent implements OnInit {
     return question as ChoiceQuestion;
   }
 
-  showDiablog(qIndex: number) {
-    
+  showUpdateQuestionDialog(questionUpd: QuestionUpd | ChoiceQuestionUpd) {
+    this.updateQuestion = questionUpd;
   }
 
   updateTest() {
@@ -116,86 +117,34 @@ export class UpdateTestComponent implements OnInit {
     return UpdateFlg;
   }
 
-  toNewQuestionForm(newQuestion: QuestionUpd | ChoiceQuestionUpd) : FormGroup {
-    if (newQuestion.questionType === QuestionType.OPEN) {
-      return this.fb.group({
-        id: "",
-        question: this.fb.control(newQuestion.question, Validators.required),
-        updateFlg: this.fb.control(UpdateFlg.NEW, Validators.required)
-      });
-    } else if (newQuestion.questionType === QuestionType.CHOICE) {
-      const choiceQuestion: ChoiceQuestionUpd = newQuestion as ChoiceQuestionUpd;
-      const answersFormArray: FormArray<FormGroup> = new FormArray<FormGroup>([]);
-      choiceQuestion.answers.forEach((answer) => {
-        answersFormArray.push(this.fb.group({
-          id: answer.id,
-          answer: this.fb.control(answer.answer, Validators.required),
-          truth: this.fb.control(answer.truth, Validators.required),
-          updateFlg: this.fb.control(answer.updateFlg, Validators.required)
-        }));
-      });
-
-      return this.fb.group({
-        id: choiceQuestion.id,
-        question: this.fb.control(choiceQuestion.question, Validators.required),
-        answers: answersFormArray,
-        updateFlg: this.fb.control(newQuestion.updateFlg, Validators.required)
-      });
+  background(questionUpd: QuestionUpd | ChoiceQuestionUpd): string {    
+    if (questionUpd.updateFlg === UpdateFlg.NEW) {
+      return "newQuestion";
+    } else if (questionUpd.updateFlg === UpdateFlg.CHANGE) {
+      return "updateQuestion";
+    } else if (questionUpd.updateFlg === UpdateFlg.DELETE) {
+      return "deleteQuestion";
     }
 
-    return this.fb.group({});
+    return "";
   }
 
-  addQuestion(questionType: number) : void {
+  showAddQuestionDialog(questionType: number) : void {
     if (questionType === QuestionType.OPEN) {
-      this.newQuestionForm = this.fb.group({
+      this.newQuestion = {
         id: "",
         question: "",
         questionType: QuestionType.OPEN,
         updateFlg: UpdateFlg.NEW
-      });
+      };
     } else if (questionType === QuestionType.CHOICE) {
-      this.newQuestionForm = this.fb.group({
+      this.newQuestion = {
         id: "",
         question: "",
         questionType: QuestionType.CHOICE,
         answers: [],
         updateFlg: UpdateFlg.NEW
-      });
+      };
     }
-
-    if (this.newQuestionForm != null) {
-      this.testUpd.questions.push(this.newQuestionForm.value);
-    }
-  }
-
-  isNewQuestionDialogOpen() : boolean {
-    if (this.newQuestionForm?.value != null) {
-      return true;
-    }
-
-    return false;
-  }
-
-  saveNewQuestion() {
-    this.newQuestionForm = this.fb.group({});
-  }
-
-  closeNewQuestionDiablog() {
-    this.newQuestionForm = this.fb.group({});
-  }
-
-  background(qIndex: number): string {
-    const question: QuestionUpd = this.testUpd.questions[qIndex];
-    
-    if (question.updateFlg === UpdateFlg.NEW) {
-      return "newQuestion";
-    } else if (question.updateFlg === UpdateFlg.CHANGE) {
-      return "updateQuestion";
-    } else if (question.updateFlg === UpdateFlg.DELETE) {
-      return "deleteQuestion";
-    }
-
-    return "";
   }
 }

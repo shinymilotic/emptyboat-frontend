@@ -1,5 +1,5 @@
 import { NgFor, NgForOf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -29,7 +29,10 @@ import { TestResponseUpd } from '../test-response-update';
   styleUrl: './add-question-dialog.component.css'
 })
 export class AddQuestionDialogComponent implements OnInit {
-
+  visible: boolean = false;
+  newQuestionForm!: FormGroup;
+  @Input() newQuestion?: QuestionUpd | ChoiceQuestionUpd;
+  @Output() newQuestionChange = new EventEmitter<QuestionUpd | ChoiceQuestionUpd>();
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -39,7 +42,60 @@ export class AddQuestionDialogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.newQuestionForm = this.toNewQuestionForm(this.newQuestion);
+  }
+
+  saveNewQuestion() {
     
   }
 
+  closeNewQuestionDiablog() {
+    
+  }
+
+  toNewQuestionForm(newQuestion?: QuestionUpd | ChoiceQuestionUpd) : FormGroup {
+    if (newQuestion?.questionType === QuestionType.OPEN) {
+      return this.fb.group({
+        id: "",
+        question: this.fb.control(newQuestion.question, Validators.required),
+        updateFlg: this.fb.control(UpdateFlg.NEW, Validators.required)
+      });
+    } else if (newQuestion?.questionType === QuestionType.CHOICE) {
+      const choiceQuestion: ChoiceQuestionUpd = newQuestion as ChoiceQuestionUpd;
+      const answersFormArray: FormArray<FormGroup> = new FormArray<FormGroup>([]);
+      choiceQuestion.answers.forEach((answer) => {
+        answersFormArray.push(this.fb.group({
+          id: answer.id,
+          answer: this.fb.control(answer.answer, Validators.required),
+          truth: this.fb.control(answer.truth, Validators.required),
+          updateFlg: this.fb.control(answer.updateFlg, Validators.required)
+        }));
+      });
+
+      return this.fb.group({
+        id: choiceQuestion.id,
+        question: this.fb.control(choiceQuestion.question, Validators.required),
+        answers: answersFormArray,
+        updateFlg: this.fb.control(newQuestion.updateFlg, Validators.required)
+      });
+    }
+
+    return this.fb.group({});
+  }
+
+  public get QuestionType() {
+    return QuestionType; 
+  }
+
+  public get UpdateFlg() {
+    return UpdateFlg;
+  }
+
+  getAnswerFormArr(): ChoiceAnswerUpd[] {
+    return this.newQuestionForm.value.answers;
+  }
+
+  deleteAnswer(choiceAnswerUpd: ChoiceAnswerUpd) {
+    choiceAnswerUpd.updateFlg = UpdateFlg.DELETE;
+  }
 }
