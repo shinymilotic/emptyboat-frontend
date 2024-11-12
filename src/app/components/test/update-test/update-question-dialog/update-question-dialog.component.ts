@@ -1,11 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
-import { TestService } from 'src/app/services/test.service';
-import { ApiError } from 'src/app/models/apierrors.model';
-import { ChoiceQuestion } from 'src/app/models/test/choicequestion.model';
+import { Component, computed, EventEmitter, Input, OnChanges, OnInit, Output, Signal, SimpleChanges, WritableSignal } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
-import { Question } from 'src/app/models/test/question.model';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -17,7 +11,7 @@ import { QuestionType } from 'src/app/models/test/QuestionType';
 import { ChoiceAnswerUpd } from '../choice-answer-update';
 import { ChoiceQuestionUpd } from '../choice-question-update';
 import { QuestionUpd } from '../question-update';
-import { TestResponseUpd } from '../test-response-update';
+import { UpdateQuestionForm } from './update-question-form';
 
 @Component({
   selector: 'app-update-question-dialog',
@@ -27,25 +21,32 @@ import { TestResponseUpd } from '../test-response-update';
   templateUrl: './update-question-dialog.component.html',
   styleUrl: './update-question-dialog.component.css'
 })
-export class UpdateQuestionDialogComponent implements OnInit, OnChanges {
-  visible: boolean = false;
-  questionForm!: FormGroup;
+export class UpdateQuestionDialogComponent implements OnChanges {
   @Input() updateQuestion?: QuestionUpd | ChoiceQuestionUpd;
   @Output() updateQuestionChange = new EventEmitter<QuestionUpd | ChoiceQuestionUpd>();
+  updateQuestionForm!: UpdateQuestionForm;
 
   constructor(
-    private readonly route: ActivatedRoute,
-    private readonly testService: TestService,
-    private readonly router: Router,
     private readonly fb: FormBuilder
   ) { }
 
-  ngOnInit(): void {
-    this.questionForm = this.toFormGroup(this.updateQuestion);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.updateQuestion == null) {
+      this.emptyUpdateQuestionForm();
+      return;
+    }
+
+    this.updateQuestionForm = {
+      questionForm: this.toFormGroup(this.updateQuestion),
+      visible: true
+    };
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
+  emptyUpdateQuestionForm() : void {
+    this.updateQuestionForm = {
+      questionForm: this.fb.group({}),
+      visible: false
+    };
   }
 
   toFormGroup(updQuestion?: QuestionUpd | ChoiceQuestionUpd) : FormGroup {
@@ -81,7 +82,7 @@ export class UpdateQuestionDialogComponent implements OnInit, OnChanges {
   } 
 
   saveQuestion() {
-    const questionFormValue : any = this.questionForm.value;
+    const questionFormValue : any = this.updateQuestionForm.questionForm.value;
 
     if (questionFormValue == null) {
       return;
@@ -106,10 +107,11 @@ export class UpdateQuestionDialogComponent implements OnInit, OnChanges {
   }
 
   closeDiablog() {
+    this.updateQuestionChange.emit(undefined);
   }
 
   deleteQuestion() {
-    this.visible = false;
+    
   }
 
   public get QuestionType() {
@@ -141,7 +143,7 @@ export class UpdateQuestionDialogComponent implements OnInit, OnChanges {
   }
 
   getAnswerFormArr(): ChoiceAnswerUpd[] {
-    return this.questionForm.value.answers;
+    return this.updateQuestionForm.questionForm.value.answers;
   }
 
   deleteAnswer(choiceAnswerUpd: ChoiceAnswerUpd) {
@@ -167,7 +169,6 @@ export class UpdateQuestionDialogComponent implements OnInit, OnChanges {
   }
 
   setUpdateQuestion(question: QuestionUpd | ChoiceQuestionUpd) : void {
-    this.updateQuestion = question;
     this.updateQuestionChange.emit(this.updateQuestion);
   }
 }
