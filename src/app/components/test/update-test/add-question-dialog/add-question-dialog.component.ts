@@ -35,9 +35,6 @@ export class AddQuestionDialogComponent implements OnInit {
   @Output() newQuestionChange = new EventEmitter<QuestionUpd | ChoiceQuestionUpd>();
 
   constructor(
-    private readonly route: ActivatedRoute,
-    private readonly testService: TestService,
-    private readonly router: Router,
     private readonly fb: FormBuilder
   ) { }
 
