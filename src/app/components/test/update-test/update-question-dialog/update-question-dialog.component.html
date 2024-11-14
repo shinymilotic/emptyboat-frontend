@@ -15,7 +15,7 @@
         </a>
     </div>
     
-    <div class="flex align-items-center gap-3 m-3" [formGroup]="this.updateQuestionForm.questionForm">
+    <div class="flex align-items-center gap-3 m-3 flex-col" [formGroup]="this.updateQuestionForm.questionForm">
     @if (this.updateQuestionForm.questionForm.value.questionType === QuestionType.CHOICE) {
         <label for="question" class="font-semibold p-2">Question: </label>
         <input pInputText id="question" class="flex-auto" formControlName="question"/>
