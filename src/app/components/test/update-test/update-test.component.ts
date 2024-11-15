@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { TestService } from 'src/app/services/test.service';
@@ -12,9 +12,8 @@ import { QuestionUpd } from './question-update';
 import { Question } from 'src/app/models/test/question.model';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ChoiceQuestionUpd } from './choice-question-update';
-import { ChoiceAnswerUpd } from './choice-answer-update';
 import { NgFor, NgForOf } from '@angular/common';
 import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
 import { UpdateFlg } from 'src/app/models/update-flg.enum';
@@ -24,8 +23,8 @@ import { AddQuestionDialogComponent } from "./add-question-dialog/add-question-d
 @Component({
   selector: 'app-update-test',
   standalone: true,
-  imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule,
-    ReactiveFormsModule, FormsModule, NgFor, NgForOf, ContenteditableValueAccessor, UpdateQuestionDialogComponent, AddQuestionDialogComponent],
+  imports: [ListErrorsComponent,
+    ReactiveFormsModule, ContenteditableValueAccessor, UpdateQuestionDialogComponent, AddQuestionDialogComponent],
   templateUrl: './update-test.component.html',
   styleUrl: './update-test.component.css'
 })
@@ -37,7 +36,7 @@ export class UpdateTestComponent implements OnInit {
     title: ""
   }
   visible: boolean = false;
-  updateQuestion?: QuestionUpd | ChoiceQuestionUpd;
+  selectedUpdateQuesion: number = -1;
   newQuestion?: QuestionUpd | ChoiceQuestionUpd;
 
   constructor(
@@ -90,8 +89,8 @@ export class UpdateTestComponent implements OnInit {
     return question as ChoiceQuestion;
   }
 
-  showUpdateQuestionDialog(questionUpd: QuestionUpd | ChoiceQuestionUpd) {
-    this.updateQuestion = questionUpd;
+  showUpdateQuestionDialog(index: number) {
+    this.selectedUpdateQuesion = index;
   }
 
   updateTest() {
@@ -146,5 +145,14 @@ export class UpdateTestComponent implements OnInit {
         updateFlg: UpdateFlg.NEW
       };
     }
+  }
+
+  updateQuestion($event: QuestionUpd|ChoiceQuestionUpd) : void {
+    if ($event == null) {
+      this.selectedUpdateQuesion = -1;
+      return;
+    }
+    this.testUpd.questions[this.selectedUpdateQuesion] = $event;
+    this.selectedUpdateQuesion = -1;
   }
 }

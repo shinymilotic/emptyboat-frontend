@@ -21,32 +21,29 @@ import { UpdateQuestionForm } from './update-question-form';
   templateUrl: './update-question-dialog.component.html',
   styleUrl: './update-question-dialog.component.css'
 })
-export class UpdateQuestionDialogComponent implements OnChanges {
-  @Input() updateQuestion?: QuestionUpd | ChoiceQuestionUpd;
+export class UpdateQuestionDialogComponent implements OnChanges, OnInit {
+  @Input() updateQuestion!: QuestionUpd | ChoiceQuestionUpd;
   @Output() updateQuestionChange = new EventEmitter<QuestionUpd | ChoiceQuestionUpd>();
-  updateQuestionForm!: UpdateQuestionForm;
+  questionForm!: FormGroup;
 
   constructor(
     private readonly fb: FormBuilder
   ) { }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.updateQuestion == null) {
-      this.emptyUpdateQuestionForm();
-      return;
-    }
-
-    this.updateQuestionForm = {
-      questionForm: this.toFormGroup(this.updateQuestion),
-      visible: true
-    };
+  ngOnInit(): void {
+    this.questionForm = this.toFormGroup(this.updateQuestion);
   }
 
-  emptyUpdateQuestionForm() : void {
-    this.updateQuestionForm = {
-      questionForm: this.fb.group({}),
-      visible: false
-    };
+  ngOnChanges(changes: SimpleChanges): void {
+    // if (this.updateQuestion == null) {
+    //   this.emptyUpdateQuestionForm();
+    //   return;
+    // }
+
+    // this.updateQuestionForm = {
+    //   questionForm: this.toFormGroup(this.updateQuestion),
+    //   visible: true
+    // };
   }
 
   toFormGroup(updQuestion?: QuestionUpd | ChoiceQuestionUpd) : FormGroup {
@@ -82,7 +79,7 @@ export class UpdateQuestionDialogComponent implements OnChanges {
   } 
 
   saveQuestion() {
-    const questionFormValue : any = this.updateQuestionForm.questionForm.value;
+    const questionFormValue : any = this.questionForm.value;
 
     if (questionFormValue == null) {
       return;
@@ -111,7 +108,18 @@ export class UpdateQuestionDialogComponent implements OnChanges {
   }
 
   deleteQuestion() {
-    
+    if (this.updateQuestion != null) {
+      this.updateQuestion = {
+        id: this.updateQuestion.id,
+        question: this.updateQuestion.question,
+        questionType: this.updateQuestion.questionType,
+        updateFlg: UpdateFlg.DELETE
+      }
+
+      this.updateQuestionChange.emit(this.updateQuestion);
+    } else {
+      this.updateQuestionChange.emit(undefined);
+    }
   }
 
   public get QuestionType() {
@@ -143,7 +151,7 @@ export class UpdateQuestionDialogComponent implements OnChanges {
   }
 
   getAnswerFormArr(): ChoiceAnswerUpd[] {
-    return this.updateQuestionForm.questionForm.value.answers;
+    return this.questionForm.value.answers;
   }
 
   deleteAnswer(choiceAnswerUpd: ChoiceAnswerUpd) {
@@ -166,9 +174,5 @@ export class UpdateQuestionDialogComponent implements OnChanges {
     }
 
     return "";
-  }
-
-  setUpdateQuestion(question: QuestionUpd | ChoiceQuestionUpd) : void {
-    this.updateQuestionChange.emit(this.updateQuestion);
   }
 }

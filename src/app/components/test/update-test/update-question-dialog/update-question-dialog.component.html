@@ -1,6 +1,6 @@
 <p-dialog 
     header="Edit question" 
-    [(visible)]="this.updateQuestionForm.visible" 
+    [visible]="true" 
     [modal]="true" 
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
     [style]="{ width: '50vw' }" 
@@ -15,8 +15,8 @@
         </a>
     </div>
     
-    <div class="flex align-items-center gap-3 m-3 flex-col" [formGroup]="this.updateQuestionForm.questionForm">
-    @if (this.updateQuestionForm.questionForm.value.questionType === QuestionType.CHOICE) {
+    <div class="flex align-items-center gap-3 m-3 flex-col" [formGroup]="this.questionForm">
+    @if (this.questionForm.value.questionType === QuestionType.CHOICE) {
         <label for="question" class="font-semibold p-2">Question: </label>
         <input pInputText id="question" class="flex-auto" formControlName="question"/>
 
@@ -50,7 +50,7 @@
                 }  
             </ol>
         </div>
-    } @else if (this.updateQuestionForm.questionForm.value.questionType === QuestionType.OPEN) {
+    } @else if (this.questionForm.value.questionType === QuestionType.OPEN) {
         <label for="question" class="font-semibold p-2">Question: </label>
         <input pInputText id="question" class="flex-auto" formControlName="question"/>
     }

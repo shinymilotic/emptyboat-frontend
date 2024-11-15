@@ -6,7 +6,7 @@
         <span>{{ this.testUpd.description }}</span>
         <ol>
             @for (questionUpd of this.testUpd.questions; track $index;) {
-                <li class="question {{this.background(questionUpd)}}" (click)="showUpdateQuestionDialog(questionUpd)">
+                <li class="question {{this.background(questionUpd)}}" (click)="showUpdateQuestionDialog($index)">
                     @if (questionUpd.questionType === QuestionType.CHOICE) { 
                         <div>
                             <div>{{questionUpd.question}}</div>
@@ -38,5 +38,7 @@
     </div>
   </div>
 
-<app-update-question-dialog [(updateQuestion)]="this.updateQuestion"></app-update-question-dialog>
+@if (this.selectedUpdateQuesion != -1) {
+  <app-update-question-dialog [updateQuestion]="this.testUpd.questions[this.selectedUpdateQuesion]" (updateQuestionChange)="updateQuestion($event)"></app-update-question-dialog>
+}
 <app-add-question-dialog [(newQuestion)]="this.newQuestion" ></app-add-question-dialog>
