@@ -29,10 +29,9 @@ import { TestResponseUpd } from '../test-response-update';
   styleUrl: './add-question-dialog.component.css'
 })
 export class AddQuestionDialogComponent implements OnInit {
-  visible: boolean = false;
-  newQuestionForm!: FormGroup;
   @Input() newQuestion?: QuestionUpd | ChoiceQuestionUpd;
   @Output() newQuestionChange = new EventEmitter<QuestionUpd | ChoiceQuestionUpd>();
+  newQuestionForm!: FormGroup;
 
   constructor(
     private readonly fb: FormBuilder
@@ -40,6 +39,7 @@ export class AddQuestionDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.newQuestionForm = this.toNewQuestionForm(this.newQuestion);
+    console.log(this.newQuestionForm.value);
   }
 
   saveNewQuestion() {
@@ -47,7 +47,7 @@ export class AddQuestionDialogComponent implements OnInit {
   }
 
   closeNewQuestionDiablog() {
-    
+    this.newQuestionChange.emit(undefined);
   }
 
   toNewQuestionForm(newQuestion?: QuestionUpd | ChoiceQuestionUpd) : FormGroup {
@@ -55,6 +55,7 @@ export class AddQuestionDialogComponent implements OnInit {
       return this.fb.group({
         id: "",
         question: this.fb.control(newQuestion.question, Validators.required),
+        questionType: newQuestion.questionType,
         updateFlg: this.fb.control(UpdateFlg.NEW, Validators.required)
       });
     } else if (newQuestion?.questionType === QuestionType.CHOICE) {
@@ -73,6 +74,7 @@ export class AddQuestionDialogComponent implements OnInit {
         id: choiceQuestion.id,
         question: this.fb.control(choiceQuestion.question, Validators.required),
         answers: answersFormArray,
+        questionType: newQuestion.questionType,
         updateFlg: this.fb.control(newQuestion.updateFlg, Validators.required)
       });
     }

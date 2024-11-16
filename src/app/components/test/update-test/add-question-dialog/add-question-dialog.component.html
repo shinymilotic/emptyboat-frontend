@@ -1,12 +1,12 @@
 <p-dialog 
     header="Add question" 
-    [(visible)]="this.visible" 
+    [visible]="true" 
     [modal]="true" 
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
     [style]="{ width: '50vw' }" 
     [draggable]="false" 
     [resizable]="false"
-    (onHide)="closeNewQuestionDiablog()">
+    (onHide)="this.closeNewQuestionDiablog()">
 
     @if (this.newQuestionForm.value.questionType === QuestionType.CHOICE) {
             <div class="flex-col align-items-center gap-3 m-3" [formGroup]="this.newQuestionForm">

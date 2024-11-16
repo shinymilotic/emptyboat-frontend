@@ -41,4 +41,7 @@
 @if (this.selectedUpdateQuesion != -1) {
   <app-update-question-dialog [updateQuestion]="this.testUpd.questions[this.selectedUpdateQuesion]" (updateQuestionChange)="updateQuestion($event)"></app-update-question-dialog>
 }
-<app-add-question-dialog [(newQuestion)]="this.newQuestion" ></app-add-question-dialog>
+
+@if (this.newQuestion != null) {
+  <app-add-question-dialog [(newQuestion)]="this.newQuestion" ></app-add-question-dialog>
+}
