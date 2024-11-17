@@ -18,7 +18,7 @@
     <div class="flex align-items-center gap-3 m-3 flex-col" [formGroup]="this.questionForm">
     @if (this.questionForm.value.questionType === QuestionType.CHOICE) {
         <label for="question" class="font-semibold p-2">Question: </label>
-        <input pInputText id="question" class="flex-auto" formControlName="question"/>
+        <div pInputText id="question" class="flex-auto textbox" contenteditable  formControlName="question"></div>
 
         <div formArrayName="answers">
             <ol>
