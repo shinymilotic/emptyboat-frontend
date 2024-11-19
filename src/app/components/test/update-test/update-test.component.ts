@@ -144,5 +144,6 @@ export class UpdateTestComponent implements OnInit {
     }
 
     this.testUpd.questions.push($event);
+    this.questionTypeForNew = -1;
   }
 }
