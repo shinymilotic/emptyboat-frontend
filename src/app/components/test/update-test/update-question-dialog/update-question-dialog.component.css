@@ -15,10 +15,6 @@
     border-color: var(--surface-border);
 }
 
-input {
-    border: 1px solid;
-}
-
 .deleteBtn {
     padding: 8px;
     border-radius: 5px;

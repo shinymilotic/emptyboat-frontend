@@ -11,7 +11,7 @@
     @if (this.questionForm.value.questionType === QuestionType.CHOICE) {
             <div class="flex flex-col align-items-center gap-3 m-3" [formGroup]="this.questionForm">
                 <label for="question" class="font-semibold p-2">Question: </label>
-                <input pInputText id="question" class="flex-auto" formControlName="question"/>
+                <div pInputText id="question" class="flex-auto textbox" contenteditable formControlName="question"></div>
 
                 <div formArrayName="answers">
                     <ol>
@@ -46,7 +46,7 @@
     } @else if (this.questionForm.value.questionType === QuestionType.OPEN) {
             <div class="flex flex-col align-items-center gap-3 m-3" [formGroup]="this.questionForm">
                 <label for="question" class="font-semibold p-2">Question: </label>
-                <input pInputText id="question" class="flex-auto" formControlName="question"/>
+                <div pInputText id="question" class="flex-auto textbox" contenteditable formControlName="question"></div>
             </div>
     }
         
