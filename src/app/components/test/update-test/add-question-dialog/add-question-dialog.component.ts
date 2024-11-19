@@ -50,7 +50,6 @@ export class AddQuestionDialogComponent implements OnInit {
         updateFlg: this.fb.control(UpdateFlg.NEW, Validators.required)
       });
     } else if (questionType === QuestionType.CHOICE) {
-
       return this.fb.group({
         id: '',
         question: this.fb.control('', Validators.required),
