@@ -37,7 +37,7 @@ export class UpdateTestComponent implements OnInit {
   }
   visible: boolean = false;
   selectedUpdateQuesion: number = -1;
-  newQuestion?: QuestionUpd | ChoiceQuestionUpd;
+  questionTypeForNew!: number;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -129,22 +129,11 @@ export class UpdateTestComponent implements OnInit {
   }
 
   showAddQuestionDialog(questionType: number) : void {
-    if (questionType === QuestionType.OPEN) {
-      this.newQuestion = {
-        id: "",
-        question: "",
-        questionType: QuestionType.OPEN,
-        updateFlg: UpdateFlg.NEW
-      };
-    } else if (questionType === QuestionType.CHOICE) {
-      this.newQuestion = {
-        id: "",
-        question: "",
-        questionType: QuestionType.CHOICE,
-        answers: [],
-        updateFlg: UpdateFlg.NEW
-      };
+    if (questionType != QuestionType.OPEN && questionType != QuestionType.CHOICE) {
+      return;
     }
+
+    this.questionTypeForNew = questionType;
   }
 
   updateQuestion($event: QuestionUpd|ChoiceQuestionUpd) : void {
@@ -154,5 +143,14 @@ export class UpdateTestComponent implements OnInit {
     }
     this.testUpd.questions[this.selectedUpdateQuesion] = $event;
     this.selectedUpdateQuesion = -1;
+  }
+
+  saveQuestion($event: QuestionUpd | ChoiceQuestionUpd) : void {
+    if ($event == null) {
+      this.questionTypeForNew = -1;
+      return;
+    }
+
+    this.testUpd.questions.push($event);
   }
 }

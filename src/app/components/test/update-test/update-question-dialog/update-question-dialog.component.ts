@@ -16,14 +16,15 @@ import { UpdateQuestionForm } from './update-question-form';
 @Component({
   selector: 'app-update-question-dialog',
   standalone: true,
-  imports: [ListErrorsComponent, DialogModule, ButtonModule, InputTextModule, 
-    ReactiveFormsModule, FormsModule, NgFor, NgForOf, ContenteditableValueAccessor],
+  imports: [DialogModule, ButtonModule, InputTextModule, 
+    ReactiveFormsModule, FormsModule, ContenteditableValueAccessor],
   templateUrl: './update-question-dialog.component.html',
   styleUrl: './update-question-dialog.component.css'
 })
-export class UpdateQuestionDialogComponent implements OnChanges, OnInit {
+export class UpdateQuestionDialogComponent implements OnInit {
   @Input() updateQuestion!: QuestionUpd | ChoiceQuestionUpd;
   @Output() updateQuestionChange = new EventEmitter<QuestionUpd | ChoiceQuestionUpd>();
+  visible: boolean = true;
   questionForm!: FormGroup;
 
   constructor(
@@ -32,18 +33,6 @@ export class UpdateQuestionDialogComponent implements OnChanges, OnInit {
 
   ngOnInit(): void {
     this.questionForm = this.toFormGroup(this.updateQuestion);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    // if (this.updateQuestion == null) {
-    //   this.emptyUpdateQuestionForm();
-    //   return;
-    // }
-
-    // this.updateQuestionForm = {
-    //   questionForm: this.toFormGroup(this.updateQuestion),
-    //   visible: true
-    // };
   }
 
   toFormGroup(updQuestion?: QuestionUpd | ChoiceQuestionUpd) : FormGroup {
