@@ -52,7 +52,7 @@ export class UpdateTestComponent implements OnInit {
         this.testUpd.description = data.description;
         this.testUpd.title = data.title;
         data.questions.forEach((question) => {
-          if (question.questionType == QuestionType.CHOICE) {
+          if (question.questionType === QuestionType.CHOICE) {
             const choiceQuestion : ChoiceQuestionUpd = question as ChoiceQuestionUpd;
             choiceQuestion.updateFlg = UpdateFlg.NOCHANGE;
             choiceQuestion.answers.forEach((answer) => {
@@ -61,7 +61,7 @@ export class UpdateTestComponent implements OnInit {
             this.testUpd.questions.push(choiceQuestion);
           }
 
-          if (question.questionType == QuestionType.OPEN) {
+          if (question.questionType === QuestionType.OPEN) {
             this.testUpd.questions.push({
                 id: question.id,
                 question: question.question,
