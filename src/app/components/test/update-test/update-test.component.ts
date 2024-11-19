@@ -23,8 +23,7 @@ import { AddQuestionDialogComponent } from "./add-question-dialog/add-question-d
 @Component({
   selector: 'app-update-test',
   standalone: true,
-  imports: [ListErrorsComponent,
-    ReactiveFormsModule, ContenteditableValueAccessor, UpdateQuestionDialogComponent, AddQuestionDialogComponent],
+  imports: [ListErrorsComponent, ReactiveFormsModule, UpdateQuestionDialogComponent, AddQuestionDialogComponent],
   templateUrl: './update-test.component.html',
   styleUrl: './update-test.component.css'
 })
