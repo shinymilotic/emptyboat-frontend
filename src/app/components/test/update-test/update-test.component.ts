@@ -1,21 +1,15 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { TestService } from 'src/app/services/test.service';
 import { ListErrorsComponent } from "../../../shared-components/list-errors/list-errors.component";
 import { ApiError } from 'src/app/models/apierrors.model';
 import { ChoiceQuestion } from 'src/app/models/test/choicequestion.model';
-import { DialogModule } from 'primeng/dialog';
 import { TestResponseUpd } from './test-response-update';
 import { QuestionType } from '../../../models/test/QuestionType';
 import { QuestionUpd } from './question-update';
 import { Question } from 'src/app/models/test/question.model';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ChoiceQuestionUpd } from './choice-question-update';
-import { NgFor, NgForOf } from '@angular/common';
-import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
 import { UpdateFlg } from 'src/app/models/update-flg.enum';
 import { UpdateQuestionDialogComponent } from "./update-question-dialog/update-question-dialog.component";
 import { AddQuestionDialogComponent } from "./add-question-dialog/add-question-dialog.component";
@@ -23,7 +17,7 @@ import { AddQuestionDialogComponent } from "./add-question-dialog/add-question-d
 @Component({
   selector: 'app-update-test',
   standalone: true,
-  imports: [ListErrorsComponent, ReactiveFormsModule, UpdateQuestionDialogComponent, AddQuestionDialogComponent],
+  imports: [ListErrorsComponent, UpdateQuestionDialogComponent, AddQuestionDialogComponent],
   templateUrl: './update-test.component.html',
   styleUrl: './update-test.component.css'
 })
@@ -41,8 +35,7 @@ export class UpdateTestComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly testService: TestService,
-    private readonly router: Router,
-    private readonly fb: FormBuilder
+    private readonly router: Router
   ) { }
 
   ngOnInit(): void {
