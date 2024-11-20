@@ -60,10 +60,6 @@ input {
     background-color: lightgray;
 }
 
-.newQuestion {
-    background-color: #E4F4DA;
-}
-
 .deleteQuestion {
     background-color: #FF8383;
 }
@@ -73,19 +69,11 @@ div.p-inputtext {
     overflow-wrap: anywhere;
 }
 
-.choice-answer-list {
-    list-style-type: upper-latin;
-}
-
 .deleteAnswer {
     background-color: #FF8383;
 }
 
-.newAnswer {
-    background-color: #E4F4DA;
-}
-
-.add-question-btn {
+.add-answer-btn {
+    width: 10rem;
     border-radius: 15px;
-    margin-left: 15px;
 }

@@ -77,4 +77,13 @@ export class AddQuestionDialogComponent implements OnInit {
   deleteAnswer(choiceAnswerUpd: ChoiceAnswerUpd) {
     choiceAnswerUpd.updateFlg = UpdateFlg.DELETE;
   }
+
+  addAnswer() {
+    this.questionForm.value.answers.push({
+      id: "",
+      answer: "",
+      truth: false,
+      updateFlg: UpdateFlg.NEW
+    });
+  }
 }
