@@ -91,7 +91,7 @@ export class CreateTestComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
-  addQuestion() {
+  addChoiceQuestion() {
     this.choiceQuestionsFormArr.push(
       this.fb.group<ChoiceQuestionForm>({
         question: this.fb.nonNullable.control("", Validators.required),
