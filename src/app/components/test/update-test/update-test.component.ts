@@ -163,7 +163,7 @@ export class UpdateTestComponent implements OnInit {
           truth: answer.truth,
           updateFlg: UpdateFlg.NEW
         })
-      })
+      });
       this.testUpd.questions.push({
         id: '',
         question: $event.question,
