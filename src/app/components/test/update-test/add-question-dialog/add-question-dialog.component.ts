@@ -10,6 +10,7 @@ import { UpdateFlg } from 'src/app/models/update-flg.enum';
 import { ChoiceAnswerUpd } from '../choice-answer-update';
 import { ChoiceQuestionUpd } from '../choice-question-update';
 import { QuestionUpd } from '../question-update';
+import { AddChoiceAnswerForm } from './add-choice-answer-form.model';
 
 @Component({
   selector: 'app-add-question-dialog',
@@ -23,7 +24,7 @@ export class AddQuestionDialogComponent implements OnInit {
   @Input() questionType!: number;
   @Output() saveQuestion = new EventEmitter<QuestionUpd | ChoiceQuestionUpd>();
   visible: boolean = true;
-  questionForm!: FormGroup;
+  questionForm!: FormGroup<AddQuestionForm>;
 
   constructor(
     private readonly fb: FormBuilder
@@ -71,14 +72,20 @@ export class AddQuestionDialogComponent implements OnInit {
   }
 
   getAnswerFormArr(): ChoiceAnswerUpd[] {
-    return this.questionForm.value.answers;
+    return this.questionForm.value.answers as ChoiceAnswerUpd[];
   }
 
   deleteAnswer(choiceAnswerUpd: ChoiceAnswerUpd) {
     choiceAnswerUpd.updateFlg = UpdateFlg.DELETE;
   }
 
+  getAnswersFormArr(): FormArray<FormGroup> {
+    return this.questionForm.get('answers') as FormArray<FormGroup<AddChoiceAnswerForm>>;
+  }
+
   addAnswer() {
+    // this.questionForm.addControl('answers', new FormArray<FormGroup>([]));
+    
     this.questionForm.value.answers.push({
       id: "",
       answer: "",
