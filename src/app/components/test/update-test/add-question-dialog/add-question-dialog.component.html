@@ -8,14 +8,14 @@
     [resizable]="false"
     (onHide)="this.closeNewQuestionDiablog()">
 
-    @if (this.questionForm.value.questionType === QuestionType.CHOICE) {
+    @if (this.questionType === QuestionType.CHOICE) {
             <div class="flex flex-col align-items-center gap-3 m-3" [formGroup]="this.questionForm">
                 <label for="question" class="font-semibold p-2">Question: </label>
                 <div pInputText id="question" class="flex-auto textbox" contenteditable formControlName="question"></div>
 
                 <div formArrayName="answers">
                     <ol>
-                    @for (answer of this.getAnswerFormArr(); track $index) {
+                    @for (answer of this.getAnswersFormArr()?.controls; track $index) {
                         <li formGroupName="{{$index}}" class="mt-2 flex items-center">
                         <fieldset class="form-group mr-3 flex-1">
                                 <div pInputText
@@ -34,7 +34,7 @@
                         </fieldset>
                             
                         <a class="deleteBtn self-center"
-                            (click)="this.deleteAnswer(answer)" >
+                            (click)="this.deleteAnswer($index)" >
                             Delete
                         </a>
                     </li>
@@ -45,7 +45,7 @@
                 <button type="button" class="overcloud-btn add-answer-btn" (click)="this.addAnswer()">Add answer</button>
             </div>
 
-    } @else if (this.questionForm.value.questionType === QuestionType.OPEN) {
+    } @else if (this.questionType === QuestionType.OPEN) {
             <div class="flex flex-col align-items-center gap-3 m-3" [formGroup]="this.questionForm">
                 <label for="question" class="font-semibold p-2">Question: </label>
                 <div pInputText id="question" class="flex-auto textbox" contenteditable formControlName="question"></div>

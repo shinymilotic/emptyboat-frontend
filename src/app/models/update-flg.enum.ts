@@ -4,4 +4,3 @@ export enum UpdateFlg {
     CHANGE = 2,
     DELETE = 3,
 }
-  
