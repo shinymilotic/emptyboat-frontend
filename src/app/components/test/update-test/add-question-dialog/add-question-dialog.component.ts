@@ -1,4 +1,3 @@
-import { NgFor, NgForOf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -7,9 +6,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
 import { QuestionType } from 'src/app/models/test/QuestionType';
 import { UpdateFlg } from 'src/app/models/update-flg.enum';
-import { ChoiceAnswerUpd } from '../choice-answer-update';
-import { ChoiceQuestionUpd } from '../choice-question-update';
-import { QuestionUpd } from '../question-update';
 import { AddChoiceAnswerForm } from './add-choice-answer-form.model';
 import { AddQuestionForm } from './add-question-form.model';
 import { NewQuestion } from './new-question.model';
@@ -111,10 +107,6 @@ export class AddQuestionDialogComponent implements OnInit {
   }
 
   getAnswersFormArr(): FormArray<FormGroup<AddChoiceAnswerForm>> {
-    // if (this.questionForm == null || this.questionForm.get('answers') == null || this.questionType == QuestionType.OPEN) {
-    //   return undefined;
-    // }
-    
     return this.questionForm.get('answers') as FormArray<FormGroup<AddChoiceAnswerForm>>;
   }
 

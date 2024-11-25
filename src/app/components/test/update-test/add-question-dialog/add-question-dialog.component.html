@@ -15,7 +15,7 @@
 
                 <div formArrayName="answers">
                     <ol>
-                    @for (answer of this.getAnswersFormArr()?.controls; track $index) {
+                    @for (answer of this.getAnswersFormArr().controls; track $index) {
                         <li formGroupName="{{$index}}" class="mt-2 flex items-center">
                         <fieldset class="form-group mr-3 flex-1">
                                 <div pInputText
