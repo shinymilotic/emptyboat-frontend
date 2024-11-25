@@ -110,21 +110,16 @@ export class AddQuestionDialogComponent implements OnInit {
     
   }
 
-  getAnswersFormArr(): FormArray<FormGroup<AddChoiceAnswerForm>> | undefined {
-    if (this.questionForm == null || this.questionForm.get('answers') == null || this.questionType == QuestionType.OPEN) {
-      return undefined;
-    }
+  getAnswersFormArr(): FormArray<FormGroup<AddChoiceAnswerForm>> {
+    // if (this.questionForm == null || this.questionForm.get('answers') == null || this.questionType == QuestionType.OPEN) {
+    //   return undefined;
+    // }
     
     return this.questionForm.get('answers') as FormArray<FormGroup<AddChoiceAnswerForm>>;
   }
 
   addAnswer() {
-    const answersForm : FormArray<FormGroup<AddChoiceAnswerForm>> | undefined = this.getAnswersFormArr();
-    if (answersForm == undefined) {
-      return;
-    }
-
-    answersForm.push(this.fb.group<AddChoiceAnswerForm>({
+    this.getAnswersFormArr().push(this.fb.group<AddChoiceAnswerForm>({
       answer: this.fb.control("", Validators.required),
       truth: this.fb.control(false, Validators.required),
     } as AddChoiceAnswerForm));

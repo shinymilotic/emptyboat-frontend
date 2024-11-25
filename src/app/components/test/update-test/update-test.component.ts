@@ -13,6 +13,9 @@ import { ChoiceQuestionUpd } from './choice-question-update';
 import { UpdateFlg } from 'src/app/models/update-flg.enum';
 import { UpdateQuestionDialogComponent } from "./update-question-dialog/update-question-dialog.component";
 import { AddQuestionDialogComponent } from "./add-question-dialog/add-question-dialog.component";
+import { NewOpenQuestion } from './add-question-dialog/new-open-question.model';
+import { NewChoiceQuestion } from './add-question-dialog/new-choice-question.model';
+import { ChoiceAnswerUpd } from './choice-answer-update';
 
 @Component({
   selector: 'app-update-test',
@@ -137,13 +140,39 @@ export class UpdateTestComponent implements OnInit {
     this.selectedUpdateQuesion = -1;
   }
 
-  saveQuestion($event: QuestionUpd | ChoiceQuestionUpd) : void {
+  saveQuestion($event: NewOpenQuestion | NewChoiceQuestion) : void {
     if ($event == null) {
       this.questionTypeForNew = -1;
       return;
     }
 
-    this.testUpd.questions.push($event);
+    if (this.questionTypeForNew === QuestionType.OPEN) {
+      this.testUpd.questions.push({
+        id: '',
+        question: $event.question,
+        questionType: QuestionType.OPEN,
+        updateFlg: UpdateFlg.NEW
+      });
+    } else if (this.questionTypeForNew === QuestionType.CHOICE) {
+      const question : NewChoiceQuestion = $event as NewChoiceQuestion;
+      const answers : ChoiceAnswerUpd[] = [];
+      question.answers.forEach((answer) => {
+        answers.push({
+          id: '',
+          answer: answer.answer,
+          truth: answer.truth,
+          updateFlg: UpdateFlg.NEW
+        })
+      })
+      this.testUpd.questions.push({
+        id: '',
+        question: $event.question,
+        questionType: QuestionType.CHOICE,
+        answers: answers,
+        updateFlg: UpdateFlg.NEW
+      });
+    }
+    
     this.questionTypeForNew = -1;
   }
 }
