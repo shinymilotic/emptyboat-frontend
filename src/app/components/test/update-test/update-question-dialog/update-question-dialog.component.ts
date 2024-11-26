@@ -167,4 +167,15 @@ export class UpdateQuestionDialogComponent implements OnInit {
 
     return "";
   }
+
+  // getAnswersFormArr(): FormArray<FormGroup<AddChoiceAnswerForm>> {
+  //   return this.questionForm.get('answers') as FormArray<FormGroup<AddChoiceAnswerForm>>;
+  // }
+
+  addAnswer() {
+    // this.getAnswersFormArr().push(this.fb.group<AddChoiceAnswerForm>({
+    //   answer: this.fb.control("", Validators.required),
+    //   truth: this.fb.control(false, Validators.required),
+    // } as AddChoiceAnswerForm));
+  }
 }

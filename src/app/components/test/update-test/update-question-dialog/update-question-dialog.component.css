@@ -84,3 +84,7 @@ div.p-inputtext {
     border-radius: 15px;
     margin-left: 15px;
 }
+.add-answer-btn {
+    width: 10rem;
+    border-radius: 15px;
+}

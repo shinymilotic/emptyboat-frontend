@@ -49,6 +49,9 @@
                 </li>
                 }  
             </ol>
+
+            <button type="button" class="overcloud-btn add-answer-btn" (click)="this.addAnswer()">Add answer</button>
+
         </div>
     } @else if (this.questionForm.value.questionType === QuestionType.OPEN) {
         <label for="question" class="font-semibold p-2">Question: </label>
