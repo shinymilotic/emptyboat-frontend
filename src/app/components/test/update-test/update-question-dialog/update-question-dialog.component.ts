@@ -11,7 +11,9 @@ import { QuestionType } from 'src/app/models/test/QuestionType';
 import { ChoiceAnswerUpd } from '../choice-answer-update';
 import { ChoiceQuestionUpd } from '../choice-question-update';
 import { QuestionUpd } from '../question-update';
-import { UpdateQuestionForm } from './update-question-form';
+import { UpdateChoiceQuestionForm } from './update-choice-question.form';
+import { UpdateOpenQuestionForm } from './update-open-question.form';
+import { UpdateChoiceAnswerForm } from './update-choice-answer.form';
 
 @Component({
   selector: 'app-update-question-dialog',
@@ -25,7 +27,7 @@ export class UpdateQuestionDialogComponent implements OnInit {
   @Input() updateQuestion!: QuestionUpd | ChoiceQuestionUpd;
   @Output() updateQuestionChange = new EventEmitter<QuestionUpd | ChoiceQuestionUpd>();
   visible: boolean = true;
-  questionForm!: FormGroup;
+  questionForm!: FormGroup<UpdateChoiceQuestionForm | UpdateOpenQuestionForm>;
 
   constructor(
     private readonly fb: FormBuilder
@@ -70,7 +72,7 @@ export class UpdateQuestionDialogComponent implements OnInit {
   saveQuestion() {
     const questionFormValue : any = this.questionForm.value;
 
-    if (questionFormValue == null) {
+    if (this.questionForm.value == null) {
       return;
     }
 
@@ -125,7 +127,7 @@ export class UpdateQuestionDialogComponent implements OnInit {
   answerFormToAnswersUpdate() : ChoiceAnswerUpd[]{
     let result : ChoiceAnswerUpd[] = [];
 
-    this.getAnswerFormArr().map((group: any) => {
+    this.getAnswersFormArr().map((group: any) => {
       if (group.updateFlg === UpdateFlg.NOCHANGE) {
         group.updateFlg = UpdateFlg.CHANGE;
       }
@@ -142,40 +144,39 @@ export class UpdateQuestionDialogComponent implements OnInit {
     return result;
   }
 
-  getAnswerFormArr(): ChoiceAnswerUpd[] {
-    return this.questionForm.value.answers;
+  getAnswersFormArr(): FormArray<FormGroup<UpdateChoiceAnswerForm>> {
+    return this.questionForm.get('answers') as FormArray<FormGroup<UpdateChoiceAnswerForm>>;
   }
 
-  deleteAnswer(choiceAnswerUpd: ChoiceAnswerUpd) {
-    choiceAnswerUpd.updateFlg = UpdateFlg.DELETE;
+  deleteAnswer(choiceAnswerUpd: FormGroup<UpdateChoiceAnswerForm>) {
+    // choiceAnswerUpd.updateFlg = UpdateFlg.DELETE;
   }
 
-  answerChange(answer: ChoiceAnswerUpd) {
-    if (answer.updateFlg === UpdateFlg.DELETE) {
+  answerChange(answer: FormGroup<UpdateChoiceAnswerForm>) {
+    const answerValue :FormGroup<UpdateChoiceAnswerForm> = answer;
+    if (answerValue.value.updateFlg === UpdateFlg.DELETE) {
       return;
     }
 
-    answer.updateFlg = UpdateFlg.CHANGE;
+    answerValue.value.updateFlg = UpdateFlg.CHANGE;
   }
 
-  answerBackground(choiceAnswerUpd: ChoiceAnswerUpd): string {
-    if (choiceAnswerUpd.updateFlg === UpdateFlg.NEW) {
+  answerBackground(choiceAnswerUpd: FormGroup<UpdateChoiceAnswerForm>): string {
+    if (choiceAnswerUpd.value.updateFlg === UpdateFlg.NEW) {
       return "newAnswer";
-    } else if (choiceAnswerUpd.updateFlg == UpdateFlg.DELETE) {
+    } else if (choiceAnswerUpd.value.updateFlg == UpdateFlg.DELETE) {
       return "deleteAnswer";
     }
 
     return "";
   }
 
-  // getAnswersFormArr(): FormArray<FormGroup<AddChoiceAnswerForm>> {
-  //   return this.questionForm.get('answers') as FormArray<FormGroup<AddChoiceAnswerForm>>;
-  // }
-
-  addAnswer() {
-    // this.getAnswersFormArr().push(this.fb.group<AddChoiceAnswerForm>({
-    //   answer: this.fb.control("", Validators.required),
-    //   truth: this.fb.control(false, Validators.required),
-    // } as AddChoiceAnswerForm));
+  addAnswer() : void {
+    this.getAnswersFormArr().push(this.fb.group<UpdateChoiceAnswerForm>({
+      id: this.fb.control('', Validators.required),
+      answer: this.fb.control("", Validators.required),
+      truth: this.fb.control(false, Validators.required),
+      updateFlg: this.fb.control(UpdateFlg.NEW, Validators.required)
+    } as UpdateChoiceAnswerForm));
   }
 }

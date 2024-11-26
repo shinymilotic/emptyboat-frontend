@@ -16,13 +16,13 @@
     </div>
     
     <div class="flex align-items-center gap-3 m-3 flex-col" [formGroup]="this.questionForm">
-    @if (this.questionForm.value.questionType === QuestionType.CHOICE) {
+    @if (this.updateQuestion.questionType === QuestionType.CHOICE) {
         <label for="question" class="font-semibold p-2">Question: </label>
         <div pInputText id="question" class="flex-auto textbox" contenteditable  formControlName="question"></div>
 
         <div formArrayName="answers">
             <ol>
-                @for (answer of this.getAnswerFormArr(); track $index) {
+                @for (answer of this.getAnswersFormArr().controls; track answer) {
                 <li formGroupName="{{$index}}" class="mt-2 flex items-center {{this.answerBackground(answer)}}">
                     <fieldset class="form-group mr-3 flex-1">
                         <div pInputText
@@ -53,7 +53,7 @@
             <button type="button" class="overcloud-btn add-answer-btn" (click)="this.addAnswer()">Add answer</button>
 
         </div>
-    } @else if (this.questionForm.value.questionType === QuestionType.OPEN) {
+    } @else if (this.updateQuestion.questionType === QuestionType.OPEN) {
         <label for="question" class="font-semibold p-2">Question: </label>
         <input pInputText id="question" class="flex-auto" formControlName="question"/>
     }
