@@ -74,20 +74,27 @@ export class UpdateQuestionDialogComponent implements OnInit {
       return;
     }
 
+    let updateFlg : UpdateFlg = UpdateFlg.CHANGE;
+
+    if (questionFormValue.updateFlg === UpdateFlg.NEW) {
+      updateFlg = UpdateFlg.NEW;
+    }
+
+
     if (questionFormValue.questionType === QuestionType.CHOICE) {
       this.updateQuestionChange.emit({
         id: questionFormValue.id,
         question: questionFormValue.question,
         questionType: questionFormValue.questionType,
         answers: this.answerFormToAnswersUpdate(),
-        updateFlg: UpdateFlg.CHANGE
+        updateFlg: updateFlg
       });   
     } else if (questionFormValue.questionType === QuestionType.OPEN) {
       this.updateQuestionChange.emit({
         id: questionFormValue.id,
         question: questionFormValue.question,
         questionType: questionFormValue.questionType,
-        updateFlg: UpdateFlg.CHANGE
+        updateFlg: updateFlg
       });
     }
   }
@@ -97,18 +104,14 @@ export class UpdateQuestionDialogComponent implements OnInit {
   }
 
   deleteQuestion() {
-    if (this.updateQuestion != null) {
-      this.updateQuestion = {
-        id: this.updateQuestion.id,
-        question: this.updateQuestion.question,
-        questionType: this.updateQuestion.questionType,
-        updateFlg: UpdateFlg.DELETE
-      }
+    const questionFormValue : any = this.questionForm.value;
 
-      this.updateQuestionChange.emit(this.updateQuestion);
-    } else {
-      this.updateQuestionChange.emit(undefined);
-    }
+    this.updateQuestionChange.emit({
+      id: questionFormValue.id,
+      question: questionFormValue.question,
+      questionType: questionFormValue.questionType,
+      updateFlg: UpdateFlg.DELETE
+    });
   }
 
   public get QuestionType() {
