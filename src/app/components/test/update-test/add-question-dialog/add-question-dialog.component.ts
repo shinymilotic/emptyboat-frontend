@@ -54,8 +54,14 @@ export class AddQuestionDialogComponent implements OnInit {
         return;
       }
       answersForm.controls.forEach((answerForm: FormGroup<AddChoiceAnswerForm>) => {
+        const answer: string | undefined = answerForm.get('answer')?.value;
+
+        if (answer == null || answer.length == 0) {
+          return;
+        }
+
         answers.push({
-          answer: answerForm.get('answer')?.value,
+          answer: answer,
           truth: answerForm.get('truth')?.value
         } as NewChoiceAnswer);
       })
@@ -85,7 +91,23 @@ export class AddQuestionDialogComponent implements OnInit {
     } else if (questionType === QuestionType.CHOICE) {
       return this.fb.group<AddQuestionForm>({
         question: this.fb.control('', Validators.required),
-        answers: new FormArray<FormGroup<AddChoiceAnswerForm>>([]),
+        answers: new FormArray<FormGroup<AddChoiceAnswerForm>>([
+          this.fb.group<AddChoiceAnswerForm>({
+            answer: this.fb.control("", Validators.required),
+            truth: this.fb.control(false, Validators.required),
+          } as AddChoiceAnswerForm),
+          this.fb.group<AddChoiceAnswerForm>({
+            answer: this.fb.control("", Validators.required),
+            truth: this.fb.control(false, Validators.required),
+          } as AddChoiceAnswerForm),
+          this.fb.group<AddChoiceAnswerForm>({
+            answer: this.fb.control("", Validators.required),
+            truth: this.fb.control(false, Validators.required),
+          } as AddChoiceAnswerForm),this.fb.group<AddChoiceAnswerForm>({
+            answer: this.fb.control("", Validators.required),
+            truth: this.fb.control(false, Validators.required),
+          } as AddChoiceAnswerForm)
+        ]),
       } as AddChoiceQuestionForm);
     }
 
@@ -102,8 +124,8 @@ export class AddQuestionDialogComponent implements OnInit {
     return UpdateFlg;
   }
 
-  deleteAnswer(index: number) {
-    
+  deleteAnswer(answer: FormGroup<AddChoiceAnswerForm>) {
+    this.getAnswersFormArr().removeAt(this.getAnswersFormArr().controls.indexOf(answer));
   }
 
   getAnswersFormArr(): FormArray<FormGroup<AddChoiceAnswerForm>> {
