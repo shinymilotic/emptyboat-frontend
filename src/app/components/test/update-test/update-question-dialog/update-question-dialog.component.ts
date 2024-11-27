@@ -84,11 +84,23 @@ export class UpdateQuestionDialogComponent implements OnInit {
 
 
     if (questionFormValue.questionType === QuestionType.CHOICE) {
+      let answers: ChoiceAnswerUpd[] = [];
+
+      this.answerFormToAnswersUpdate().filter((answer) => answer.answer != null && answer.answer != '')
+          .forEach((answer: ChoiceAnswerUpd) => {
+        answers.push({
+          id: answer.id,
+          answer: answer.answer,
+          truth: answer.truth,
+          updateFlg: answer.updateFlg
+        });
+      });
+
       this.updateQuestionChange.emit({
         id: questionFormValue.id,
         question: questionFormValue.question,
         questionType: questionFormValue.questionType,
-        answers: this.answerFormToAnswersUpdate(),
+        answers: answers,
         updateFlg: updateFlg
       });   
     } else if (questionFormValue.questionType === QuestionType.OPEN) {
@@ -127,19 +139,18 @@ export class UpdateQuestionDialogComponent implements OnInit {
   answerFormToAnswersUpdate() : ChoiceAnswerUpd[]{
     let result : ChoiceAnswerUpd[] = [];
 
-    this.getAnswersFormArr().map((group: any) => {
-      if (group.updateFlg === UpdateFlg.NOCHANGE) {
-        group.updateFlg = UpdateFlg.CHANGE;
+    this.getAnswersFormArr().value.forEach((answer: any) => {
+      if (answer.updateFlg === UpdateFlg.NOCHANGE) {
+        answer.updateFlg = UpdateFlg.CHANGE;
       }
 
       result.push({
-        id: group.id,
-        answer: group.answer,
-        truth: group.truth,
-        updateFlg: group.updateFlg
+        id: answer.id,
+        answer: answer.answer,
+        truth: answer.truth,
+        updateFlg: answer.updateFlg
       })
-    }
-    );
+    })
 
     return result;
   }
@@ -148,13 +159,19 @@ export class UpdateQuestionDialogComponent implements OnInit {
     return this.questionForm.get('answers') as FormArray<FormGroup<UpdateChoiceAnswerForm>>;
   }
 
-  deleteAnswer(choiceAnswerUpd: FormGroup<UpdateChoiceAnswerForm>) {
-    // choiceAnswerUpd.updateFlg = UpdateFlg.DELETE;
+  deleteAnswer(choiceAnswerUpd: FormGroup<UpdateChoiceAnswerForm>) : void {
+    if (choiceAnswerUpd.value.updateFlg === UpdateFlg.NEW) {
+      this.getAnswersFormArr().removeAt(this.getAnswersFormArr().controls.indexOf(choiceAnswerUpd));
+      return;
+    }
+
+    choiceAnswerUpd.value.updateFlg = UpdateFlg.DELETE;
+
   }
 
   answerChange(answer: FormGroup<UpdateChoiceAnswerForm>) {
     const answerValue :FormGroup<UpdateChoiceAnswerForm> = answer;
-    if (answerValue.value.updateFlg === UpdateFlg.DELETE) {
+    if (answerValue.value.updateFlg === UpdateFlg.DELETE || answerValue.value.updateFlg === UpdateFlg.NEW) {
       return;
     }
 
