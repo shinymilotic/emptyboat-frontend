@@ -1,11 +1,7 @@
 import {
   Component,
-  ElementRef,
   OnDestroy,
   OnInit,
-  Renderer2,
-  ViewChild,
-  inject,
 } from "@angular/core";
 import {
   ReactiveFormsModule,
@@ -15,17 +11,14 @@ import {
 } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ListErrorsComponent } from "../../shared-components/list-errors/list-errors.component";
-import { NgForOf, NgFor, AsyncPipe } from "@angular/common";
 import { ArticlesService } from "../../services/articles.service";
-import { Observable, Subject, throwError } from "rxjs";
+import { Subject, throwError } from "rxjs";
 import { catchError, map, takeUntil, tap } from "rxjs/operators";
 import { UserService } from "../../services/user.service";
-import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { TagService } from "src/app/services/tags.service";
 import { Editor } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import { ApiError } from "src/app/models/apierrors.model";
-import { Article } from "src/app/models/blog/article.model";
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { Tag } from "src/app/models/blog/tag.model";
@@ -45,10 +38,7 @@ interface ArticleForm {
     imports: [
         ListErrorsComponent,
         ReactiveFormsModule,
-        NgForOf,
         ReactiveFormsModule,
-        NgFor,
-        AsyncPipe,
         InputTextModule,
         FormsModule,
         DropdownModule
