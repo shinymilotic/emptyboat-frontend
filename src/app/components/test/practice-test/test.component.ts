@@ -1,5 +1,5 @@
 import { NgForOf, CommonModule } from "@angular/common";
-import { Component, computed, OnInit, Signal } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   FormArray,
   FormBuilder,
@@ -10,8 +10,6 @@ import {
 import {
   ActivatedRoute,
   Router,
-  RouterLink,
-  RouterLinkActive,
 } from "@angular/router";
 import {
   catchError,
@@ -28,6 +26,7 @@ import { QuestionType } from "../../../models/test/QuestionType";
 import { Question } from "src/app/models/test/question.model";
 import { ApiError } from "src/app/models/apierrors.model";
 import { TestResponse } from "src/app/models/test/test-response.model";
+import { Editor } from "@tiptap/core";
 
 @Component({
     selector: "app-test",
@@ -35,8 +34,6 @@ import { TestResponse } from "src/app/models/test/test-response.model";
     styleUrls: ["./test.component.css"],
     standalone: true,
     imports: [
-        RouterLinkActive,
-        RouterLink,
         NgForOf,
         CommonModule,
         ReactiveFormsModule,
@@ -59,6 +56,14 @@ export class TestComponent implements OnInit {
   };
   destroy$ = new Subject<void>();
   questionForm: FormGroup = new FormGroup([]);
+  editor!: Editor;
+  editors: any = [
+    {
+      editor: ..,
+      showMenu: false,
+    }
+  ];
+  items: Array<any> = [];
   
   constructor(
     private readonly route: ActivatedRoute,
@@ -95,7 +100,98 @@ export class TestComponent implements OnInit {
     return new FormGroup(group);
   }
 
+  showEditorMenuOnClick() : void {
+    
+  }
+
   ngOnInit(): void {
+    this.items = [
+      {
+        icon: 'format_bold',
+        title: 'Bold',
+        action: () => this.editor.chain().focus().toggleBold().run(),
+        isActive: () => this.editor.isActive('bold'),
+      },
+      {
+        icon: 'format_italic',
+        title: 'Italic',
+        action: () => this.editor.chain().focus().toggleItalic().run(),
+        isActive: () => this.editor.isActive('italic'),
+      },
+      {
+        icon: 'format_strikethrough',
+        title: 'Strike',
+        action: () => this.editor.chain().focus().toggleStrike().run(),
+        isActive: () => this.editor.isActive('strike'),
+      },
+      {
+        icon: 'code',
+        title: 'Code',
+        action: () => this.editor.chain().focus().toggleCode().run(),
+        isActive: () => this.editor.isActive('code'),
+      },
+      {
+        icon: 'format_h1',
+        title: 'Heading 1',
+        action: () => this.editor.chain().focus().toggleHeading({ level: 1 }).run(),
+        isActive: () => this.editor.isActive('heading', { level: 1 }),
+      },
+      {
+        icon: 'format_h2',
+        title: 'Heading 2',
+        action: () => this.editor.chain().focus().toggleHeading({ level: 2 }).run(),
+        isActive: () => this.editor.isActive('heading', { level: 2 }),
+      },
+      {
+        icon: 'format_paragraph',
+        title: 'Paragraph',
+        action: () => this.editor.chain().focus().setParagraph().run(),
+        isActive: () => this.editor.isActive('paragraph'),
+      },
+      {
+        icon: 'format_list_bulleted',
+        title: 'Bullet List',
+        action: () => this.editor.chain().focus().toggleBulletList().run(),
+        isActive: () => this.editor.isActive('bulletList'),
+      },
+      {
+        icon: 'format_list_numbered',
+        title: 'Ordered List',
+        action: () => this.editor.chain().focus().toggleOrderedList().run(),
+        isActive: () => this.editor.isActive('orderedList'),
+      },
+      {
+        icon: 'code_blocks',
+        title: 'Code Block',
+        action: () => this.editor.chain().focus().toggleCodeBlock().run(),
+        isActive: () => this.editor.isActive('codeBlock'),
+      },
+
+      {
+        icon: 'format_quote',
+        title: 'Blockquote',
+        action: () => this.editor.chain().focus().toggleBlockquote().run(),
+        isActive: () => this.editor.isActive('blockquote'),
+      },
+      {
+        icon: 'horizontal_rule',
+        title: 'Horizontal Rule',
+        action: () => this.editor.chain().focus().setHorizontalRule().run(),
+      },
+      {
+        icon: 'undo',
+        title: 'Undo',
+        action: () => this.editor.chain().focus().undo().run(),
+        isActive: () => this.editor.isActive('undo'),
+      },
+      {
+        icon: 'redo',
+        title: 'Redo',
+        action: () => this.editor.chain().focus().redo().run(),
+        isActive: () => this.editor.isActive('redo'),
+      },
+    ];
+    
     const id = this.route.snapshot.params["id"];
 
     this.testService.getOne(id)

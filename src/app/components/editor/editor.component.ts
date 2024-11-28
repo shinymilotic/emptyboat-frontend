@@ -27,7 +27,6 @@ import { SubmitArticle } from "./submit-article.model";
 interface ArticleForm {
   title: FormControl<string>;
   description: FormControl<string>;
-  body: FormControl<string>;
 }
 
 @Component({
@@ -65,7 +64,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.articleForm = new FormGroup<ArticleForm>({
       title: new FormControl("", { nonNullable: true }),
       description: new FormControl("", { nonNullable: true }),
-      body: new FormControl("", { nonNullable: true }),
     });
   }
 
@@ -208,7 +206,6 @@ export class EditorComponent implements OnInit, OnDestroy {
   submitForm(): void {
     this.isSubmitting = true;
     
-
     if (this.isUpdate === true) {
       this.updateArticle();
     } else {
