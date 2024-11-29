@@ -1,5 +1,5 @@
 import { NgForOf, CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { AfterRenderPhase, AfterViewChecked, AfterViewInit, Component, OnInit } from "@angular/core";
 import {
   FormArray,
   FormBuilder,
@@ -27,6 +27,7 @@ import { Question } from "src/app/models/test/question.model";
 import { ApiError } from "src/app/models/apierrors.model";
 import { TestResponse } from "src/app/models/test/test-response.model";
 import { Editor } from "@tiptap/core";
+import { StarterKit } from "@tiptap/starter-kit";
 
 @Component({
     selector: "app-test",
@@ -57,12 +58,7 @@ export class TestComponent implements OnInit {
   destroy$ = new Subject<void>();
   questionForm: FormGroup = new FormGroup([]);
   editor!: Editor;
-  editors: any = [
-    {
-      editor: ..,
-      showMenu: false,
-    }
-  ];
+  editors: any = {};
   items: Array<any> = [];
   
   constructor(
@@ -100,98 +96,96 @@ export class TestComponent implements OnInit {
     return new FormGroup(group);
   }
 
-  showEditorMenuOnClick() : void {
-    
-  }
-
-  ngOnInit(): void {
+  showEditorMenuOnClick(questionId: number) : void {
     this.items = [
       {
         icon: 'format_bold',
         title: 'Bold',
-        action: () => this.editor.chain().focus().toggleBold().run(),
-        isActive: () => this.editor.isActive('bold'),
+        action: () => this.editors[questionId].chain().focus().toggleBold().run(),
+        isActive: () => this.editors[questionId].isActive('bold'),
       },
       {
         icon: 'format_italic',
         title: 'Italic',
-        action: () => this.editor.chain().focus().toggleItalic().run(),
-        isActive: () => this.editor.isActive('italic'),
+        action: () => this.editors[questionId].chain().focus().toggleItalic().run(),
+        isActive: () => this.editors[questionId].isActive('italic'),
       },
       {
         icon: 'format_strikethrough',
         title: 'Strike',
-        action: () => this.editor.chain().focus().toggleStrike().run(),
-        isActive: () => this.editor.isActive('strike'),
+        action: () => this.editors[questionId].chain().focus().toggleStrike().run(),
+        isActive: () => this.editors[questionId].isActive('strike'),
       },
       {
         icon: 'code',
         title: 'Code',
-        action: () => this.editor.chain().focus().toggleCode().run(),
-        isActive: () => this.editor.isActive('code'),
+        action: () => this.editors[questionId].chain().focus().toggleCode().run(),
+        isActive: () => this.editors[questionId].isActive('code'),
       },
       {
         icon: 'format_h1',
         title: 'Heading 1',
-        action: () => this.editor.chain().focus().toggleHeading({ level: 1 }).run(),
-        isActive: () => this.editor.isActive('heading', { level: 1 }),
+        action: () => this.editors[questionId].chain().focus().toggleHeading({ level: 1 }).run(),
+        isActive: () => this.editors[questionId].isActive('heading', { level: 1 }),
       },
       {
         icon: 'format_h2',
         title: 'Heading 2',
-        action: () => this.editor.chain().focus().toggleHeading({ level: 2 }).run(),
-        isActive: () => this.editor.isActive('heading', { level: 2 }),
+        action: () => this.editors[questionId].chain().focus().toggleHeading({ level: 2 }).run(),
+        isActive: () => this.editors[questionId].isActive('heading', { level: 2 }),
       },
       {
         icon: 'format_paragraph',
         title: 'Paragraph',
-        action: () => this.editor.chain().focus().setParagraph().run(),
-        isActive: () => this.editor.isActive('paragraph'),
+        action: () => this.editors[questionId].chain().focus().setParagraph().run(),
+        isActive: () => this.editors[questionId].isActive('paragraph'),
       },
       {
         icon: 'format_list_bulleted',
         title: 'Bullet List',
-        action: () => this.editor.chain().focus().toggleBulletList().run(),
-        isActive: () => this.editor.isActive('bulletList'),
+        action: () => this.editors[questionId].chain().focus().toggleBulletList().run(),
+        isActive: () => this.editors[questionId].isActive('bulletList'),
       },
       {
         icon: 'format_list_numbered',
         title: 'Ordered List',
-        action: () => this.editor.chain().focus().toggleOrderedList().run(),
-        isActive: () => this.editor.isActive('orderedList'),
+        action: () => this.editors[questionId].chain().focus().toggleOrderedList().run(),
+        isActive: () => this.editors[questionId].isActive('orderedList'),
       },
       {
         icon: 'code_blocks',
         title: 'Code Block',
-        action: () => this.editor.chain().focus().toggleCodeBlock().run(),
-        isActive: () => this.editor.isActive('codeBlock'),
+        action: () => this.editors[questionId].chain().focus().toggleCodeBlock().run(),
+        isActive: () => this.editors[questionId].isActive('codeBlock'),
       },
 
       {
         icon: 'format_quote',
         title: 'Blockquote',
-        action: () => this.editor.chain().focus().toggleBlockquote().run(),
-        isActive: () => this.editor.isActive('blockquote'),
+        action: () => this.editors[questionId].chain().focus().toggleBlockquote().run(),
+        isActive: () => this.editors[questionId].isActive('blockquote'),
       },
       {
         icon: 'horizontal_rule',
         title: 'Horizontal Rule',
-        action: () => this.editor.chain().focus().setHorizontalRule().run(),
+        action: () => this.editors[questionId].chain().focus().setHorizontalRule().run(),
       },
       {
         icon: 'undo',
         title: 'Undo',
-        action: () => this.editor.chain().focus().undo().run(),
-        isActive: () => this.editor.isActive('undo'),
+        action: () => this.editors[questionId].chain().focus().undo().run(),
+        isActive: () => this.editors[questionId].isActive('undo'),
       },
       {
         icon: 'redo',
         title: 'Redo',
-        action: () => this.editor.chain().focus().redo().run(),
-        isActive: () => this.editor.isActive('redo'),
+        action: () => this.editors[questionId].chain().focus().redo().run(),
+        isActive: () => this.editors[questionId].isActive('redo'),
       },
     ];
-    
+  }
+
+  ngOnInit(): void {
     const id = this.route.snapshot.params["id"];
 
     this.testService.getOne(id)
@@ -205,6 +199,20 @@ export class TestComponent implements OnInit {
         this.test = data;
         this.questionForm = this.toFormGroup(this.test.questions);
       });
+  }
+
+  afterRender(): void {
+    this.test.questions
+          .filter(question => question.questionType === QuestionType.OPEN)
+          .map(question => {
+          this.editors[question.id] = new Editor({
+            element: document.querySelector('.' + question.id) as HTMLElement,
+            extensions: [
+              StarterKit,
+            ],
+            content: '<div class="editor-content"></div>',
+          });
+        });
   }
 
   asChoiceQuestion(qIndex: number): ChoiceQuestion {
