@@ -1,10 +1,10 @@
 .form-control {
-    border: 1px solid;
-    border-color: var(--surface-border);
-    border-radius: 10px;
-    padding: 8px;
-    width: 100%;
-    outline: none;
+  border: 1px solid;
+  border-color: var(--surface-border);
+  border-radius: 10px;
+  padding: 8px;
+  width: 100%;
+  outline: none;
 }
 
 .btn-register {
