@@ -1,5 +1,5 @@
 import { NgForOf, CommonModule } from "@angular/common";
-import { AfterRenderPhase, AfterViewChecked, AfterViewInit, Component, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   FormArray,
   FormBuilder,
