@@ -51,20 +51,8 @@
           </ol>
         }
         @if (question.questionType === QuestionType.OPEN) {
-          <fieldset class="form-border">
-            <input type="hidden" class="border-none outline-none w-full" formControlName="{{ question.id }}">
-             <div class="tiptap-editor {{question.id}}">
-              <div class="editor-header">
-                @for (item of items; track $index) {
-                  <button class="menu-item" [class]="item.isActive && item.isActive()? 'is-active' : ''" (click)="item.action()">
-                  <span class="material-symbols-outlined">
-                    {{item.icon}}
-                  </span>
-                  </button>
-                }
-              </div>
-             </div>
-          </fieldset>
+            <!-- <input type="hidden" class="border-none outline-none w-full" formControlName="{{ question.id }}"> -->
+              <app-open-question [questionId]="question.id" ></app-open-question>
         }    
         </li>
       </ol>
