@@ -51,8 +51,7 @@
           </ol>
         }
         @if (question.questionType === QuestionType.OPEN) {
-            <!-- <input type="hidden" class="border-none outline-none w-full" formControlName="{{ question.id }}"> -->
-              <app-open-question [questionId]="question.id" ></app-open-question>
+            <app-open-question [questionId]="question.id" ></app-open-question>
         }    
         </li>
       </ol>
