@@ -89,7 +89,6 @@ export class OpenQuestionEditorComponent implements OnInit {
         action: () => this.editors[questionId].chain().focus().toggleCodeBlock().run(),
         isActive: () => this.editors[questionId].isActive('codeBlock'),
       },
-
       {
         icon: 'format_quote',
         title: 'Blockquote',

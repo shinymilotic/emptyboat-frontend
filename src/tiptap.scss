@@ -1,5 +1,6 @@
 /* Basic editor styles */
 .tiptap {
+    outline: none;
     > * + * {
       margin-top: 0.75em;
     }
@@ -87,7 +88,6 @@
     background-color: #fff;
     // border: 3px solid #0d0d0d;
     border: 2px solid var(--surface-border);
-    border-bottom: none;
     border-radius: 0.75rem;
     color: #0d0d0d;
     display: flex;
