@@ -146,7 +146,6 @@ export class TestComponent implements OnInit {
         });
       }
     });
-    console.log(practice);
     this.practiceService.createPractice(practice)
       .subscribe(({data}) => {
           this.router.navigate(
@@ -175,5 +174,9 @@ export class TestComponent implements OnInit {
 
   public get QuestionType() {
     return QuestionType;
+  }
+
+  contentChange($event: string, questionId : string) {
+    console.log($event);
   }
 }

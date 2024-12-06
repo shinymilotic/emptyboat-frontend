@@ -1,11 +1,15 @@
-<div class="tiptap-editor ">
-    <div class="editor-header">
+  
+  @if (this.editorFocus) {
+    <div class="editor-header" contenteditable="false" >
       @for (item of items; track $index) {
-        <button class="menu-item" [class]="item.isActive && item.isActive()? 'is-active' : ''" (click)="item.action()">
+        <button class="menu-item" [class]="item.isActive && item.isActive()? 'is-active' : ''" (click)="item.action() ">
         <span class="material-symbols-outlined">
           {{item.icon}}
         </span>
         </button>
       }
     </div>
-</div>
+  }
+  <div  class="tiptap-editor">
+    
+  </div>

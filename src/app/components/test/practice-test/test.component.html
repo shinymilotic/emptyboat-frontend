@@ -24,7 +24,7 @@
       <h1>{{ this.test.title }}</h1>
     </div>
 
-    <form (ngSubmit)="createPractice()" [formGroup]="this.questionForm" class="flex flex-col items-center">
+    <form [formGroup]="this.questionForm" class="flex flex-col items-center">
       <ol class="question-list">
         <li
           *ngFor="let question of this.test.questions; let qIndex = index"
@@ -51,13 +51,12 @@
           </ol>
         }
         @if (question.questionType === QuestionType.OPEN) {
-            <app-open-question [questionId]="question.id" ></app-open-question>
+            <app-open-question [questionId]="question.id" (content)="contentChange($event, question.id)" ></app-open-question>
         }    
         </li>
       </ol>
       <button
-        type="submit"
-        class="submitTestBtn overcloud-btn"
+        class="submitTestBtn overcloud-btn" (click)="this.createPractice()"
       >
         Submit
       </button>
