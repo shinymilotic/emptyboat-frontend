@@ -27,6 +27,7 @@ import { Question } from "src/app/models/test/question.model";
 import { ApiError } from "src/app/models/apierrors.model";
 import { TestResponse } from "src/app/models/test/test-response.model";
 import { OpenQuestionEditorComponent } from "./practice-open-question-editor/open-question-editor.component";
+import { User } from "src/app/models/auth/user.model";
 
 @Component({
     selector: "app-test",
@@ -57,7 +58,6 @@ export class TestComponent implements OnInit {
   };
   destroy$ = new Subject<void>();
   questionForm: FormGroup = new FormGroup([]);
-  
   
   constructor(
     private readonly route: ActivatedRoute,
@@ -148,8 +148,14 @@ export class TestComponent implements OnInit {
     });
     this.practiceService.createPractice(practice)
       .subscribe(({data}) => {
-          this.router.navigate(
-            [`@${this.userService.userSignal()?.username}/practices/${data.practiceId}`]);
+        const user: User | null = this.userService.userSignal();
+
+        if (user == null) {
+          return;
+        }
+
+        this.router.navigate(
+          [`@${user.username}/practices/${data.practiceId}`]);
       });
   }
 
@@ -177,6 +183,6 @@ export class TestComponent implements OnInit {
   }
 
   contentChange($event: string, questionId : string) {
-    console.log($event);
+    this.questionForm.controls[questionId].setValue($event);
   }
 }

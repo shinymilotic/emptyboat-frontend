@@ -5,30 +5,24 @@
     <h1>{{this.practiceResult.testTitle}}</h1>
       <ol>
         @for (question of this.practiceResult.questions; track $index) {
-          <li
-          class="list-decimal p-3">
-          <div class="question m-2">{{ question.question }}</div>
-          @if (question.questionType == QuestionType.CHOICE) {
-            <ol class="answers-list">
-              @for (answer of asChoiceQuestion(question).answers; track $index) {
-                <li>        
-                    <div [class]="this.paintColor(answer)" class="inline-block m-2">{{ answer.answer }}</div>
-                </li>
-              }   
-            </ol>
-          }
-          
-          @if (question.questionType === QuestionType.OPEN) {
-              <div type="text" class="border-none outline-none w-full">
-                {{asOpenQuestion(question).answer}}
-              </div>
-          }
-          
+          <li class="list-decimal p-3">
+            <div class="question m-2">{{ question.question }}</div>
+            @if (question.questionType == QuestionType.CHOICE) {
+              <ol class="answers-list">
+                @for (answer of asChoiceQuestion(question).answers; track $index) {
+                  <li>        
+                      <div [class]="this.paintColor(answer)" class="inline-block m-2">{{ answer.answer }}</div>
+                  </li>
+                }   
+              </ol>
+            }
+            
+            @if (question.questionType === QuestionType.OPEN) {
+              <div class="border-none outline-none w-full" [outerHTML]="asOpenQuestion(question).answer"></div>
+            }
           </li>
         }
-        
       </ol>
-  
   </div>
 </div>
     

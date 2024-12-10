@@ -1,12 +1,9 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { PracticeService } from "src/app/services/practice.service";
-import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
 import { PracticeResult } from "./PracticeResult";
 import { Question } from "./Question";
 import { ChoiceResult } from "./ChoiceQuestion";
-import { Answer } from "./Answer";
 import { ChoiceAnswer } from "./ChoiceAnswer";
-import { OpenAnswer } from "./OpenAnswer";
 import { OpenAnswerResult } from "./OpenAnswerResult";
 import { RestResponse } from "src/app/models/restresponse.model";
 import { QuestionType } from "src/app/models/test/QuestionType";
