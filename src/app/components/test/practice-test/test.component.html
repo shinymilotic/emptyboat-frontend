@@ -52,7 +52,7 @@
         }
         @if (question.questionType === QuestionType.OPEN) {
             <app-open-question [questionId]="question.id" (content)="contentChange($event, question.id)" ></app-open-question>
-        }    
+        }
         </li>
       </ol>
       <button
