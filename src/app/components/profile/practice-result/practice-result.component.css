@@ -11,4 +11,5 @@
 .container {
     background-color: white;
     border-radius: 12px;
+    word-break: break-all;
 }
