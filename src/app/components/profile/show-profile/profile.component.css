@@ -20,9 +20,14 @@
   word-break: break-word;
 }
 
+.articles-toggle {
+  gap: 0.25rem;
+}
+
 .user-info {
   background-color: white;
   border-radius: 13px;
+  flex-wrap: wrap;
 }
 
 .menu-btn {

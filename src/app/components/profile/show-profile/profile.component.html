@@ -1,7 +1,6 @@
 <div class="profile-page flex justify-center flex-col" >
 
   @if (profile) {
-      <div class="user-info" >
         <div class="flex flex-row p-4 user-info">
           <img [src]="profile.image" class="user-img" alt="Avatar" width="160" height="160"/>
           <div class="user-info flex flex-col ml-5">
@@ -25,13 +24,11 @@
           </app-follow-button>
           }
         </div>
-      </div>
     
       <hr>
 
       <div class="container col-sm-12 col-md-10 col-lg-10 col-xl-8 self-center">
-        <div class="articles-toggle ">
-          <div class="outline-active flex list-none">
+        <div class="articles-toggle outline-active flex list-none flex-wrap">
               <a
                 class="menu-btn overcloud-btn mr-2"
                 routerLinkActive="active"
@@ -65,7 +62,6 @@
                 Created tests
               </a>
           </div>
-        </div>
         <br>
         <hr>
         <router-outlet></router-outlet>

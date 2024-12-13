@@ -12,7 +12,6 @@ import { UserService } from "../../../services/user.service";
 import { Profile } from "../../../models/auth/profile.model";
 import { ProfileService } from "../../../services/profile.service";
 import { FollowButtonComponent } from "../../../shared-components/buttons/follow-button.component";
-import { AsyncPipe } from "@angular/common";
 
 @Component({
     selector: "app-profile-page",
@@ -22,7 +21,6 @@ import { AsyncPipe } from "@angular/common";
     imports: [
         FollowButtonComponent,
         RouterLink,
-        AsyncPipe,
         RouterLinkActive,
         RouterOutlet,
     ]
