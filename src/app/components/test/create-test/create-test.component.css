@@ -1,5 +1,7 @@
 
-
+.container {
+  word-break: break-word;
+}
 .question {
   border-radius: 10px;
 }
