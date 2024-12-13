@@ -4,16 +4,15 @@
       <div class="user-info" >
         <div class="flex flex-row p-4 user-info">
           <img [src]="profile.image" class="user-img" alt="Avatar" width="160" height="160"/>
-          <div class="user-info flex flex-col ml-5 relative">
+          <div class="user-info flex flex-col ml-5">
             <h1 class="font-bold mb-4">{{ profile.username }}</h1>
             <div class="bio">{{ profile.bio }}</div>
-    
             @if (isUser) {
               <a
-              [routerLink]="['/settings']"
-              class="setting-btn absolute bottom-0 overcloud-btn" >
-              <i class="ion-gear-a"></i> Settings
-            </a>
+                [routerLink]="['/settings']"
+                class="setting-btn bottom-0 overcloud-btn" >
+                <i class="ion-gear-a"></i> Settings
+              </a>
             }
             
           </div>
