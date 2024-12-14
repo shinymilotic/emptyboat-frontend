@@ -183,6 +183,12 @@ export class TestComponent implements OnInit {
   }
 
   contentChange($event: string, questionId : string) {
-    this.questionForm.controls[questionId].setValue($event);
+    const form : FormControl = this.questionForm.get(questionId) as FormControl;
+
+    if (form == null) {
+      return;
+    }
+    
+    form.setValue($event);
   }
 }
