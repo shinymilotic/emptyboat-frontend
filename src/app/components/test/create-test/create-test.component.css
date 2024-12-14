@@ -24,6 +24,7 @@ textarea {
   transition: .1s ease-in-out;
   background-color: white;
 }
+
 .addAnswerBtn:hover {
   color: white;
   background-color: #0084ff;
@@ -75,4 +76,8 @@ textarea {
   border-radius: 8px;
   padding: .3em 8px;
   margin: 5px;
+}
+
+.delete-answer-icon {
+  margin-top: 50%;
 }

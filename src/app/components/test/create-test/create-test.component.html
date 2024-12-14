@@ -40,12 +40,10 @@
                 placeholder="Câu hỏi"
               ></textarea>
             </fieldset>
-            <a
-              class="deleteQuestionBtn"
-              (click)="deleteQuestion(qIndex)"
-            >
-              Delete
-            </a>
+
+            <span class="mod-options cursor-pointer" >
+              <i class="pi pi-times" (click)="deleteQuestion(qIndex)"></i>
+            </span>
           </div>
   
           @if (this.isChoiceQuestion(qIndex)) {
@@ -78,13 +76,9 @@
                   </label>  
                 </fieldset>
                   
-                <a
-                  class="deleteAnswerBtn"
-                  (click)="deleteAnswer(qIndex, aIndex)"
-                >
-                  Delete
-                </a>
-
+                <span class="mod-options cursor-pointer" >
+                  <i class="pi pi-times delete-answer-icon" (click)="deleteAnswer(qIndex, aIndex)"></i>
+                </span>
                 <br>
               </div>
               <button
