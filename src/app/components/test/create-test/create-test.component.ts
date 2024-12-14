@@ -29,6 +29,7 @@ import { ChoiceQuestionForm } from "./form-model/ChoiceQuestionForm";
 import { OpenQuestionForm } from "./form-model/OpenQuestionForm";
 import { QuestionForm } from "./form-model/QuestionForm";
 import { ApiError } from "src/app/models/apierrors.model";
+import { EditorComponent } from "./editor/editor.component";
 
 @Component({
     selector: "app-create-test",
@@ -36,12 +37,13 @@ import { ApiError } from "src/app/models/apierrors.model";
     styleUrls: ["./create-test.component.css"],
     standalone: true,
     imports: [
-        ListErrorsComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        NgForOf,
-        CommonModule,
-    ]
+    ListErrorsComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    NgForOf,
+    CommonModule,
+    EditorComponent
+]
 })
 export class CreateTestComponent implements OnInit, OnDestroy {
   isSubmitting = false;
@@ -185,5 +187,15 @@ export class CreateTestComponent implements OnInit, OnDestroy {
     }
 
     return false;
+  }
+
+  questionChange($event: string, question: FormGroup<QuestionForm>) {
+    let questionForm : FormControl = question.get("question") as FormControl;
+
+    if (question == null) {
+      return;
+    }
+    
+    questionForm.setValue($event);
   }
 }

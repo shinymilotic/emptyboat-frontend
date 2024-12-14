@@ -7,14 +7,13 @@ import StarterKit from '@tiptap/starter-kit';
   standalone: true,
   imports: [],
   templateUrl: './editor.component.html',
-  styleUrl: './editor.component.css'
+  styleUrl: './editor.component.scss'
 })
 export class EditorComponent {
 editor!: Editor;
   editors: any = {};
   items: Array<any> = [];
   editorFocus: boolean = false;
-  @Input() questionId!: string;
   @Output() content: EventEmitter<string> = new EventEmitter<string>();
   
   constructor(public elementRef: ElementRef, public renderer: Renderer2) {}
