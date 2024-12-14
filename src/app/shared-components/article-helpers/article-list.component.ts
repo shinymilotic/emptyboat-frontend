@@ -8,7 +8,7 @@ import { ArticlesService } from "../../services/articles.service";
 import { ArticleListConfig } from "../../models/blog/article-list-config.model";
 import { Article } from "../../models/blog/article.model";
 import { ArticlePreviewComponent } from "./article-preview.component";
-import { NgClass, NgForOf } from "@angular/common";
+import { NgForOf } from "@angular/common";
 import { LoadingState } from "../../models/loading-state.model";
 import { Subject, Subscription } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -16,7 +16,7 @@ import { takeUntil } from "rxjs/operators";
   selector: "app-article-list",
   styleUrls: ["article-list.component.css"],
   templateUrl: "./article-list.component.html",
-  imports: [ArticlePreviewComponent, NgForOf, NgClass],
+  imports: [ArticlePreviewComponent, NgForOf],
   standalone: true,
 })
 export class ArticleListComponent implements OnDestroy {
@@ -28,8 +28,8 @@ export class ArticleListComponent implements OnDestroy {
   destroy$ = new Subject<void>();
   subscription!: Subscription;
   isNoMore: boolean = false;
-
   @Input() limit!: number;
+  
   @Input()
   set config(config: ArticleListConfig) {
     if (config) {
@@ -62,11 +62,11 @@ export class ArticleListComponent implements OnDestroy {
       .subscribe(({data}) => {
         this.loading = LoadingState.LOADED;
         this.results.push(...data.articles);
-        if (data.articles != undefined && data.articles.length > 0) {
+        if (data.articles !== undefined && data.articles.length > 0) {
           this.lastArticleId = data.articles.at(data.articlesCount - 1)?.id;
         }
 
-        if (data.articles.length == 0) {
+        if (data.articles.length === 0) {
           this.isNoMore = true;
         }
       });
