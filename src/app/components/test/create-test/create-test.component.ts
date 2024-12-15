@@ -190,12 +190,21 @@ export class CreateTestComponent implements OnInit, OnDestroy {
   }
 
   questionChange($event: string, question: FormGroup<QuestionForm>) {
-    let questionForm : FormControl = question.get("question") as FormControl;
+    const questionForm : FormControl = question.get("question") as FormControl;
 
     if (question == null) {
       return;
     }
-    
+
     questionForm.setValue($event);
+  }
+
+  answerChange($event: string, answer: FormGroup<ChoiceAnswerForm>) {
+    const answerForm : FormControl = answer.get("answer") as FormControl;
+
+    if (answer == null) {
+      return;
+    }
+    answerForm.setValue($event);
   }
 }

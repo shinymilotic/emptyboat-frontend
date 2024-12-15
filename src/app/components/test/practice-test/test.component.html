@@ -30,7 +30,7 @@
           *ngFor="let question of this.test.questions; let qIndex = index"
           class="list-decimal p-3"
         >
-          <div class="question m-2">{{ question.question }}</div>
+          <div class="question m-2" [innerHTML]="question.question"></div>
           @if (question.questionType === QuestionType.CHOICE) {
           <ol class="answers-list">
             <li *ngFor="let answer of asChoiceQuestion(qIndex).answers; let aIndex = index">
@@ -45,7 +45,7 @@
                     </span>
                 </span>  
               <label for="{{ answer.id }}" class="cursor-pointer">
-                <div class="inline-block m-2">{{ answer.answer }}</div></label
+                <div class="inline-block m-2" [innerHTML]="answer.answer"></div></label
               >
             </li>
           </ol>
