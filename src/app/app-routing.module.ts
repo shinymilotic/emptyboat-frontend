@@ -185,6 +185,7 @@ export const routes: Routes = [
         // path: ":username",
         matcher: (url) => {
           const username: string = url[0].path;
+          console.log(url);
           if (url.length === 1 && username.match(/^@[\w]+$/gm)) {
             return {
               consumed: url,
@@ -193,7 +194,7 @@ export const routes: Routes = [
           } else if (
             url.length === 2 &&
             username.match(/^@[\w]+$/gm) &&
-            (url[1].path.match("favorites") || url[1].path.match("practices"))
+            (url[1].path.match("favorites") || url[1].path.match("practices") || url[1].path.match("tests"))
           ) {
             return {
               consumed: url.slice(0, 1),
@@ -230,6 +231,16 @@ export const routes: Routes = [
               import(
                 "./components/profile/user-practice/user-practice.component"
               ).then((m) => m.UserPracticeComponent),
+            canActivate: [
+              () => inject(AuthGuard).canActivate(),
+            ],
+          },
+          {
+            path: "tests",
+            loadComponent: () =>
+              import(
+                "./components/profile/test-create/test-create.component"
+              ).then((m) => m.TestCreateComponent),
             canActivate: [
               () => inject(AuthGuard).canActivate(),
             ],
