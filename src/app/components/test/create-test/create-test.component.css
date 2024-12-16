@@ -76,3 +76,7 @@
 .delete-answer-icon {
   margin-top: 50%;
 }
+
+.answer-container {
+  align-items: center;
+}

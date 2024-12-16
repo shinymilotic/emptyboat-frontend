@@ -41,25 +41,16 @@
           @if (this.isChoiceQuestion(qIndex)) {
             <div formArrayName="answers">
               <div
-                class="flex mb-2"
+                class="flex mb-2 answer-container"
                 *ngFor="
                   let answer of getAnswerFormArr(qIndex).controls;
                   let aIndex = index
                 "
                 [formGroupName]="aIndex"
               >
-                <!-- <fieldset class="form-group mr-3 form-border">
-                  <input
-                    id="{{ aIndex }}"
-                    class="form-control answer outline-none"
-                    formControlName="answer"
-                    type="text"
-                    placeholder="Câu trả lời"
-                  />
-                </fieldset> -->
                 <app-editor class="form-group mb-3 w-full" id="{{ aIndex }}" (content)="answerChange($event, answer)" ></app-editor>
 
-                <fieldset class="form-group mr-3 truth-fieldset ">
+                <fieldset class="form-group mr-3 truth-fieldset flex content-center">
                   <label class="checkmark-fieldset">
                     <input
                       class="form-control form-border"
