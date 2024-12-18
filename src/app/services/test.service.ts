@@ -11,16 +11,6 @@ import { TestResponseUpd } from "src/app/components/test/update-test/test-respon
 export class TestService {
   constructor(private readonly http: HttpClient) {}
 
-  // get(slug: string): Observable<Test> {
-  //   return this.http
-  //     .get<{ article: Article }>(`/articles/${slug}`)
-  //     .pipe(map((data) => data.article));
-  // }
-
-  // delete(slug: string): Observable<void> {
-  //   // return this.http.delete<void>(`/articles/${slug}`);
-  // }
-
   get(): Observable<RestResponse<SimpleTestResponse[]>> {
     return this.http
       .get<RestResponse<SimpleTestResponse[]>>("/tests");
@@ -42,5 +32,9 @@ export class TestService {
   update(testId: string, testUpd: TestResponseUpd): Observable<RestResponse<void>> {
     return this.http
       .put<RestResponse<void>>(`/test/${testId}/update`, testUpd);
+  }
+
+  getProfileCreateTests(username: string) : Observable<RestResponse<SimpleTestResponse[]>> {
+    return this.http.get<RestResponse<SimpleTestResponse[]>>(`/tests/${username}`);
   }
 }
