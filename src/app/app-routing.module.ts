@@ -182,7 +182,6 @@ export const routes: Routes = [
         ],
       },
       {
-        // path: ":username",
         matcher: (url) => {
           const username: string = url[0].path;
           if (url.length === 1 && username.match(/^@[\w]+$/gm)) {

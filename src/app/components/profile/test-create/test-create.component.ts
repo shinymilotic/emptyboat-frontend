@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit, Signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SimpleTestResponse } from '../../test/test-list/simple-test-response.model';
 import { TestService } from 'src/app/services/test.service';
