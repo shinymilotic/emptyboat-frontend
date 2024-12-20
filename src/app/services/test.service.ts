@@ -35,6 +35,6 @@ export class TestService {
   }
 
   getProfileCreateTests(username: string) : Observable<RestResponse<SimpleTestResponse[]>> {
-    return this.http.get<RestResponse<SimpleTestResponse[]>>(`/tests/${username}`);
+    return this.http.get<RestResponse<SimpleTestResponse[]>>(`/tests/${username}/profile`);
   }
 }

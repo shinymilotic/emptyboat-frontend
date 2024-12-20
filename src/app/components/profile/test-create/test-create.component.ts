@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SimpleTestResponse } from '../../test/test-list/simple-test-response.model';
 import { TestService } from 'src/app/services/test.service';
 
@@ -13,12 +13,19 @@ import { TestService } from 'src/app/services/test.service';
 export class TestCreateComponent implements OnInit {
   tests: SimpleTestResponse[] = [];
 
-  constructor(private readonly testService : TestService) {}
+  constructor(
+      private readonly testService : TestService,
+      private readonly route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.tests = [
-      { id: '1', title: 'Test 1', description: 'Description for test 1' },
-      { id: '2', title: 'Test 2', description: 'Description for test 2' }
-    ];
+    const username :string = this.route.snapshot.params["username"];
+    this.testService.getProfileCreateTests(username).subscribe({
+      next: (data) => {
+        this.tests = data.data;
+      },
+      error: () => {
+
+      }});
   }
 }
