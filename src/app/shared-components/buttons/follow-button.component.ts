@@ -33,6 +33,7 @@ export class FollowButtonComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly userService: UserService
   ) {}
+  
   ngOnInit(): void {
     this.following = this.profile?.following
   }

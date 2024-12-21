@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, signal, WritableSignal } from "@angular/core";
 import { Observable } from "rxjs";
 import { shareReplay } from "rxjs/operators";
 import { Profile } from "../models/auth/profile.model";
@@ -7,6 +7,7 @@ import { RestResponse } from "../models/restresponse.model";
 
 @Injectable({ providedIn: "root" })
 export class ProfileService {
+  public profile: WritableSignal<Profile | undefined> = signal(undefined);
   constructor(private readonly http: HttpClient) {}
 
   get(username: string): Observable<RestResponse<Profile>> {

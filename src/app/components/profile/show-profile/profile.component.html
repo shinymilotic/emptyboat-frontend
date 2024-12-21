@@ -16,7 +16,7 @@
               </a>
             </div>  
             <div class="bio">{{ profile.bio }}</div>
-            @if (isUser) {
+            @if (this.isCurrentUser()) {
               <a
                 [routerLink]="['/settings']"
                 class="setting-btn bottom-0 overcloud-btn" >
@@ -27,7 +27,7 @@
           </div>
           &nbsp;&nbsp;&nbsp;&nbsp;
 
-          @if (!isUser) {
+          @if (!this.isCurrentUser()) {
             <app-follow-button
             [profile]="profile"
           >

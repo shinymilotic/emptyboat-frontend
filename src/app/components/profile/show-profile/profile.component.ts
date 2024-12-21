@@ -48,8 +48,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
       )
       .subscribe((profile) => {
         this.profile = profile.data;
-        this.isUser = profile.data.username === this.userService.userSignal()?.username;
+        this.profileService.profile.set(profile.data);
       });
+  }
+
+  isCurrentUser() {
+    if (this.profile) {
+      return this.profile.username === this.userService.userSignal()?.username;
+    }
+
+    return false;
   }
 
   ngOnDestroy() {
