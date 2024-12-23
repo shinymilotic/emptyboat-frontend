@@ -12,6 +12,7 @@ div, h1, p {
   background-color: #f2f2f2;
   cursor: pointer;
   margin: 7px;
+  text-align: left;
 }
 
 .tag-list {

@@ -124,6 +124,7 @@
 
 .tag-pill {
     cursor: pointer;
+    text-align: left;
 }
 
 .title {

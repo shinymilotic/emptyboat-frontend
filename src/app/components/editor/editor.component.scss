@@ -15,6 +15,8 @@
 .inTag {
   display: flex;
   margin: 20px;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .selectedTag {
