@@ -24,10 +24,10 @@ export class AppMenuComponent implements OnInit {
                 items: [
                     { label: 'Articles', icon: 'pi pi-fw pi-book', routerLink: ['/'] },
                     { label: 'Tags', icon: 'pi pi-fw pi-tags', routerLink: ['/tags'] },
-                    { label: 'Tests', icon: 'pi pi-fw pi-home', routerLink: ['/tests'] },
+                    { label: 'Tests', icon: 'pi pi-fw pi-pencil', routerLink: ['/tests'] },
                     { label: 'Manage users', icon: 'pi pi-fw pi-users', routerLink: ['/tests'] },
                     { label: 'Manage tags', icon: 'pi pi-fw pi-tags', routerLink: ['/tests'] },
-                    { label: 'Manage posts', icon: 'pi pi-fw pi-book', routerLink: ['/tests'] },
+                    { label: 'Manage articles', icon: 'pi pi-fw pi-book', routerLink: ['/tests'] },
                     { label: 'Manage tests', icon: 'pi pi-fw pi-file', routerLink: ['/tests'] },
                     // { label: 'Chat', icon: 'pi pi-fw pi-home', routerLink: ['/chat'] },
                 ]
