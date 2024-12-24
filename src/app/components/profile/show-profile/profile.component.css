@@ -44,3 +44,14 @@
   color: white;
 }
 
+.followers {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.following {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
