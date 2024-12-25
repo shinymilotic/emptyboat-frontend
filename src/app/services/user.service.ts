@@ -38,11 +38,11 @@ export class UserService {
   }
 
   getCurrentUser(): Observable<RestResponse<User>> {
-    return this.http.get<RestResponse<User>>("/users");
+    return this.http.get<RestResponse<User>>("/users/current");
   }
 
   update(user: Partial<User>): Observable<RestResponse<User>> {
-    return this.http.put<RestResponse<User>>("/users", user).pipe(
+    return this.http.put<RestResponse<User>>("/users/current", user).pipe(
       tap((user) => {
         this.userSignal.set(user.data);
       })
