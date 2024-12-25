@@ -36,6 +36,38 @@ export const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
+        path: "admin/user",
+        loadComponent: () =>
+          import("./components/management/user/user.component").then((m) => m.UserComponent),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
+      },
+      {
+        path: "admin/tag",
+        loadComponent: () =>
+          import("./components/management/tag/tag.component").then((m) => m.TagComponent),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
+      },
+      {
+        path: "admin/article",
+        loadComponent: () =>
+          import("./components/management/article/article.component").then((m) => m.ArticleComponent),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
+      },
+      {
+        path: "admin/test",
+        loadComponent: () =>
+          import("./components/management/test/test.component").then((m) => m.TestComponent),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
+      },
+      {
         path: "",
         loadComponent: () =>
           import("./components/home/home.component").then((m) => m.HomeComponent),
