@@ -1,7 +1,8 @@
 
 export interface User {
-    username: string;
-    email: string;
-    image: string;
-    enable: boolean;
+    id?: string;
+    username?: string;
+    email?: string;
+    bio?: string;
+    image?: string;
 }

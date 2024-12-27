@@ -82,6 +82,5 @@ export class UserService {
   getFollowers(userId: string) : Observable<RestResponse<User[]>> {
     return this.http
       .get<RestResponse<User[]>>(`/followers/${userId}`, {});
-    ;
   }
 }
