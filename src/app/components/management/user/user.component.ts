@@ -4,11 +4,13 @@ import { TableModule, TablePageEvent } from 'primeng/table';
 import { User } from './user.model';
 import { UserManageService } from './user-manage.serivce';
 import { RestResponse } from 'src/app/models/restresponse.model';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { ImageModule } from 'primeng/image';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [TableModule, CommonModule],
+  imports: [TableModule, CommonModule, PaginatorModule, ImageModule],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
@@ -22,7 +24,7 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userManageService.getUsers().subscribe({
+    this.userManageService.getUsers(this.page, this.size).subscribe({
       next: (data: RestResponse<User[]>) => {
         this.users = data.data;
         console.log(this.users);
@@ -33,8 +35,9 @@ export class UserComponent implements OnInit {
     });
   }
 
-  onPageChange($event: TablePageEvent) {
-    const page: number = $event.first/$event.rows + 1;
+  onPageChange($event: PaginatorState) {
+    console.log($event);
+    // const page: number = $event.first/$event.rows + 1;
     // this.userManageService.getUsers(page, $event.rows).subscribe({
     //   next: (data: RestResponse<User[]>) => {
     //     this.users = data.data;

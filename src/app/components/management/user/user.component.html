@@ -1,27 +1,27 @@
-<p-table #table 
+
+<div class="card flex flex-col justify-center">
+    <p-table #table 
     [value]="users"
-    [tableStyle]="{ 'min-width': '50rem' }"  [paginator]="true"
-    [rows]="5"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    [rowsPerPageOptions]="[10, 20, 30]"
-    
-    (onPage)="this.onPageChange($event)">
-    <ng-template pTemplate="header">
-        <tr>
-            <th style="width:20%">ID</th>
-            <th style="width:20%">Username</th>
-            <th style="width:20%">Email</th>
-            <th style="width:20%">Image</th>
-            <th style="width:20%">Bio</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-user>
-        <tr>
-            <td>{{ user.id }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.image }}</td>
-            <td>{{ user.bio }}</td>
-        </tr>
-    </ng-template>
-</p-table>
+    [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:20%">ID</th>
+                <th style="width:20%">Username</th>
+                <th style="width:20%">Email</th>
+                <th style="width:20%">Image</th>
+                <th style="width:20%">Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td><p-image [src]="user.image" alt="Image" width="90" [preview]="true" />
+                </td>
+                <td>{{ user.bio }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-paginator (onPageChange)="onPageChange($event)" [first]="1" [rows]="10" [totalRecords]="120" [rowsPerPageOptions]="[10, 20, 30]" />
+</div>
