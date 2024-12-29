@@ -1,4 +1,18 @@
 
+<div class="card flex gap-4 flex-col">
+    <button class="overcloud-btn add-user-btn"><i class="pi pi-user-plus"></i></button>
+    <p-iconField iconPosition="left">
+        <p-inputIcon>
+            <i class="pi pi-search"></i>
+        </p-inputIcon>
+        <input
+            pInputText
+            type="text"
+            [(ngModel)]="this.searchKeywords"
+            placeholder="Search keyword"
+        />
+    </p-iconField>
+</div>
 <div class="card flex flex-col justify-center">
     <p-table #table 
     [value]="users"
@@ -19,7 +33,10 @@
                 <td>{{ user.email }}</td>
                 <td><p-image [src]="user.image" alt="Image" width="90" [preview]="true" />
                 </td>
-                <td>{{ user.bio }}</td>
+                <td>
+                    <button class="overcloud-btn mr-5"><i class="pi pi-pencil"></i></button>&emsp;
+                    <button class="delete-btn"><i class="pi pi-trash"></i></button>
+                </td>
             </tr>
         </ng-template>
     </p-table>

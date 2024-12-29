@@ -6,11 +6,14 @@ import { UserManageService } from './user-manage.serivce';
 import { RestResponse } from 'src/app/models/restresponse.model';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { ImageModule } from 'primeng/image';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputText, InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [TableModule, CommonModule, PaginatorModule, ImageModule],
+  imports: [TableModule, CommonModule, PaginatorModule, ImageModule, IconFieldModule,InputIconModule, InputTextModule ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
@@ -18,6 +21,7 @@ export class UserComponent implements OnInit {
   users!: User[];
   page: number = 1;
   size: number = 10;
+  searchKeywords: string = '';
 
   constructor(private readonly userManageService: UserManageService) {
 
@@ -47,5 +51,15 @@ export class UserComponent implements OnInit {
 
     //   }
     // });
+  }
+
+  searchKeyword(event: Event | null) : void {
+    console.log(this.searchKeywords);
+    // const inputEvent: InputEvent = event as InputEvent;
+    // if (event?.target == null) {
+    //   return;
+    // }
+    // // const value: string = event.v;
+    // console.log((inputEvent.target as EventTarget));
   }
 }
