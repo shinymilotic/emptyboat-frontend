@@ -33,11 +33,11 @@
     cursor: pointer;
     border: 1px solid transparent;
     transition: .1s ease-in-out;
-    background-color: #0084ff;
+    background-color: green;
     color: white;
     outline: none;
     white-space:nowrap;
-    border-color: #0084ff!important;
+    border-color: green!important;
     border-radius: 8px;
     padding-top: 4px;
     padding-bottom: 4px;
