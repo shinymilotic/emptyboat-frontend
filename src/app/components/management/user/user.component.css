@@ -1,3 +1,17 @@
 .add-user-btn {
     width:fit-content;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: green;
+}
+
+.edit-user-btn {
+    background-color: green;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.delete-btn {
+    padding: 8px;
+    border-radius: 8px;
 }

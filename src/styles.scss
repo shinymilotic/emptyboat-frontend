@@ -13,9 +13,10 @@
 //   // font-style: normal;
 // }
 
-fieldset, input {
+fieldset {
   border: none;
 }
+
 body {
   background-color: white;
   // margin: 0px;
@@ -26,6 +27,7 @@ body {
   /* background-size: 100% 100%; */
   background-attachment: fixed;
 }
+
 .article-content, .article-content pre {
   background-color: aliceblue;
   border-radius: 8px;
