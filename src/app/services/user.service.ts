@@ -51,7 +51,7 @@ export class UserService {
 
   auth(): Observable<RestResponse<User>> {
     console.log("auth");
-    return this.http.get<RestResponse<User>>("/users").pipe(
+    return this.http.get<RestResponse<User>>("/users/current").pipe(
       tap({
         next: ({data}) => {
           this.userSignal.set(data);

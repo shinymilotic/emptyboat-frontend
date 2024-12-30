@@ -18,6 +18,7 @@ export class UserManageService {
       params = params.set('page', page);
       params = params.set('size', size);  
     }
+    
     return this.http
       .get<RestResponse<User[]>>(`/users`, { params });
   }

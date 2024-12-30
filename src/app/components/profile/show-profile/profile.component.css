@@ -33,14 +33,11 @@
 .menu-btn {
   border-radius: 10px;
   padding: 4px 16px;
-  color: #0084ff;
   border: 1px solid;
-  border-color: #0084ff;
   color: white;
 }
 
 .menu-btn:hover {
-  background-color: #0084ff;
   color: white;
 }
 

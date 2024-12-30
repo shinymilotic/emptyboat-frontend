@@ -46,7 +46,7 @@
 }
   
 .follow-tag-btn:hover {
-    filter: brightness(60%);
+    filter: brightness(120%);
 }
 
 .following-tag-btn {
@@ -75,7 +75,7 @@
 }
 
 .following-tag-btn:hover {
-    filter: brightness(60%);
+    filter: brightness(120%);
 }
 
 @media (max-width: 800px) {
