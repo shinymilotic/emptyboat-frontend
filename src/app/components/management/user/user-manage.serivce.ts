@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { RestResponse } from "src/app/models/restresponse.model";
 import { User } from "./user.model";
-import { GetUserResponse } from "./get-user-response.mode";
 
 @Injectable({ providedIn: "root" })
 export class UserManageService {
@@ -12,15 +10,20 @@ export class UserManageService {
     private readonly http: HttpClient,
   ) {}
 
-  getUsers(page?: number, size?: number) : Observable<RestResponse<GetUserResponse>> {
+  getUsers(pageNumber?: number, itemsPerPage?: number) : Observable<User[]> {
     let params = new HttpParams();
 
-    if (page != null && size != null) {
-      params = params.set('page', page);
-      params = params.set('size', size);  
+    if (pageNumber != null && itemsPerPage != null) {
+      params = params.set('pageNumber', pageNumber + 1);
+      params = params.set('itemsPerPage', itemsPerPage);  
     }
     
     return this.http
-      .get<RestResponse<GetUserResponse>>(`/users`, { params });
+      .get<User[]>(`/users`, { params });
+  }
+
+  getUsersCount() : Observable<number> {
+    return this.http
+      .get<number>(`/usersCount`);
   }
 }

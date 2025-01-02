@@ -1,15 +1,13 @@
-import { CommonModule, NgFor, NgForOf } from '@angular/common';
-import { Component, NgModule, OnInit } from '@angular/core';
-import { TableModule, TablePageEvent } from 'primeng/table';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { TableModule } from 'primeng/table';
 import { User } from './user.model';
 import { UserManageService } from './user-manage.serivce';
-import { RestResponse } from 'src/app/models/restresponse.model';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { ImageModule } from 'primeng/image';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { InputText, InputTextModule } from 'primeng/inputtext';
-import { GetUserResponse } from './get-user-response.mode';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-user',
@@ -19,9 +17,10 @@ import { GetUserResponse } from './get-user-response.mode';
   styleUrl: './user.component.css'
 })
 export class UserComponent implements OnInit {
-  data!: GetUserResponse;
-  page: number = 1;
-  size: number = 10;
+  users!: User[];
+  usersCount!: number;
+  pageNumber: number = 0;
+  itemsPerPage: number = 10;
   searchKeywords: string = '';
 
   constructor(private readonly userManageService: UserManageService) {
@@ -30,27 +29,38 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("ngOnInit()");
-    this.userManageService.getUsers(this.page, this.size).subscribe({
-      next: (data: RestResponse<GetUserResponse>) => {
-        this.data = data.data;
-        console.log(this.data);
+    this.userManageService.getUsers(this.pageNumber, this.itemsPerPage).subscribe({
+      next: (data: User[]) => {
+        this.users = data;
+        console.log(this.users);
       },
       error: () => {
 
       }
     });
+    
+    this.userManageService.getUsersCount().subscribe({
+      next: (data: number) => {
+        this.usersCount = data;
+        console.log(data);
+      },
+      error: () => {
+
+      }
+    })
   }
 
   onPageChange($event: PaginatorState) {
+    console.log($event);
     this.userManageService.getUsers($event.page, $event.rows).subscribe({
-      next: (data: RestResponse<GetUserResponse>) => {
-        this.data = data.data;
+      next: (data: User[]) => {
+        this.users = data;
         if ($event.page != undefined) {
-          this.page = $event.page;
+          this.pageNumber = $event.page;
         }
 
         if ($event.rows != undefined) {
-          this.size = $event.rows;
+          this.pageNumber = $event.rows;
         }
         
       },
