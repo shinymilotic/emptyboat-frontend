@@ -9,6 +9,7 @@ import { ImageModule } from 'primeng/image';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputText, InputTextModule } from 'primeng/inputtext';
+import { GetUserResponse } from './get-user-response.mode';
 
 @Component({
   selector: 'app-user',
@@ -18,7 +19,7 @@ import { InputText, InputTextModule } from 'primeng/inputtext';
   styleUrl: './user.component.css'
 })
 export class UserComponent implements OnInit {
-  users!: User[];
+  data!: GetUserResponse;
   page: number = 1;
   size: number = 10;
   searchKeywords: string = '';
@@ -28,10 +29,11 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log("ngOnInit()");
     this.userManageService.getUsers(this.page, this.size).subscribe({
-      next: (data: RestResponse<User[]>) => {
-        this.users = data.data;
-        console.log(this.users);
+      next: (data: RestResponse<GetUserResponse>) => {
+        this.data = data.data;
+        console.log(this.data);
       },
       error: () => {
 
@@ -40,17 +42,22 @@ export class UserComponent implements OnInit {
   }
 
   onPageChange($event: PaginatorState) {
-    console.log($event);
-    // const page: number = $event.first/$event.rows + 1;
-    // this.userManageService.getUsers(page, $event.rows).subscribe({
-    //   next: (data: RestResponse<User[]>) => {
-    //     this.users = data.data;
-    //     console.log(this.users);
-    //   },
-    //   error: () => {
+    this.userManageService.getUsers($event.page, $event.rows).subscribe({
+      next: (data: RestResponse<GetUserResponse>) => {
+        this.data = data.data;
+        if ($event.page != undefined) {
+          this.page = $event.page;
+        }
 
-    //   }
-    // });
+        if ($event.rows != undefined) {
+          this.size = $event.rows;
+        }
+        
+      },
+      error: () => {
+
+      }
+    });
   }
 
   searchKeyword(event: Event | null) : void {

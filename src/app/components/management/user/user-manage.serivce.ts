@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { RestResponse } from "src/app/models/restresponse.model";
 import { User } from "./user.model";
+import { GetUserResponse } from "./get-user-response.mode";
 
 @Injectable({ providedIn: "root" })
 export class UserManageService {
@@ -11,7 +12,7 @@ export class UserManageService {
     private readonly http: HttpClient,
   ) {}
 
-  getUsers(page?: number, size?: number) : Observable<RestResponse<User[]>> {
+  getUsers(page?: number, size?: number) : Observable<RestResponse<GetUserResponse>> {
     let params = new HttpParams();
 
     if (page != null && size != null) {
@@ -20,6 +21,6 @@ export class UserManageService {
     }
     
     return this.http
-      .get<RestResponse<User[]>>(`/users`, { params });
+      .get<RestResponse<GetUserResponse>>(`/users`, { params });
   }
 }
