@@ -26,4 +26,9 @@ export class UserManageService {
     return this.http
       .get<number>(`/usersCount`);
   }
+
+  deleteUser(userId: string) : Observable<void> {
+    return this.http
+      .delete<void>(`/users/${userId}`);
+  }
 }

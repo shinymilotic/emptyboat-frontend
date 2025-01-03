@@ -28,11 +28,9 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("ngOnInit()");
     this.userManageService.getUsers(this.pageNumber, this.itemsPerPage).subscribe({
       next: (data: User[]) => {
         this.users = data;
-        console.log(this.users);
       },
       error: () => {
 
@@ -51,7 +49,6 @@ export class UserComponent implements OnInit {
   }
 
   onPageChange($event: PaginatorState) {
-    console.log($event);
     this.userManageService.getUsers($event.page, $event.rows).subscribe({
       next: (data: User[]) => {
         this.users = data;
@@ -70,13 +67,14 @@ export class UserComponent implements OnInit {
     });
   }
 
-  searchKeyword(event: Event | null) : void {
-    console.log(this.searchKeywords);
-    // const inputEvent: InputEvent = event as InputEvent;
-    // if (event?.target == null) {
-    //   return;
-    // }
-    // // const value: string = event.v;
-    // console.log((inputEvent.target as EventTarget));
+  deleteUser(userId: string) : void {
+    this.userManageService.deleteUser(userId).subscribe({
+      next: () => {
+
+      },
+      error: () => {
+
+      }
+    })
   }
 }
