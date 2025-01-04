@@ -8,11 +8,12 @@ import { ImageModule } from 'primeng/image';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [TableModule, CommonModule, PaginatorModule, ImageModule, IconFieldModule,InputIconModule, InputTextModule ],
+  imports: [TableModule, CommonModule, PaginatorModule, ImageModule, IconFieldModule,InputIconModule,InputTextModule, RouterLink ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })

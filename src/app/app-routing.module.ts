@@ -44,6 +44,22 @@ export const routes: Routes = [
         ],
       },
       {
+        path: "admin/user/create",
+        loadComponent: () =>
+          import("./components/management/user/create-user/create-user.component").then((m) => m.CreateUserComponent),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
+      },
+      {
+        path: "admin/user/:username/update",
+        loadComponent: () =>
+          import("./components/management/user/update-user/update-user.component").then((m) => m.UpdateUserComponent),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
+      },
+      {
         path: "admin/tag",
         loadComponent: () =>
           import("./components/management/tag/tag.component").then((m) => m.TagComponent),
