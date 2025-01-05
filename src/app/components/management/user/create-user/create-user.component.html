@@ -1,1 +1,27 @@
-<p>create-user works!</p>
+
+<form [formGroup]="this.createUserForm" method="post">
+    <div class="flex gap-2 flex-col w-fit">
+        <div class="flex"><label class="align-middle" for="username">Username: </label><input pInputText id="username" formControlName="username" class="float-right" /></div>
+        <div><label for="password">Password: </label><input pInputText type="password" id="password" formControlName="password" class="float-right" /></div>
+        <div><label for="bio">Bio: </label><input pInputText id="bio" formControlName="bio" class="float-right" /></div>
+        <div><label for="image">Image: </label><input pInputText id="image" formControlName="image" class="float-right" /></div>
+        <div class="flex flex-row gap-2"><label>Enabled?: </label> 
+            <div class="flex flex-wrap gap-4">
+                <div class="flex items-center">
+                    <p-radioButton inputId="enabledOn" [value]="true" formControlName="enabled" />
+                    <label for="enabledOn" class="ml-2">On</label>
+                </div>
+            
+                <div class="flex items-center">
+                    <p-radioButton inputId="enabledOff" [value]="false" formControlName="enabled"/>
+                    <label for="enabledOff" class="ml-2">Off</label>
+                </div>
+            </div>
+        </div>
+
+        <button class="overcloud-btn createUserBtn w-fit self-center" (click)="createUser()">Create</button>
+    </div>
+</form>
+
+
+

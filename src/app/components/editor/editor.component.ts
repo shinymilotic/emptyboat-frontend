@@ -37,7 +37,6 @@ interface ArticleForm {
     imports: [
         ListErrorsComponent,
         ReactiveFormsModule,
-        ReactiveFormsModule,
         InputTextModule,
         FormsModule,
         DropdownModule
