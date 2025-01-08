@@ -3,8 +3,10 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { UserManageService } from '../user-manage.serivce';
+import { CreateUserRequest } from './create-user-request.model';
 
-interface CreateUserForm {
+export interface CreateUserForm {
   username: FormControl<string>;
   password: FormControl<string>;
   bio: FormControl<string>;
@@ -22,9 +24,11 @@ interface CreateUserForm {
 export class CreateUserComponent implements OnInit{
   createUserForm!: FormGroup<CreateUserForm>;
 
-  constructor(private readonly fb: FormBuilder) {
-
-  }
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly manageUserService: UserManageService
+  ) { }
+  
   ngOnInit(): void {
     this.createUserForm = this.fb.group({
       username: this.fb.control('', { nonNullable: true }),
@@ -36,6 +40,21 @@ export class CreateUserComponent implements OnInit{
   }
 
   createUser() {
-    console.log(this.createUserForm.value);
+    const request: CreateUserRequest = {
+      username: this.createUserForm.value.username,
+      password: this.createUserForm.value.password,
+      bio: this.createUserForm.value.bio,
+      image: this.createUserForm.value.image,
+      enabled: this.createUserForm.value.enabled
+    }
+
+    this.manageUserService.adminCreateUser(request).subscribe({
+      next: () => {
+        
+      },
+      error: () => {
+
+      }
+    });
   }
 }
