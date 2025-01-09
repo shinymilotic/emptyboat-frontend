@@ -29,8 +29,6 @@ import { DialogModule } from 'primeng/dialog';
         NgClass,
         FollowButtonComponent,
         FavoriteButtonComponent,
-        NgForOf,
-        AsyncPipe,
         ListErrorsComponent,
         FormsModule,
         ArticleCommentComponent,
