@@ -3,13 +3,31 @@
 
 <form [formGroup]="this.createUserForm" method="post" (ngSubmit)="createUser()">
     @if (this.isDisplayError === true) {
-      <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="alert alert-danger">
-          <div *ngIf="username?.hasError('required')">
-            Name is required.
-          </div>
-          <div *ngIf="username?.hasError('minlength')">
-            Name must be at least 4 characters long.
-          </div>
+      <div class="form-errors">
+        <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="alert alert-danger">
+            <div *ngIf="username?.hasError('required')">
+            Username can't be blank.
+            </div>
+            <div *ngIf="username?.hasError('minlength') || username?.hasError('maxlength')">
+              Username must contains from 6 to 32 characters
+            </div>
+        </div>
+        <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="alert alert-danger">
+            <div *ngIf="username?.hasError('required')">
+              Username can't be blank.
+            </div>
+            <div *ngIf="username?.hasError('minlength') || username?.hasError('maxlength')">
+              Username must contains from 6 to 32 characters
+            </div>
+        </div>
+        <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="alert alert-danger">
+            <div *ngIf="username?.hasError('required')">
+              Username can't be blank.
+            </div>
+            <div *ngIf="username?.hasError('minlength') || username?.hasError('maxlength')">
+              Username must contains from 6 to 32 characters
+            </div>
+        </div>
       </div>
     }
   

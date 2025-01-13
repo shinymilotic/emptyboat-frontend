@@ -2,3 +2,8 @@
     padding: 0.5rem;
     border-radius: 8px;
 }
+
+.form-errors {
+    padding-bottom: 2rem;
+    color: #b85c5c;
+}

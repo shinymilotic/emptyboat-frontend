@@ -55,7 +55,6 @@ export class CreateUserComponent implements OnInit{
   }
 
   createUser() {
-    console.log(this.createUserForm.invalid);
     if (this.createUserForm.invalid === true) {
       this.isDisplayError = true;
       return;
@@ -110,5 +109,4 @@ export class CreateUserComponent implements OnInit{
   get enabled() {
     return this.createUserForm.get('enabled');
   }
-
 }
