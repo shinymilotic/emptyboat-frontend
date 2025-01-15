@@ -38,16 +38,16 @@ export class CreateUserComponent implements OnInit{
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(32),
-          ]),
+      ]),
       password: this.fb.control('', [
         Validators.required,
         Validators.minLength(8),
         Validators.maxLength(64),
       ]),
-      email: this.fb.control('', [
+      email: this.fb.control('',[
         Validators.required,
         Validators.email
-      ]),
+      ],),
       bio: this.fb.control('', { nonNullable: true }),
       image: this.fb.control('', { nonNullable: true }),
       enabled: this.fb.control(false, { nonNullable: true })
