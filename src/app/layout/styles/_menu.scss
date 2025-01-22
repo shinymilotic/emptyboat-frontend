@@ -84,12 +84,10 @@
             }
 
             &:hover {
-                background-color: var(--surface-hover);
+                background-color: var(--primary-color);
+                color: white;
             }
 
-            &:focus {
-                @include focused-inset();
-            }
         }
 
         ul {
