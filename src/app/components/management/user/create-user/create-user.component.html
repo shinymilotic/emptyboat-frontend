@@ -2,34 +2,34 @@
 
 
 <form [formGroup]="this.createUserForm" method="post" (ngSubmit)="createUser()">
-    @if (this.isDisplayError === true) {
-      <div class="form-errors">
-        <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="alert alert-danger">
-            <div *ngIf="username?.hasError('required')">
-              Username can't be blank.
-            </div>
-            <div *ngIf="username?.hasError('minlength') || username?.hasError('maxlength')">
-              Username must contains from 6 to 32 characters
-            </div>
-        </div>
-        <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="alert alert-danger">
-            <div *ngIf="password?.hasError('required')">
-              Password can't be blank.
-            </div>
-            <div *ngIf="password?.hasError('minlength') || username?.hasError('maxlength')">
-              Password must contains from 8 to 64 characters.
-            </div>
-        </div>
-        <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="alert alert-danger">
-            <div *ngIf="email?.hasError('required')">
-              Email can't be blank.
-            </div>
-            <div *ngIf="email?.hasError('email')">
-              Email is not valid.
-            </div>
-        </div>
+    <div class="form-errors">
+      <app-list-errors [errors]="errors"></app-list-errors>
+
+      <div *ngIf="username?.invalid && (username?.dirty || username?.touched)" class="alert alert-danger">
+          <div *ngIf="username?.hasError('required')">
+            Username can't be blank.
+          </div>
+          <div *ngIf="username?.hasError('minlength') || username?.hasError('maxlength')">
+            Username must contains from 6 to 32 characters
+          </div>
       </div>
-    }
+      <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="alert alert-danger">
+          <div *ngIf="password?.hasError('required')">
+            Password can't be blank.
+          </div>
+          <div *ngIf="password?.hasError('minlength') || username?.hasError('maxlength')">
+            Password must contains from 8 to 64 characters.
+          </div>
+      </div>
+      <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="alert alert-danger">
+          <div *ngIf="email?.hasError('required')">
+            Email can't be blank.
+          </div>
+          <div *ngIf="email?.hasError('email')">
+            Email is not valid.
+          </div>
+      </div>
+    </div>
   
     <div class="flex flex-col w-fit gap-10">
         <div class="flex justify-between"><label class="self-center" for="username">Username: </label><input pInputText id="username" formControlName="username" class="float-right" /></div>

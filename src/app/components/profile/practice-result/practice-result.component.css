@@ -5,7 +5,7 @@
 }
 
 .success {
-    color: green;
+    color: var(--primary-color);
 }
 
 .container {

@@ -6,6 +6,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { UserManageService } from '../user-manage.serivce';
 import { CreateUserRequest } from './create-user-request.model';
 import { NgIf } from '@angular/common';
+import { ApiError } from 'src/app/models/apierrors.model';
+import { ListErrorsComponent } from "../../../../shared-components/list-errors/list-errors.component";
 
 export interface CreateUserForm {
   username: FormControl<string|null>;
@@ -19,13 +21,14 @@ export interface CreateUserForm {
 @Component({
   selector: 'app-create-user',
   standalone: true,
-  imports: [InputTextModule, DropdownModule, RadioButtonModule, FormsModule, ReactiveFormsModule, NgIf],
+  imports: [InputTextModule, DropdownModule, RadioButtonModule, FormsModule, ReactiveFormsModule, NgIf, ListErrorsComponent],
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.css'
 })
 export class CreateUserComponent implements OnInit{
   createUserForm!: FormGroup<CreateUserForm>;
   isDisplayError: boolean = false;
+  errors!: ApiError;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -55,10 +58,7 @@ export class CreateUserComponent implements OnInit{
   }
 
   createUser() {
-    if (this.createUserForm.invalid === true) {
-      this.isDisplayError = true;
-      return;
-    }
+    
 
     const request: CreateUserRequest = {
       username: this.createUserForm.value.username,
@@ -73,8 +73,8 @@ export class CreateUserComponent implements OnInit{
       next: () => {
         
       },
-      error: () => {
-
+      error: (error) => {
+        this.errors = error;
       }
     });
   }
@@ -82,13 +82,6 @@ export class CreateUserComponent implements OnInit{
   get username() {
     return this.createUserForm.get('username');
   }
-
-  // username: FormControl<string|null>;
-  // password: FormControl<string|null>;
-  // email: FormControl<string|null>;
-  // bio: FormControl<string>;
-  // image: FormControl<string>;
-  // enabled: FormControl<boolean>;
 
   get password() {
     return this.createUserForm.get('password');
