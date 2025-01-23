@@ -10,9 +10,9 @@ import { ApiError } from 'src/app/models/apierrors.model';
 import { ListErrorsComponent } from "../../../../shared-components/list-errors/list-errors.component";
 
 export interface CreateUserForm {
-  username: FormControl<string|null>;
-  password: FormControl<string|null>;
-  email: FormControl<string|null>;
+  username: FormControl<string>;
+  password: FormControl<string>;
+  email: FormControl<string>;
   bio: FormControl<string>;
   image: FormControl<string>;
   enabled: FormControl<boolean>;
@@ -36,29 +36,45 @@ export class CreateUserComponent implements OnInit{
   ) { }
   
   ngOnInit(): void {
-    this.createUserForm = this.fb.group({
-      username: this.fb.control('', [
+    this.createUserForm = this.fb.group<CreateUserForm>({
+      username: this.fb.nonNullable.control('', [
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(32),
-      ]),
-      password: this.fb.control('', [
+      ], ),
+      password: this.fb.nonNullable.control('', [
         Validators.required,
         Validators.minLength(8),
         Validators.maxLength(64),
       ]),
-      email: this.fb.control('',[
+      email: this.fb.nonNullable.control('',[
         Validators.required,
         Validators.email
       ],),
-      bio: this.fb.control('', { nonNullable: true }),
-      image: this.fb.control('', { nonNullable: true }),
-      enabled: this.fb.control(false, { nonNullable: true })
+      bio: this.fb.nonNullable.control(''),
+      image: this.fb.nonNullable.control(''),
+      enabled: this.fb.nonNullable.control(false)
     });
   }
 
-  createUser() {
+  validateUsername(username?: string): void {
+
+  }
+
+  validatePassword(password?: string): void {
+
+  }
+
+  validateEmail(email?: string): void {
     
+  }
+
+  createUser() {
+    const form : CreateUserRequest = this.createUserForm.value;
+
+    this.validateUsername(form.username);
+    this.validatePassword(form.password);
+    this.validateEmail(form.email);
 
     const request: CreateUserRequest = {
       username: this.createUserForm.value.username,

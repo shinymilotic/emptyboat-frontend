@@ -1,8 +1,8 @@
 
 export interface CreateUserRequest {
-    username?: string|null;
-    password?: string|null;
-    email?: string|null;
+    username?: string;
+    password?: string;
+    email?: string;
     bio?: string;
     image?: string;
     enabled?: boolean;
