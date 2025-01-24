@@ -28,7 +28,7 @@ export interface CreateUserForm {
 export class CreateUserComponent implements OnInit{
   createUserForm!: FormGroup<CreateUserForm>;
   isDisplayError: boolean = false;
-  errors!: ApiError;
+  errors: ApiError = {errors: []};
 
   constructor(
     private readonly fb: FormBuilder,
@@ -58,7 +58,13 @@ export class CreateUserComponent implements OnInit{
   }
 
   validateUsername(username?: string): void {
+    if (this.username?.hasError('required')) {
+      this.errors.errors.push()
+    }
 
+    if (this.username?.hasError('minlength') || this.username?.hasError('maxlength')) {
+
+    }
   }
 
   validatePassword(password?: string): void {
