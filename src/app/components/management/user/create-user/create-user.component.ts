@@ -68,7 +68,7 @@ export class CreateUserComponent implements OnInit{
   }
 
   validatePassword(password?: string): void {
-
+    
   }
 
   validateEmail(email?: string): void {
