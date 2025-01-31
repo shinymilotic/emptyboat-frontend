@@ -30,20 +30,22 @@ import { OpenQuestionForm } from "./form-model/OpenQuestionForm";
 import { QuestionForm } from "./form-model/QuestionForm";
 import { ApiError } from "src/app/models/apierrors.model";
 import { EditorComponent } from "./editor/editor.component";
+import { InputTextModule } from "primeng/inputtext";
 
 @Component({
     selector: "app-create-test",
     templateUrl: "./create-test.component.html",
-    styleUrls: ["./create-test.component.css"],
+    styleUrls: ["./create-test.component.scss"],
     standalone: true,
     imports: [
-    ListErrorsComponent,
-    FormsModule,
-    ReactiveFormsModule,
-    NgForOf,
-    CommonModule,
-    EditorComponent
-]
+      InputTextModule,
+      ListErrorsComponent,
+      FormsModule,
+      ReactiveFormsModule,
+      NgForOf,
+      CommonModule,
+      EditorComponent
+    ]
 })
 export class CreateTestComponent implements OnInit, OnDestroy {
   isSubmitting = false;
