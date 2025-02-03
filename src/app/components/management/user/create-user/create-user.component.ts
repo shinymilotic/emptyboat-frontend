@@ -95,7 +95,7 @@ export class CreateUserComponent implements OnInit{
       next: () => {
         
       },
-      error: (error) => {
+      error: (error: ApiError) => {
         this.errors = error;
       }
     });

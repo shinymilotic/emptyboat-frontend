@@ -25,7 +25,7 @@ export class ConfirmEmailComponent implements OnInit {
       next: () => {
           this.isConfirmed = true;
       },
-      error: (errors) => {
+      error: (errors: ApiError) => {
         this.errors = errors;
       }
     });

@@ -125,7 +125,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
           this.commentControl.reset("");
           this.isSubmitting = false;
         },
-        error: (errors) => {
+        error: (errors: ApiError) => {
           this.isSubmitting = false;
           this.commentFormErrors = errors;
         },

@@ -42,7 +42,7 @@ import { User } from "src/app/models/auth/user.model";
     ]
 })
 export class TestComponent implements OnInit {
-  errors!: ApiError[];
+  errors!: ApiError;
   isSubmitting = false;
   test: TestResponse = {
     author: {
@@ -167,7 +167,7 @@ export class TestComponent implements OnInit {
         next: (result) => {
           this.router.navigate(["/tests"]);
         },
-        error: (errors) => {
+        error: (errors: ApiError) => {
           this.errors = errors;
           this.isSubmitting = false;
         },

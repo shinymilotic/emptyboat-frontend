@@ -5,6 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import { User } from "../models/auth/user.model";
 import { AuthCookieUtils } from "../utils/authCookie.utils";
 import { RestResponse } from "../models/restresponse.model";
+import { ApiError } from "../models/apierrors.model";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
@@ -56,7 +57,7 @@ export class UserService {
         next: ({data}) => {
           this.userSignal.set(data);
         },
-        error: (errors) => this.purgeAuth(),
+        error: (errors: ApiError) => this.purgeAuth(),
       }),
       shareReplay(1)
     );

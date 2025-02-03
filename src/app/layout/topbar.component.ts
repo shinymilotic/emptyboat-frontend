@@ -9,6 +9,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { MenuModule } from 'primeng/menu';
 import { UserService } from '../services/user.service';
 import { Router } from "@angular/router";
+import { ApiError } from '../models/apierrors.model';
 
 @Component({
     selector: 'app-topbar',
@@ -106,8 +107,7 @@ export class TopBarComponent {
               void this.router.navigate(["/"]).then(() => window.location.reload());
             }
           },
-          error: (errors) => {
-            console.log(errors);
+          error: (errors: ApiError) => {
             void this.router.navigate(["/"]).then(() => window.location.reload());
         }
         });

@@ -248,7 +248,7 @@ export class EditorComponent implements OnInit, OnDestroy {
         next: ({data}) => {
           this.router.navigate(["/articles/", data]);
         },
-        error: (errors) => {
+        error: (errors: ApiError) => {
           this.errors = errors;
           this.isSubmitting = false;
         },
