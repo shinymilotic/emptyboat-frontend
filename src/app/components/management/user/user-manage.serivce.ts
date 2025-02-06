@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { User } from "./user.model";
-import { CreateUserForm } from "./create-user/create-user.component";
 import { CreateUserRequest } from "./create-user/create-user-request.model";
 
 @Injectable({ providedIn: "root" })

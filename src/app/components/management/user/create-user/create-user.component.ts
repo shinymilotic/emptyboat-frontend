@@ -8,6 +8,7 @@ import { CreateUserRequest } from './create-user-request.model';
 import { NgIf } from '@angular/common';
 import { ApiError } from 'src/app/models/apierrors.model';
 import { ListErrorsComponent } from "../../../../shared-components/list-errors/list-errors.component";
+import { Router } from '@angular/router';
 
 export interface CreateUserForm {
   username: FormControl<string>;
@@ -32,7 +33,8 @@ export class CreateUserComponent implements OnInit{
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly manageUserService: UserManageService
+    private readonly manageUserService: UserManageService,
+    private readonly router: Router
   ) { }
   
   ngOnInit(): void {
@@ -57,43 +59,68 @@ export class CreateUserComponent implements OnInit{
     });
   }
 
-  validateUsername(username?: string): void {
+  validateUsername(): void {
     if (this.username?.hasError('required')) {
-      this.errors.errors.push()
+      this.errors.errors.push({
+        messageId: '',
+        message: 'Username can\'t be blank.'
+      });
     }
 
     if (this.username?.hasError('minlength') || this.username?.hasError('maxlength')) {
-
+      this.errors.errors.push({
+        messageId: '',
+        message: 'Username must contains from 6 to 32 characters'
+      });
     }
   }
 
-  validatePassword(password?: string): void {
-    
+  validatePassword(): void {
+    if (this.password?.hasError('required')) {
+      this.errors.errors.push({
+        messageId: '',
+        message: 'Password can\'t be blank.'
+      });
+    }
+
+    if (this.password?.hasError('minlength') || this.password?.hasError('maxlength')) {
+      this.errors.errors.push({
+        messageId: '',
+        message: 'Password must contains from 8 to 64 characters.'
+      });
+    }
   }
 
-  validateEmail(email?: string): void {
-    
+  validateEmail(): void {
+    if (this.email?.hasError('required')) {
+      this.errors.errors.push({
+        messageId: '',
+        message: 'Email can\'t be blank.'
+      });
+    }
+
+    if (this.email?.hasError('email')) {
+      this.errors.errors.push({
+        messageId: '',
+        message: 'Email is not valid.'
+      });
+    }
   }
 
-  createUser() {
+  createUser(): void {
     const form : CreateUserRequest = this.createUserForm.value;
 
-    this.validateUsername(form.username);
-    this.validatePassword(form.password);
-    this.validateEmail(form.email);
+    this.validateUsername();
+    this.validatePassword();
+    this.validateEmail();
 
-    const request: CreateUserRequest = {
-      username: this.createUserForm.value.username,
-      password: this.createUserForm.value.password,
-      email: this.createUserForm.value.email,
-      bio: this.createUserForm.value.bio,
-      image: this.createUserForm.value.image,
-      enabled: this.createUserForm.value.enabled
+    if (this.errors.errors.length != 0) {
+      return;
     }
 
-    this.manageUserService.adminCreateUser(request).subscribe({
+    this.manageUserService.adminCreateUser(form).subscribe({
       next: () => {
-        
+        this.router.navigate(["/admin/user"]);
       },
       error: (error: ApiError) => {
         this.errors = error;
