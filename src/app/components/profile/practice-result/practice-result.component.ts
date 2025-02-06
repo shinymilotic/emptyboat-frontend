@@ -5,7 +5,6 @@ import { Question } from "./Question";
 import { ChoiceResult } from "./ChoiceQuestion";
 import { ChoiceAnswer } from "./ChoiceAnswer";
 import { OpenAnswerResult } from "./OpenAnswerResult";
-import { RestResponse } from "src/app/models/restresponse.model";
 import { QuestionType } from "src/app/models/test/QuestionType";
 
 @Component({
@@ -28,8 +27,8 @@ export class PracticeResultComponent implements OnInit {
     private readonly practiceService: PracticeService) {}
 
   ngOnInit(): void {
-    this.practiceService.getPractice(this.id).subscribe((data: RestResponse<PracticeResult>) => {
-      this.practiceResult = data.data;
+    this.practiceService.getPractice(this.id).subscribe((data: PracticeResult) => {
+      this.practiceResult = data;
     });
   }
 

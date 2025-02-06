@@ -12,7 +12,6 @@ import { ProfileService } from "../../services/profile.service";
 import { UserService } from "../../services/user.service";
 import { Profile } from "../../models/auth/profile.model";
 import { NgClass } from "@angular/common";
-import { RestResponse } from "src/app/models/restresponse.model";
 
 @Component({
   selector: "app-follow-button",
@@ -61,7 +60,7 @@ export class FollowButtonComponent implements OnInit, OnDestroy {
       });
   }
 
-  public toggleFollow(following: boolean): Observable<RestResponse<void>> {
+  public toggleFollow(following: boolean): Observable<void> {
     if (!following) {
       return this.profileService.follow(this.profile.username);
     } else {

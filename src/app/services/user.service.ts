@@ -4,7 +4,6 @@ import { tap, shareReplay } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import { User } from "../models/auth/user.model";
 import { AuthCookieUtils } from "../utils/authCookie.utils";
-import { RestResponse } from "../models/restresponse.model";
 import { ApiError } from "../models/apierrors.model";
 
 @Injectable({ providedIn: "root" })
@@ -16,10 +15,10 @@ export class UserService {
     private readonly authCookieUtils: AuthCookieUtils,
   ) {}
 
-  login(credentials: { email: string; password: string }): Observable<RestResponse<User>> {
+  login(credentials: { email: string; password: string }): Observable<User> {
     return this.http
-      .post<RestResponse<User>>("/users/login", credentials )
-      .pipe(tap(({data}) => {
+      .post<User>("/users/login", credentials )
+      .pipe(tap((data) => {
         this.userSignal.set(data);
         this.authCookieUtils.saveUserIdCookie(data.id);
       }));
@@ -29,32 +28,32 @@ export class UserService {
     username: string;
     email: string;
     password: string;
-  }): Observable<RestResponse<void>> {
+  }): Observable<void> {
     return this.http
-      .post<RestResponse<void>>("/users", credentials);
+      .post<void>("/users", credentials);
   }
 
-  logout(): Observable<RestResponse<void>> {
-    return this.http.post<RestResponse<void>>("/users/logout", {});
+  logout(): Observable<void> {
+    return this.http.post<void>("/users/logout", {});
   }
 
-  getCurrentUser(): Observable<RestResponse<User>> {
-    return this.http.get<RestResponse<User>>("/users/current");
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>("/users/current");
   }
 
-  update(user: Partial<User>): Observable<RestResponse<User>> {
-    return this.http.put<RestResponse<User>>("/users/current", user).pipe(
+  update(user: Partial<User>): Observable<User> {
+    return this.http.put<User>("/users/current", user).pipe(
       tap((user) => {
-        this.userSignal.set(user.data);
+        this.userSignal.set(user);
       })
     );
   }
 
-  auth(): Observable<RestResponse<User>> {
+  auth(): Observable<User> {
     console.log("auth");
-    return this.http.get<RestResponse<User>>("/users/current").pipe(
+    return this.http.get<User>("/users/current").pipe(
       tap({
-        next: ({data}) => {
+        next: (data) => {
           this.userSignal.set(data);
         },
         error: (errors: ApiError) => this.purgeAuth(),
@@ -68,20 +67,20 @@ export class UserService {
     this.userSignal.set(null);
   }
 
-  refreshToken(): Observable<RestResponse<string>> {
+  refreshToken(): Observable<string> {
     return this.http
-      .post<RestResponse<string>>("/users/refreshToken", {});
+      .post<string>("/users/refreshToken", {});
       ;
   }
 
-  confirmEmail(token: string) : Observable<RestResponse<void>> {
+  confirmEmail(token: string) : Observable<void> {
     return this.http
-      .post<RestResponse<void>>(`/confirmEmail`, {"confirmToken" : token});
+      .post<void>(`/confirmEmail`, {"confirmToken" : token});
     ;
   }
 
-  getFollowers(userId: string) : Observable<RestResponse<User[]>> {
+  getFollowers(userId: string) : Observable<User[]> {
     return this.http
-      .get<RestResponse<User[]>>(`/followers/${userId}`, {});
+      .get<User[]>(`/followers/${userId}`, {});
   }
 }

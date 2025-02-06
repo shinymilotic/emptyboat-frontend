@@ -4,25 +4,24 @@ import { HttpClient } from "@angular/common/http";
 import { Practice } from "../models/test/practice.model";
 import { UserPractice } from "../models/test/user-practices.model";
 import { PracticeResult } from "src/app/components/profile/practice-result/PracticeResult";
-import { RestResponse } from "../models/restresponse.model";
 import { CreatePracticeResponse } from "src/app/components/test/practice-test/create-practice-res.model";
 
 @Injectable({ providedIn: "root" })
 export class PracticeService {
   constructor(private readonly http: HttpClient) {}
 
-  createPractice(practice: Practice): Observable<RestResponse<CreatePracticeResponse>> {
+  createPractice(practice: Practice): Observable<CreatePracticeResponse> {
     return this.http
-      .post<RestResponse<CreatePracticeResponse>>(`/practice`, practice);
+      .post<CreatePracticeResponse>(`/practice`, practice);
   }
 
-  getPractices(username: string): Observable<RestResponse<UserPractice[]>> {
+  getPractices(username: string): Observable<UserPractice[]> {
     return this.http
-      .get<RestResponse<UserPractice[]>>(`/practices/${username}`);
+      .get<UserPractice[]>(`/practices/${username}`);
   }
 
-  getPractice(id: string): Observable<RestResponse<PracticeResult>> {
+  getPractice(id: string): Observable<PracticeResult> {
     return this.http
-      .get<RestResponse<PracticeResult>>(`/practice/${id}`);
+      .get<PracticeResult>(`/practice/${id}`);
   }
 }

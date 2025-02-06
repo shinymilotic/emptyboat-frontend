@@ -2,23 +2,22 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Comment } from "../models/blog/comment.model";
-import { RestResponse } from "../models/restresponse.model";
 
 @Injectable({ providedIn: "root" })
 export class CommentsService {
   constructor(private readonly http: HttpClient) {}
 
-  getAll(id: string): Observable<RestResponse<Comment[]>> {
+  getAll(id: string): Observable<Comment[]> {
     return this.http
-      .get<RestResponse<Comment[]>>(`/articles/${id}/comments`);
+      .get<Comment[]>(`/articles/${id}/comments`);
   }
 
-  add(id: string, payload: string): Observable<RestResponse<Comment>> {
+  add(id: string, payload: string): Observable<Comment> {
     return this.http
-      .post<RestResponse<Comment>>(`/articles/${id}/comments`, { body: payload });
+      .post<Comment>(`/articles/${id}/comments`, { body: payload });
   }
 
-  delete(commentId: string, articleId: string): Observable<RestResponse<void>> {
-    return this.http.delete<RestResponse<void>>(`/comment/${commentId}`);
+  delete(commentId: string, articleId: string): Observable<void> {
+    return this.http.delete<void>(`/comment/${commentId}`);
   }
 }

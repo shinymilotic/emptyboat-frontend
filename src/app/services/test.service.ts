@@ -3,7 +3,6 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { CreateTestRequest } from "../models/test/test.model";
 import { TestResponse } from "../models/test/test-response.model";
-import { RestResponse } from "../models/restresponse.model";
 import { SimpleTestResponse } from "src/app/components/test/test-list/simple-test-response.model";
 import { TestResponseUpd } from "src/app/components/test/update-test/test-response-update";
 
@@ -11,30 +10,30 @@ import { TestResponseUpd } from "src/app/components/test/update-test/test-respon
 export class TestService {
   constructor(private readonly http: HttpClient) {}
 
-  get(): Observable<RestResponse<SimpleTestResponse[]>> {
+  get(): Observable<SimpleTestResponse[]> {
     return this.http
-      .get<RestResponse<SimpleTestResponse[]>>("/tests");
+      .get<SimpleTestResponse[]>("/tests");
   }
 
-  getOne(id: string): Observable<RestResponse<TestResponse>> {
+  getOne(id: string): Observable<TestResponse> {
     return this.http
-      .get<RestResponse<TestResponse>>(`/tests/${id}`);
+      .get<TestResponse>(`/tests/${id}`);
   }
 
-  create(test: Partial<CreateTestRequest>): Observable<RestResponse<void>> {
-    return this.http.post<RestResponse<void>>("/test", test);
+  create(test: Partial<CreateTestRequest>): Observable<void> {
+    return this.http.post<void>("/test", test);
   }
 
-  delete(id: string): Observable<RestResponse<void>> {
-    return this.http.delete<RestResponse<void>>(`/tests/${id}`);
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`/tests/${id}`);
   }
 
-  update(testId: string, testUpd: TestResponseUpd): Observable<RestResponse<void>> {
+  update(testId: string, testUpd: TestResponseUpd): Observable<void> {
     return this.http
-      .put<RestResponse<void>>(`/test/${testId}/update`, testUpd);
+      .put<void>(`/test/${testId}/update`, testUpd);
   }
 
-  getProfileCreateTests(username: string) : Observable<RestResponse<SimpleTestResponse[]>> {
-    return this.http.get<RestResponse<SimpleTestResponse[]>>(`/tests/${username}/profile`);
+  getProfileCreateTests(username: string) : Observable<SimpleTestResponse[]> {
+    return this.http.get<SimpleTestResponse[]>(`/tests/${username}/profile`);
   }
 }
