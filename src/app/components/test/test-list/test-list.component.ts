@@ -25,7 +25,7 @@ export class TestListComponent implements OnDestroy {
       .get()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ({data}) => {
+        next: (data) => {
           this.tests = data;
         },
         error: (err) => {

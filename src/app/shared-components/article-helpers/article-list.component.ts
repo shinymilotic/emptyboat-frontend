@@ -59,7 +59,7 @@ export class ArticleListComponent implements OnDestroy {
     this.articlesService
       .query(this.query)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(({data}) => {
+      .subscribe((data) => {
         this.loading = LoadingState.LOADED;
         this.results.push(...data.articles);
         if (data.articles !== undefined && data.articles.length > 0) {

@@ -47,8 +47,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }),
       )
       .subscribe((profile) => {
-        this.profile = profile.data;
-        this.profileService.profile.set(profile.data);
+        this.profile = profile;
+        this.profileService.profile.set(profile);
       });
   }
 

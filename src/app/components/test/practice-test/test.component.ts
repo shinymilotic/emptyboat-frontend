@@ -106,7 +106,7 @@ export class TestComponent implements OnInit {
           return throwError(() => err);
         })
       )
-      .subscribe(({data}) => {
+      .subscribe((data) => {
         this.test = data;
         this.questionForm = this.toFormGroup(this.test.questions);
       });
@@ -147,7 +147,7 @@ export class TestComponent implements OnInit {
       }
     });
     this.practiceService.createPractice(practice)
-      .subscribe(({data}) => {
+      .subscribe((data) => {
         const user: User | null = this.userService.userSignal();
 
         if (user == null) {

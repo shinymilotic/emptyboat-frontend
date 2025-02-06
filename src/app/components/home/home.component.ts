@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   tags$ = inject(TagService)
     .getFollowingTags()
     .pipe(
-      map((data) => data.data),
+      map((data) => data),
       tap(() => (this.tagsLoaded = true))
     );
   tagsLoaded = false;

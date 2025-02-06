@@ -22,7 +22,7 @@ export class TestCreateComponent implements OnInit {
     const username :string = this.route.snapshot.params["username"];
     this.testService.getProfileCreateTests(username).subscribe({
       next: (data) => {
-        this.tests = data.data;
+        this.tests = data;
       },
       error: () => {
 

@@ -51,7 +51,7 @@ export class UpdateTestComponent implements OnInit {
           return throwError(() => err);
         })
       )
-      .subscribe(({data}) => {
+      .subscribe((data) => {
         this.testUpd.description = data.description;
         this.testUpd.title = data.title;
         data.questions.forEach((question) => {

@@ -163,7 +163,7 @@ export class EditorComponent implements OnInit, OnDestroy {
             return throwError(() => err);
           }),
         )
-        .subscribe(({data}) => {
+        .subscribe((data) => {
           if (this.userService.userSignal()?.username === data.author.username) {
             this.inTags = data.tagList;
             this.articleForm.patchValue(data);
@@ -190,7 +190,7 @@ export class EditorComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.tagService.getAll(false).subscribe(({data}) => {
+    this.tagService.getAll(false).subscribe((data) => {
       this.filteredTags = data;
     }
     );
@@ -245,7 +245,7 @@ export class EditorComponent implements OnInit, OnDestroy {
       .create(article)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ({data}) => {
+        next: (data) => {
           this.router.navigate(["/articles/", data]);
         },
         error: (errors: ApiError) => {

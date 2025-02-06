@@ -78,8 +78,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(([article, comments]) => {
-        this.article = article.data;
-        this.comments = comments.data;
+        this.article = article;
+        this.comments = comments;
       });
   }
 
@@ -121,7 +121,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (comment) => {
-          this.comments.unshift(comment.data);
+          this.comments.unshift(comment);
           this.commentControl.reset("");
           this.isSubmitting = false;
         },

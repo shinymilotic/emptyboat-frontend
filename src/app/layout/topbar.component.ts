@@ -101,11 +101,9 @@ export class TopBarComponent {
     logout(): void {
         this.userService.logout()
         .subscribe({
-          next: (isLogout) => {
-            if (isLogout) {
+          next: () => {
               this.userService.purgeAuth();
               void this.router.navigate(["/"]).then(() => window.location.reload());
-            }
           },
           error: (errors: ApiError) => {
             void this.router.navigate(["/"]).then(() => window.location.reload());

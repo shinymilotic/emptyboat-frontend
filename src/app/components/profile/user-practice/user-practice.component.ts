@@ -21,7 +21,7 @@ export class UserPracticeComponent implements OnInit {
 
   ngOnInit() {
     const username = this.getUsername();
-    this.practiceService.getPractices(username).subscribe(({data}) => {
+    this.practiceService.getPractices(username).subscribe((data) => {
       data.forEach(practice => {
         const [day, month, year] = practice.date.split(/[- :]/);
         const date = day + '/' + month + '/' + year;
