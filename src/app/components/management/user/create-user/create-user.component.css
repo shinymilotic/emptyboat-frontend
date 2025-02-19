@@ -7,3 +7,25 @@
     padding-bottom: 2rem;
     color: #b85c5c;
 }
+
+.form-container  {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    line-height: 26px;
+    margin-bottom: 10px;
+    width: 75%;
+}
+
+.bio {
+    width: 246.33px;
+    overflow-y: overlay;
+    outline: none;
+    min-height: 100px;
+}
+
+.bio:focus {
+    border-color: #4b5563;
+}
+
+  

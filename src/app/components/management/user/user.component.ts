@@ -8,12 +8,15 @@ import { ImageModule } from 'primeng/image';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
+import { ApiError } from 'src/app/models/apierrors.model';
+import { ListErrorsComponent } from "../../../shared-components/list-errors/list-errors.component";
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [TableModule, CommonModule, PaginatorModule, ImageModule, IconFieldModule,InputIconModule,InputTextModule, RouterLink ],
+  imports: [TableModule, CommonModule, RouterModule, PaginatorModule, ImageModule, IconFieldModule, InputIconModule, InputTextModule, RouterLink, ListErrorsComponent],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
@@ -23,30 +26,28 @@ export class UserComponent implements OnInit {
   pageNumber: number = 0;
   itemsPerPage: number = 10;
   searchKeywords: string = '';
+  error!: ApiError;
 
-  constructor(private readonly userManageService: UserManageService) {
+  constructor(
+    private readonly userManageService: UserManageService,
+    private readonly router: Router
+  ) {
 
   }
 
   ngOnInit(): void {
-    this.userManageService.getUsers(this.pageNumber, this.itemsPerPage).subscribe({
-      next: (data: User[]) => {
-        this.users = data;
-      },
-      error: () => {
-
-      }
-    });
-    
-    this.userManageService.getUsersCount().subscribe({
-      next: (data: number) => {
-        this.usersCount = data;
-        console.log(data);
-      },
-      error: () => {
-
-      }
-    })
+    forkJoin([
+      this.userManageService.getUsers(this.pageNumber, this.itemsPerPage),
+      this.userManageService.getUsersCount()
+      ]).subscribe({
+        next: ([data, userCount]) => {
+          this.users = data;
+          this.usersCount = userCount;
+        },
+        error: (error: ApiError) => {
+          this.error = error;
+        }
+      })
   }
 
   onPageChange($event: PaginatorState) {
@@ -62,8 +63,8 @@ export class UserComponent implements OnInit {
         }
         
       },
-      error: () => {
-
+      error: (error: ApiError) => {
+        this.error = error;
       }
     });
   }
@@ -71,10 +72,12 @@ export class UserComponent implements OnInit {
   deleteUser(userId: string) : void {
     this.userManageService.deleteUser(userId).subscribe({
       next: () => {
-
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate(['admin/user']);
+      });
       },
-      error: () => {
-
+      error: (error: ApiError) => {
+        this.error = error;
       }
     })
   }

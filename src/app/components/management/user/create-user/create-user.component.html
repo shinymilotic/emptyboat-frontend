@@ -6,13 +6,17 @@
       <app-list-errors [errors]="errors"></app-list-errors>
     </div>
   
-    <div class="flex flex-col w-fit gap-10">
-        <div class="flex justify-between"><label class="self-center" for="username">Username: </label><input pInputText id="username" formControlName="username" class="float-right" /></div>
-        <div class="flex justify-between"><label class="self-center" for="password">Password: </label><input pInputText type="password" id="password" formControlName="password" class="float-right" /></div>
-        <div class="flex justify-between"><label class="self-center" for="email">Email: </label><input pInputText id="email" formControlName="email" class="float-right" /></div>
-        <div class="flex justify-between"><label class="self-center" for="bio">Bio: </label><input pInputText id="bio" formControlName="bio" class="float-right" /></div>
-        <div class="flex justify-between"><label class="self-center" for="image">Image: </label><input pInputText id="image" formControlName="image" class="float-right" /></div>
-        <div class="flex flex-row gap-2"><label>Enabled?: </label> 
+    <!-- <div class="flex flex-col w-fit gap-10"> -->
+        <div class="flex form-container"><label class="self-center" for="username">Username: </label><input pInputText id="username" formControlName="username" class="float-right" /></div>
+        <div class="flex form-container"><label class="self-center" for="password">Password: </label><input pInputText type="password" id="password" formControlName="password" class="float-right" /></div>
+        <div class="flex form-container"><label class="self-center" for="email">Email: </label><input pInputText id="email" formControlName="email" class="float-right" /></div>
+        <div class="flex form-container"><label class="self-center" for="bio">Bio: </label>
+            <!-- <input pInputText id="bio" formControlName="bio" class="float-right" /> -->
+
+            <div pInputText id="bio" class="float-right bio" contenteditable formControlName="bio"></div>
+        </div>
+        <div class="flex form-container"><label class="self-center" for="image">Image: </label><input pInputText id="image" formControlName="image" class="float-right" /></div>
+        <div class="flex form-container gap-2"><label>Enabled?: </label> 
             <div class="flex flex-wrap gap-4">
                 <div class="flex items-center">
                     <p-radioButton inputId="enabledOn" [value]="true" formControlName="enabled" />
@@ -27,7 +31,7 @@
         </div>
 
         <button class="overcloud-btn createUserBtn w-fit self-center" type="submit">Create</button>
-    </div>
+    <!-- </div> -->
 </form>
 
 
