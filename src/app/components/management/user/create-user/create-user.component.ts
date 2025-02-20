@@ -9,6 +9,8 @@ import { NgIf } from '@angular/common';
 import { ApiError } from 'src/app/models/apierrors.model';
 import { ListErrorsComponent } from "../../../../shared-components/list-errors/list-errors.component";
 import { Router } from '@angular/router';
+import { FileSelectEvent, FileUpload, FileUploadModule } from 'primeng/fileupload';
+import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
 
 export interface CreateUserForm {
   username: FormControl<string>;
@@ -19,14 +21,31 @@ export interface CreateUserForm {
   enabled: FormControl<boolean>;
 }
 
+
+interface UploadEvent {
+  currentFiles: Array<File>;
+  originalEvent: Event;
+  fileList: FileList;
+}
+
 @Component({
   selector: 'app-create-user',
   standalone: true,
-  imports: [InputTextModule, DropdownModule, RadioButtonModule, FormsModule, ReactiveFormsModule, NgIf, ListErrorsComponent],
+  imports: [
+    InputTextModule, 
+    DropdownModule, 
+    RadioButtonModule, 
+    FormsModule, 
+    ReactiveFormsModule, 
+    ListErrorsComponent, 
+    FileUploadModule,
+    ContenteditableValueAccessor
+    ],
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.css'
 })
 export class CreateUserComponent implements OnInit{
+  isDisable: boolean = true;
   createUserForm!: FormGroup<CreateUserForm>;
   isDisplayError: boolean = false;
   errors: ApiError = {errors: []};
@@ -150,5 +169,23 @@ export class CreateUserComponent implements OnInit{
 
   get enabled() {
     return this.createUserForm.get('enabled');
+  }
+
+  onUpload(event: FileSelectEvent) {
+    this.isDisable = false;
+    event.files[0].arrayBuffer().then((data: ArrayBuffer) => {
+      let binary = '';
+      let bytes = new Uint8Array(data);
+      let len = bytes.byteLength;
+
+      for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      this.createUserForm.get('image')?.setValue(binary);
+      this.isDisable = true;
+      // const file: FileReader = new FileReader();
+      // file.readAsArrayBuffer(data);
+      // console.log(file);
+    });
   }
 }

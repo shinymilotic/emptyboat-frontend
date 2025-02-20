@@ -50,7 +50,7 @@ import { NgFor, NgForOf } from '@angular/common';
             @if (item.items && item.visible !== false) {
                 <ul>
                     <ng-template ngFor let-child let-i="index" [ngForOf]="item.items">
-                        <li app-menuitem [item]="child" [index]="i" [parentKey]="key" [class]="child.badgeClass"></li>
+                        <li app-menuitem class="menuItem" [item]="child" [index]="i" [parentKey]="key" [class]="child.badgeClass"></li>
                     </ng-template>
 			    </ul>
             }
@@ -80,6 +80,7 @@ import { NgFor, NgForOf } from '@angular/common';
         NgFor,
         NgForOf
     ],
+    styleUrl: './app.menu.component.scss',
     standalone: true
 })
 export class AppMenuitemComponent implements OnInit, OnDestroy {

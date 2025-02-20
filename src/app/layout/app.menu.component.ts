@@ -6,6 +6,7 @@ import { AppMenuitemComponent } from './app.menuitem.component';
 @Component({
     selector: 'app-menu',
     templateUrl: './app.menu.component.html',
+    styleUrl: './app.menu.component.scss',
     standalone: true,
     imports: [
         AppMenuitemComponent
