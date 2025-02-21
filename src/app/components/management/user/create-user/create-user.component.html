@@ -11,14 +11,12 @@
         <div class="flex form-container"><label class="self-center" for="password">Password: </label><input pInputText type="password" id="password" formControlName="password" class="float-right" /></div>
         <div class="flex form-container"><label class="self-center" for="email">Email: </label><input pInputText id="email" formControlName="email" class="float-right" /></div>
         <div class="flex form-container"><label class="self-center" for="bio">Bio: </label>
-            <!-- <input pInputText id="bio" formControlName="bio" class="float-right" /> -->
-
             <div pInputText id="bio" class="float-right bio" contenteditable formControlName="bio"></div>
         </div>
         <div class="flex form-container"><label class="self-center" for="image">Image: </label>
             <div class="flex flex-row items-center">
-                <p-fileUpload #fu mode="basic" [showCancelButton]="true" chooseLabel="Choose" chooseIcon="pi pi-upload" name="demo[]" (onSelect)="onUpload($event)" accept="image/*"  />
-                <i _ngcontent-ng-c3532602245="" class="pi pi-times pl-2 deleteFileBtn"></i>    
+                <input #inputImage type="file" id="image" name="image" accept="image/*" (change)="this.onSelectImage($event)" class="chooseFileBtn">
+                <i #resetImageBtn _ngcontent-ng-c3532602245="" class="pi pi-times mr-4 pl-2 deleteFileBtn"></i>
             </div>
         </div>
         <div class="flex form-container gap-2"><label>Enabled?: </label> 

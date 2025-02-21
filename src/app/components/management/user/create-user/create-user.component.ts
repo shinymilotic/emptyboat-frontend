@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, RequiredValidator, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
@@ -9,7 +9,7 @@ import { NgIf } from '@angular/common';
 import { ApiError } from 'src/app/models/apierrors.model';
 import { ListErrorsComponent } from "../../../../shared-components/list-errors/list-errors.component";
 import { Router } from '@angular/router';
-import { FileSelectEvent, FileUpload, FileUploadModule } from 'primeng/fileupload';
+import { FileSelectEvent, FileUpload, FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
 import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
 
 export interface CreateUserForm {
@@ -19,13 +19,6 @@ export interface CreateUserForm {
   bio: FormControl<string>;
   image: FormControl<string>;
   enabled: FormControl<boolean>;
-}
-
-
-interface UploadEvent {
-  currentFiles: Array<File>;
-  originalEvent: Event;
-  fileList: FileList;
 }
 
 @Component({
@@ -49,7 +42,9 @@ export class CreateUserComponent implements OnInit{
   createUserForm!: FormGroup<CreateUserForm>;
   isDisplayError: boolean = false;
   errors: ApiError = {errors: []};
-
+  @ViewChild('inputImage') inputImage!: ElementRef;
+  @ViewChild('resetImageBtn') resetImageBtn!: ElementRef;
+  
   constructor(
     private readonly fb: FormBuilder,
     private readonly manageUserService: UserManageService,
@@ -187,5 +182,24 @@ export class CreateUserComponent implements OnInit{
       // file.readAsArrayBuffer(data);
       // console.log(file);
     });
+  }
+
+  onSelectImage(event: Event) {
+    this.isDisable = false;
+    const target: HTMLInputElement = event.target as HTMLInputElement;
+
+    if (target != null && target.files != null) {
+      target.files[0].arrayBuffer().then((data: ArrayBuffer) => {
+        let binary = '';
+        let bytes = new Uint8Array(data);
+        let len = bytes.byteLength;
+  
+        for (var i = 0; i < len; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        this.createUserForm.get('image')?.setValue(binary);
+        this.isDisable = true;
+      });
+    }
   }
 }
