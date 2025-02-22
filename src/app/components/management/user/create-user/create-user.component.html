@@ -1,7 +1,7 @@
 
 
 
-<form [formGroup]="this.createUserForm" method="post" (ngSubmit)="createUser()">
+<form [formGroup]="this.createUserForm" method="post">
     <div class="form-errors">
       <app-list-errors [errors]="errors"></app-list-errors>
     </div>
@@ -15,10 +15,16 @@
         </div>
         <div class="flex form-container"><label class="self-center" for="image">Image: </label>
             <div class="flex flex-row items-center">
-                <input #inputImage type="file" id="image" name="image" accept="image/*" (change)="this.onSelectImage($event)" class="chooseFileBtn">
-                <i #resetImageBtn _ngcontent-ng-c3532602245="" class="pi pi-times mr-4 pl-2 deleteFileBtn"></i>
+                <i #resetImageBtn _ngcontent-ng-c3532602245="" class="pi pi-times mr-4 pl-2 deleteFileBtn" (click)="this.resetImage()"></i>
+                <div class="flex flex-col">
+                    <input #inputImage type="file" id="image" name="image" accept="image/*" (change)="this.onSelectImage($event)" class="chooseFileBtn" />
+                    <!-- <button class="chooseFileBtn" onclick="image.click()">Select Image</button> -->
+                    <img #imagePreview src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Image" width="250" />
+                </div>
+
             </div>
         </div>
+
         <div class="flex form-container gap-2"><label>Enabled?: </label> 
             <div class="flex flex-wrap gap-4">
                 <div class="flex items-center">
@@ -32,8 +38,8 @@
                 </div>
             </div>
         </div>
-
-        <button class="overcloud-btn createUserBtn w-fit self-center" type="submit" [disabled]="this.isDisable">Create</button>
+        
+        <button class="overcloud-btn createUserBtn w-fit self-center" type="button"  (click)="createUser()">Create</button>
     <!-- </div> -->
 </form>
 

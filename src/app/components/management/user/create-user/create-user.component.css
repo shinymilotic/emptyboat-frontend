@@ -30,8 +30,17 @@
 
 .deleteFileBtn {
     font-size: 1.5rem;
+    cursor: pointer;
+    display: none;
 }
 
+/* input[type=file] {
+    display: block;
+}
+
+.chooseFileInput::file-selector-button {
+    display: none;
+} */
 
 .chooseFileBtn::file-selector-button {
     align-items: center;
@@ -48,4 +57,5 @@
     border-color: var(--primary-color) !important;
     padding: 0.5rem;
     border-radius: 8px;
+    margin-bottom: 1rem;
 }

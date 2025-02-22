@@ -11,6 +11,7 @@ import { ListErrorsComponent } from "../../../../shared-components/list-errors/l
 import { Router } from '@angular/router';
 import { FileSelectEvent, FileUpload, FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
 import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
+import { ImageModule } from 'primeng/image';
 
 export interface CreateUserForm {
   username: FormControl<string>;
@@ -32,7 +33,8 @@ export interface CreateUserForm {
     ReactiveFormsModule, 
     ListErrorsComponent, 
     FileUploadModule,
-    ContenteditableValueAccessor
+    ContenteditableValueAccessor,
+    ImageModule
     ],
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.css'
@@ -44,7 +46,8 @@ export class CreateUserComponent implements OnInit{
   errors: ApiError = {errors: []};
   @ViewChild('inputImage') inputImage!: ElementRef;
   @ViewChild('resetImageBtn') resetImageBtn!: ElementRef;
-  
+  @ViewChild('imagePreview') imagePreview!: ElementRef;
+
   constructor(
     private readonly fb: FormBuilder,
     private readonly manageUserService: UserManageService,
@@ -166,26 +169,7 @@ export class CreateUserComponent implements OnInit{
     return this.createUserForm.get('enabled');
   }
 
-  onUpload(event: FileSelectEvent) {
-    this.isDisable = false;
-    event.files[0].arrayBuffer().then((data: ArrayBuffer) => {
-      let binary = '';
-      let bytes = new Uint8Array(data);
-      let len = bytes.byteLength;
-
-      for (var i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i]);
-      }
-      this.createUserForm.get('image')?.setValue(binary);
-      this.isDisable = true;
-      // const file: FileReader = new FileReader();
-      // file.readAsArrayBuffer(data);
-      // console.log(file);
-    });
-  }
-
   onSelectImage(event: Event) {
-    this.isDisable = false;
     const target: HTMLInputElement = event.target as HTMLInputElement;
 
     if (target != null && target.files != null) {
@@ -197,9 +181,16 @@ export class CreateUserComponent implements OnInit{
         for (var i = 0; i < len; i++) {
           binary += String.fromCharCode(bytes[i]);
         }
-        this.createUserForm.get('image')?.setValue(binary);
-        this.isDisable = true;
+        this.createUserForm.get('image')?.setValue(btoa(binary));
+        this.resetImageBtn.nativeElement.style.display = 'block';
+        this.imagePreview.nativeElement.src= 'data:image/png;base64,'+ btoa(binary);
       });
     }
+  }
+
+  resetImage() {
+    this.inputImage.nativeElement.value = '';
+    this.resetImageBtn.nativeElement.style.display = 'none';
+    this.imagePreview.nativeElement.src = '';
   }
 }
