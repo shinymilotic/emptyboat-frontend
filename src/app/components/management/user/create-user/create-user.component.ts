@@ -127,6 +127,8 @@ export class CreateUserComponent implements OnInit{
   createUser(): void {
     const form : CreateUserRequest = this.createUserForm.value;
 
+    this.errors = {errors: []};
+
     this.validateUsername();
     this.validatePassword();
     this.validateEmail();
