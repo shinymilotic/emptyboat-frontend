@@ -23,7 +23,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   imports: [],
   standalone: true,
 })
-export class FavoriteButtonComponent implements OnDestroy {
+export class FavoriteButtonComponent {
   destroy$ = new Subject<void>();
   isSubmitting = false;
   destroyRef: DestroyRef = inject(DestroyRef);
@@ -33,9 +33,9 @@ export class FavoriteButtonComponent implements OnDestroy {
   constructor(
     private readonly articleService: ArticlesService,
     private readonly router: Router,
-    private readonly userService: UserService,
-    private readonly renderer: Renderer2
-  ) {}
+    private readonly userService: UserService) {
+      
+    }
 
   toggleFavoriteBtn($event: Event): void {
     $event.stopPropagation();
