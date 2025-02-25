@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Signal, computed } from "@angular/core";
+import { Component, DestroyRef, OnInit, Signal, computed, inject } from "@angular/core";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { Article } from "../../models/blog/article.model";
@@ -6,17 +6,18 @@ import { ArticlesService } from "../../services/articles.service";
 import { CommentsService } from "../../services/comments.service";
 import { UserService } from "../../services/user.service";
 import { ArticleMetaComponent } from "../../shared-components/article-helpers/article-meta.component";
-import { AsyncPipe, NgClass, NgForOf } from "@angular/common";
+import { NgClass, NgForOf } from "@angular/common";
 import { FollowButtonComponent } from "../../shared-components/buttons/follow-button.component";
 import { FavoriteButtonComponent } from "../../shared-components/buttons/favorite-button.component";
 import { ListErrorsComponent } from "../../shared-components/list-errors/list-errors.component";
 import { ArticleCommentComponent } from "./article-comment.component";
-import { catchError, takeUntil } from "rxjs/operators";
-import { Subject, combineLatest, throwError } from "rxjs";
+import { catchError, } from "rxjs/operators";
+import { combineLatest, throwError } from "rxjs";
 import { Comment } from "../../models/blog/comment.model";
 import { ShowAuthedDirective } from "../../directives/show-authed.directive";
 import { ApiError } from "src/app/models/apierrors.model";
 import { DialogModule } from 'primeng/dialog';
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
     selector: "app-article-page",
@@ -37,7 +38,7 @@ import { DialogModule } from 'primeng/dialog';
         DialogModule
     ]
 })
-export class ArticleComponent implements OnInit, OnDestroy {
+export class ArticleComponent implements OnInit {
   article!: Article;
   comments: Comment[] = [];
   canModify: Signal<boolean> = computed(() => {
@@ -52,7 +53,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   bodyAsHtml!: string;
   isSubmitting = false;
   isDeleting = false;
-  destroy$ = new Subject<void>();
+  destroyRef: DestroyRef = inject(DestroyRef);
   visible: boolean = false;
   
   constructor(
@@ -83,11 +84,6 @@ export class ArticleComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   onToggleFavorite(favorited: boolean): void {
     this.article.favorited = favorited;
 
@@ -107,7 +103,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
     this.articleService
       .delete(this.article.id)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         void this.router.navigate(["/"]);
       });
@@ -118,7 +114,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
     this.commentsService
       .add(this.article.id, this.commentControl.value)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (comment) => {
           this.comments.unshift(comment);
@@ -135,7 +131,7 @@ export class ArticleComponent implements OnInit, OnDestroy {
   deleteComment(comment: Comment): void {
     this.commentsService
       .delete(comment.id, this.article.id)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.comments = this.comments.filter((item) => item !== comment);
       });

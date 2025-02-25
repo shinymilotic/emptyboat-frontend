@@ -1,21 +1,18 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component } from "@angular/core";
 import { Article } from "../../../models/blog/article.model";
-import { SearchService } from "../../../services/search.service";
 import { SearchParam } from "../../../models/search.model";
-import { Subject, takeUntil } from "rxjs";
+import { Subject } from "rxjs";
 import { Router } from "@angular/router";
-import { ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @Component({
   selector: "app-search-bar",
   templateUrl: "./search-bar.component.html",
   styleUrls: ["./search-bar.component.css"],
-  imports: [ FormsModule, ReactiveFormsModule 
-  ],
+  imports: [FormsModule, ReactiveFormsModule],
   standalone: true,
 })
-export class SearchBarComponent implements OnDestroy {
+export class SearchBarComponent {
   results: Article[] = [];
   
   searchInput: FormControl<string> = new FormControl('', { nonNullable: true });
@@ -31,11 +28,6 @@ export class SearchBarComponent implements OnDestroy {
     private readonly fb: FormBuilder,
     private readonly router: Router,
   ) {}
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   onSearch() {
     const searchInput :string = this.searchForm.get("searchInput")?.value;

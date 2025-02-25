@@ -1,5 +1,7 @@
 import {
   Component,
+  DestroyRef,
+  inject,
   OnDestroy,
   OnInit,
 } from "@angular/core";
@@ -13,7 +15,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ListErrorsComponent } from "../../shared-components/list-errors/list-errors.component";
 import { ArticlesService } from "../../services/articles.service";
 import { Subject, throwError } from "rxjs";
-import { catchError, map, takeUntil, tap } from "rxjs/operators";
+import { catchError } from "rxjs/operators";
 import { UserService } from "../../services/user.service";
 import { TagService } from "src/app/services/tags.service";
 import { Editor } from '@tiptap/core'
@@ -23,6 +25,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { Tag } from "src/app/models/blog/tag.model";
 import { SubmitArticle } from "./submit-article.model";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 interface ArticleForm {
   title: FormControl<string>;
@@ -52,6 +55,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   isUpdate: boolean = false;
   editor!: Editor;
   items: Array<any> = [];
+  destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(
     private readonly articleService: ArticlesService,
@@ -227,7 +231,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     console.log(article);
     this.articleService
       .update(article, this.route.snapshot.params["id"])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
           this.router.navigate(["/articles/", this.route.snapshot.params["id"]]);
@@ -243,7 +247,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     const article : Partial<SubmitArticle> = this.articleForSubmit();
     this.articleService
       .create(article)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => {
           this.router.navigate(["/articles/", data]);

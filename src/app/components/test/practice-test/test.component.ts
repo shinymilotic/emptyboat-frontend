@@ -1,5 +1,5 @@
 import { NgForOf, CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import {
   FormArray,
   FormBuilder,
@@ -28,6 +28,7 @@ import { ApiError } from "src/app/models/apierrors.model";
 import { TestResponse } from "src/app/models/test/test-response.model";
 import { OpenQuestionEditorComponent } from "./practice-open-question-editor/open-question-editor.component";
 import { User } from "src/app/models/auth/user.model";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
     selector: "app-test",
@@ -56,7 +57,7 @@ export class TestComponent implements OnInit {
     questions: [],
     title: "",
   };
-  destroy$ = new Subject<void>();
+  destroyRef: DestroyRef = inject(DestroyRef);
   questionForm: FormGroup = new FormGroup([]);
   
   constructor(
@@ -162,9 +163,9 @@ export class TestComponent implements OnInit {
   deleteTest() {
     this.testService
       .delete(this.route.snapshot.params["id"])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (result) => {
+        next: () => {
           this.router.navigate(["/tests"]);
         },
         error: (errors: ApiError) => {

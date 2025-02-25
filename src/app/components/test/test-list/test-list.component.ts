@@ -1,10 +1,10 @@
 import { NgForOf, CommonModule } from "@angular/common";
-import { Component, OnDestroy } from "@angular/core";
+import { Component, DestroyRef, inject } from "@angular/core";
 import { RouterLinkActive, RouterLink } from "@angular/router";
-import { Subject, takeUntil } from "rxjs";
 import { ApiError } from "src/app/models/apierrors.model";
 import { TestService } from "src/app/services/test.service";
 import { SimpleTestResponse } from "./simple-test-response.model";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
     selector: "app-test-list",
@@ -13,17 +13,17 @@ import { SimpleTestResponse } from "./simple-test-response.model";
     standalone: true,
     imports: [RouterLinkActive, RouterLink, NgForOf, CommonModule]
 })
-export class TestListComponent implements OnDestroy {
+export class TestListComponent {
   errors!: ApiError;
   tests: SimpleTestResponse[] = [];
-  destroy$ = new Subject<void>();
+  destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(private readonly testService: TestService) {}
 
   ngOnInit() {
     this.testService
       .get()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => {
           this.tests = data;
@@ -32,10 +32,5 @@ export class TestListComponent implements OnDestroy {
           this.errors = err;
         },
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

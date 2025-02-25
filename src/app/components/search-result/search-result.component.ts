@@ -1,10 +1,7 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Subject, Subscription, takeUntil } from 'rxjs';
-import { Article } from 'src/app/models/blog/article.model';
+import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 import { LoadingState } from 'src/app/models/loading-state.model';
-import { SearchParam } from 'src/app/models/search.model';
 import { SearchService } from 'src/app/services/search.service';
-import { AsyncPipe } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -14,7 +11,6 @@ import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@ang
     standalone: true,
     imports: [
       RouterLink,
-      AsyncPipe,
       RouterLinkActive,
       RouterOutlet
     ]

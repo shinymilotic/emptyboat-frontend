@@ -1,14 +1,12 @@
 import { CommonModule, NgForOf } from "@angular/common";
 import {
     Component,
-    ElementRef,
+    DestroyRef,
+    inject,
     OnDestroy,
     OnInit,
-    Renderer2,
 } from "@angular/core";
 import {
-    AbstractControl,
-    Form,
     FormArray,
     FormBuilder,
     FormControl,
@@ -18,7 +16,7 @@ import {
     Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
-import { Subject, takeUntil } from "rxjs";
+import { Subject } from "rxjs";
 import { Question } from "src/app/models/test/question.model";
 import { CreateTestRequest } from "src/app/models/test/test.model";
 import { TestService } from "src/app/services/test.service";
@@ -31,6 +29,7 @@ import { QuestionForm } from "./form-model/QuestionForm";
 import { ApiError } from "src/app/models/apierrors.model";
 import { EditorComponent } from "./editor/editor.component";
 import { InputTextModule } from "primeng/inputtext";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
     selector: "app-create-test",
@@ -47,7 +46,7 @@ import { InputTextModule } from "primeng/inputtext";
       EditorComponent
     ]
 })
-export class CreateTestComponent implements OnInit, OnDestroy {
+export class CreateTestComponent implements OnInit {
   isSubmitting = false;
   errors!: ApiError;
   testForm: FormGroup = this.fb.group({
@@ -55,18 +54,13 @@ export class CreateTestComponent implements OnInit, OnDestroy {
     description: this.fb.control(""),
     questions: this.fb.array([]),
   });
-  destroy$ = new Subject<void>();
+  destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly testService: TestService,
     private readonly router: Router
   ) {}
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   get questionsFormArr(): FormArray<FormGroup<QuestionForm>> {
     return this.testForm.get("questions") as FormArray<FormGroup<QuestionForm>>;
@@ -153,7 +147,7 @@ export class CreateTestComponent implements OnInit, OnDestroy {
     };
     this.testService
       .create(test)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
           void this.router.navigate(["/tests"]);

@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, DestroyRef, HostListener, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { Article } from 'src/app/models/blog/article.model';
@@ -7,6 +7,7 @@ import { SearchParam } from 'src/app/models/search.model';
 import { SearchService } from 'src/app/services/search.service';
 import { ArticlePreviewComponent } from "../../../shared-components/article-helpers/article-preview.component";
 import { NgForOf } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-search-articles',
@@ -24,6 +25,7 @@ export class SearchArticlesComponent {
   destroy$ = new Subject<void>();
   message: string = '';
   q: string = '';
+  destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(
     private searchService: SearchService,
@@ -49,7 +51,7 @@ export class SearchArticlesComponent {
 
     this.searchService
       .search(param)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
         this.loading = LoadingState.LOADED;
         this.results.push(...data.articles);

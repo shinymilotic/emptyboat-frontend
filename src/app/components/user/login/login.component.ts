@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnDestroy, OnInit } from "@angular/core";
 import {
   Validators,
   FormGroup,
@@ -13,6 +13,7 @@ import { catchError, takeUntil } from "rxjs/operators";
 import { Subject, throwError } from "rxjs";
 import { LoginForm } from "./LoginForm";
 import { ApiError } from "src/app/models/apierrors.model";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 @Component({
     selector: "app-login",
     templateUrl: "./login.component.html",
@@ -20,12 +21,12 @@ import { ApiError } from "src/app/models/apierrors.model";
     standalone: true,
     imports: [RouterLink, ListErrorsComponent, ReactiveFormsModule]
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
   title = "";
   errors!: ApiError;
   isSubmitting = false;
   authForm: FormGroup<LoginForm>;
-  destroy$ = new Subject<void>();
+  destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -49,11 +50,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.title = "Login";
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   submitForm(): void {
     this.isSubmitting = true;
 
@@ -61,7 +57,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.authForm.value as { email: string; password: string }
     );
 
-    observable.pipe(takeUntil(this.destroy$)).subscribe({
+    observable.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => void this.router.navigate(["/"]),
       error: (errors: ApiError) => {
         console.log(errors);

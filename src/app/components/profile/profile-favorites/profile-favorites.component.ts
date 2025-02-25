@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ArticleListComponent } from "../../../shared-components/article-helpers/article-list.component";
-import { takeUntil } from "rxjs/operators";
 import { ProfileService } from "../../../services/profile.service";
 import { Profile } from "../../../models/auth/profile.model";
 import { ArticleListConfig } from "../../../models/blog/article-list-config.model";
-import { Subject } from "rxjs";
+import { Subject, takeUntil } from "rxjs";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "app-profile-favorites",
@@ -13,10 +13,10 @@ import { Subject } from "rxjs";
   imports: [ArticleListComponent],
   standalone: true,
 })
-export class ProfileFavoritesComponent implements OnInit, OnDestroy {
+export class ProfileFavoritesComponent implements OnInit {
   profile!: Profile;
   favoritesConfig!: ArticleListConfig;
-  destroy$ = new Subject<void>();
+  destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(
     private route: ActivatedRoute,
@@ -27,7 +27,7 @@ export class ProfileFavoritesComponent implements OnInit, OnDestroy {
     console.log("Favorites");
     this.profileService
       .get(this.route.parent?.snapshot.params["username"])
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => {
           this.profile = data;
@@ -38,10 +38,5 @@ export class ProfileFavoritesComponent implements OnInit, OnDestroy {
           };
         },
       });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

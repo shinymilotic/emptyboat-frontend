@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnDestroy, OnInit } from "@angular/core";
 import {
   Validators,
   FormGroup,
@@ -11,6 +11,7 @@ import { UserService } from "../../../services/user.service";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { ApiError } from "src/app/models/apierrors.model";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 interface RegisterFrom {
   email: FormControl<string>;
   password: FormControl<string>;
@@ -23,13 +24,13 @@ interface RegisterFrom {
     standalone: true,
     imports: [RouterLink, ListErrorsComponent, ReactiveFormsModule]
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnInit {
   title = "";
   errors!: ApiError;
   isSubmitting = false;
   authForm: FormGroup<RegisterFrom>;
   isRegisterSuccess: boolean = false;
-  destroy$ = new Subject<void>();
+  destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(
     private readonly userService: UserService
@@ -58,11 +59,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   submitForm(): void {
     this.isSubmitting = true;
 
@@ -74,7 +70,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       }
     );
 
-    observable.pipe(takeUntil(this.destroy$)).subscribe({
+    observable.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: () => this.isRegisterSuccess = true,
       error: (error: ApiError) => {
         this.errors = error;

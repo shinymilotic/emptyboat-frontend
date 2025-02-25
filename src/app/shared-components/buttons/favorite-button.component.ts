@@ -1,30 +1,32 @@
 import {
   Component,
+  DestroyRef,
   EventEmitter,
+  inject,
   Input,
   OnDestroy,
   Output,
   Renderer2,
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { EMPTY, Observable, Subject, of, switchMap } from "rxjs";
-import { map, takeUntil } from "rxjs/operators";
+import { Observable, Subject } from "rxjs";
 import { NgClass } from "@angular/common";
 import { ArticlesService } from "../../services/articles.service";
 import { UserService } from "../../services/user.service";
 import { Article } from "../../models/blog/article.model";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "app-favorite-button",
   templateUrl: "./favorite-button.component.html",
   styleUrls: ["./favorite-button.component.css"],
-  imports: [NgClass],
+  imports: [],
   standalone: true,
 })
 export class FavoriteButtonComponent implements OnDestroy {
   destroy$ = new Subject<void>();
   isSubmitting = false;
-
+  destroyRef: DestroyRef = inject(DestroyRef);
   @Input() article!: Article;
   @Output() toggle = new EventEmitter<boolean>();
 
@@ -35,11 +37,6 @@ export class FavoriteButtonComponent implements OnDestroy {
     private readonly renderer: Renderer2
   ) {}
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   toggleFavoriteBtn($event: Event): void {
     $event.stopPropagation();
     this.isSubmitting = true;
@@ -48,6 +45,7 @@ export class FavoriteButtonComponent implements OnDestroy {
     }
 
     this.toggleFavorite(this.article.favorited)
+    .pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe({
       next: () => {
         this.isSubmitting = false;
