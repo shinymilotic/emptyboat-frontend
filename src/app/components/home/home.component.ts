@@ -20,18 +20,12 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.css"],
   imports: [
-    NgClass,
     ArticleListComponent,
-    AsyncPipe,
     RxLet,
-    NgForOf,
-    ShowAuthedDirective,
-    RouterLink,
-    RouterLinkActive,
   ],
   standalone: true,
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
   listConfig: ArticleListConfig = {
     filters: {},
   };
@@ -42,27 +36,17 @@ export class HomeComponent implements OnInit, OnDestroy {
       tap(() => (this.tagsLoaded = true))
     );
   tagsLoaded = false;
-  destroy$ = new Subject<void>();
 
   constructor(
     private readonly userService: UserService
   ) {
-    // this.router.events.subscribe((event) => {
-    //   if (event instanceof NavigationEnd) {
-    //     this.router.navigated = false;
-    //   }
-    // });
+
   }
 
   ngOnInit(): void {
       if (this.userService.userSignal()) {
         this.setListTo();
       }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   setListTo(filters: Object = {}): void {

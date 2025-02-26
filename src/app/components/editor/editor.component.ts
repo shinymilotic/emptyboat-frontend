@@ -15,7 +15,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ListErrorsComponent } from "../../shared-components/list-errors/list-errors.component";
 import { ArticlesService } from "../../services/articles.service";
 import { Subject, throwError } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { catchError, take } from "rxjs/operators";
 import { UserService } from "../../services/user.service";
 import { TagService } from "src/app/services/tags.service";
 import { Editor } from '@tiptap/core'
@@ -45,11 +45,10 @@ interface ArticleForm {
         DropdownModule
     ]
 })
-export class EditorComponent implements OnInit, OnDestroy {
+export class EditorComponent implements OnInit {
   articleForm: FormGroup<ArticleForm>;
   errors!: ApiError;
   isSubmitting = false;
-  destroy$ = new Subject<void>();
   filteredTags: Tag[] = [];
   inTags: Tag[] = [];
   isUpdate: boolean = false;
@@ -161,28 +160,29 @@ export class EditorComponent implements OnInit, OnDestroy {
     const id = this.route.snapshot.params["id"];
     if (id != undefined) {
       this.articleService.get(id)
-        .pipe(
-          catchError((err) => {
-            void this.router.navigate(["/editor"]);
-            return throwError(() => err);
-          }),
-        )
-        .subscribe((data) => {
-          if (this.userService.userSignal()?.username === data.author.username) {
-            this.inTags = data.tagList;
-            this.articleForm.patchValue(data);
-            this.editor = new Editor({
-              element: document.querySelector('.tiptap-editor') as HTMLElement,
-              extensions: [
-                StarterKit,
-              ],
-              content: data.body,
-        
-            });
-            this.isUpdate = true;
-          } else {
-            void this.router.navigate(["/"]);
-          }
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (data) => {
+            if (this.userService.userSignal()?.username === data.author.username) {
+              this.inTags = data.tagList;
+              this.articleForm.patchValue(data);
+              this.editor = new Editor({
+                element: document.querySelector('.tiptap-editor') as HTMLElement,
+                extensions: [
+                  StarterKit,
+                ],
+                content: data.body,
+          
+              });
+              this.isUpdate = true;
+            } else {
+              void this.router.navigate(["/"]);
+            }
+          },
+          error: (errors: ApiError) => {
+            this.isSubmitting = false;
+            this.errors = errors;
+          },
         });
     } else {
       this.editor = new Editor({
@@ -194,15 +194,11 @@ export class EditorComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.tagService.getAll(false).subscribe((data) => {
-      this.filteredTags = data;
-    }
-    );
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.tagService.getAll(false)
+      .pipe(takeUntilDestroyed(this.destroyRef))      
+      .subscribe((data) => {
+        this.filteredTags = data;
+      });
   }
 
   submitForm(): void {
@@ -228,7 +224,6 @@ export class EditorComponent implements OnInit, OnDestroy {
 
   updateArticle() : void {
     const article : Partial<SubmitArticle> = this.articleForSubmit();
-    console.log(article);
     this.articleService
       .update(article, this.route.snapshot.params["id"])
       .pipe(takeUntilDestroyed(this.destroyRef))
