@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { User } from './user.model';
 import { UserManageService } from './user-manage.serivce';
@@ -12,6 +12,7 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
 import { ApiError } from 'src/app/models/apierrors.model';
 import { ListErrorsComponent } from "../../../shared-components/list-errors/list-errors.component";
 import { forkJoin } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-user',
@@ -26,6 +27,7 @@ export class UserComponent implements OnInit {
   pageNumber: number = 0;
   itemsPerPage: number = 10;
   searchKeywords: string = '';
+  destroyRef: DestroyRef = inject(DestroyRef);
   error!: ApiError;
 
   constructor(
@@ -39,7 +41,9 @@ export class UserComponent implements OnInit {
     forkJoin([
       this.userManageService.getUsers(this.pageNumber, this.itemsPerPage),
       this.userManageService.getUsersCount()
-      ]).subscribe({
+      ])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
         next: ([data, userCount]) => {
           this.users = data;
           this.usersCount = userCount;
@@ -51,34 +55,38 @@ export class UserComponent implements OnInit {
   }
 
   onPageChange($event: PaginatorState) {
-    this.userManageService.getUsers($event.page, $event.rows).subscribe({
-      next: (data: User[]) => {
-        this.users = data;
-        if ($event.page != undefined) {
-          this.pageNumber = $event.page;
-        }
+    this.userManageService.getUsers($event.page, $event.rows)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (data: User[]) => {
+          this.users = data;
+          if ($event.page != undefined) {
+            this.pageNumber = $event.page;
+          }
 
-        if ($event.rows != undefined) {
-          this.pageNumber = $event.rows;
+          if ($event.rows != undefined) {
+            this.pageNumber = $event.rows;
+          }
+          
+        },
+        error: (error: ApiError) => {
+          this.error = error;
         }
-        
-      },
-      error: (error: ApiError) => {
-        this.error = error;
-      }
-    });
+      });
   }
 
   deleteUser(userId: string) : void {
-    this.userManageService.deleteUser(userId).subscribe({
-      next: () => {
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-          this.router.navigate(['admin/user']);
-      });
-      },
-      error: (error: ApiError) => {
-        this.error = error;
-      }
-    })
+    this.userManageService.deleteUser(userId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['admin/user']);
+        });
+        },
+        error: (error: ApiError) => {
+          this.error = error;
+        }
+      })
   }
 }

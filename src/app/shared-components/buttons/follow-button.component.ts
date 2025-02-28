@@ -1,6 +1,8 @@
 import {
   Component,
+  DestroyRef,
   EventEmitter,
+  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -12,6 +14,7 @@ import { ProfileService } from "../../services/profile.service";
 import { UserService } from "../../services/user.service";
 import { Profile } from "../../models/auth/profile.model";
 import { NgClass } from "@angular/common";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "app-follow-button",
@@ -20,11 +23,11 @@ import { NgClass } from "@angular/common";
   imports: [NgClass],
   standalone: true,
 })
-export class FollowButtonComponent implements OnInit, OnDestroy {
+export class FollowButtonComponent implements OnInit {
   @Input() profile!: Profile;
   @Output() toggle = new EventEmitter<void>();
   isSubmitting = false;
-  destroy$ = new Subject<void>();
+  destroyRef: DestroyRef = inject(DestroyRef);
   following!: boolean;
 
   constructor(
@@ -37,11 +40,6 @@ export class FollowButtonComponent implements OnInit, OnDestroy {
     this.following = this.profile?.following
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   toggleFollowing(): void {
     this.isSubmitting = true;
 
@@ -50,6 +48,7 @@ export class FollowButtonComponent implements OnInit, OnDestroy {
     }
 
     this.toggleFollow(this.profile.following)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
           this.isSubmitting = false;

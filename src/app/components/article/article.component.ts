@@ -76,7 +76,8 @@ export class ArticleComponent implements OnInit {
         catchError((err) => {
           void this.router.navigate(["/"]);
           return throwError(() => err);
-        })
+        }),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([article, comments]) => {
         this.article = article;

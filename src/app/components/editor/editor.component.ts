@@ -160,7 +160,12 @@ export class EditorComponent implements OnInit {
     const id = this.route.snapshot.params["id"];
     if (id != undefined) {
       this.articleService.get(id)
-        .pipe(takeUntilDestroyed(this.destroyRef))
+        .pipe(
+          catchError((err) => {
+            void this.router.navigate(["/editor"]);
+            return throwError(() => err);
+          }),
+          takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: (data) => {
             if (this.userService.userSignal()?.username === data.author.username) {
