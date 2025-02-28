@@ -1,5 +1,6 @@
 import { NgFor } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnInit } from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { UserPractice } from "src/app/models/test/user-practices.model";
 import { PracticeService } from "src/app/services/practice.service";
@@ -8,12 +9,14 @@ import { PracticeService } from "src/app/services/practice.service";
   selector: "app-user-practice",
   templateUrl: "./user-practice.component.html",
   styleUrls: ["./user-practice.component.css"],
-  imports: [NgFor, RouterLink],
+  imports: [RouterLink],
   standalone: true,
 })
 export class UserPracticeComponent implements OnInit {
   practices: UserPractice[] = [];
   practiceMap: Map<string, UserPractice[]> = new Map();
+  destroyRef: DestroyRef = inject(DestroyRef);
+
   constructor(
     private readonly practiceService: PracticeService,
     private readonly route: ActivatedRoute
@@ -21,18 +24,20 @@ export class UserPracticeComponent implements OnInit {
 
   ngOnInit() {
     const username = this.getUsername();
-    this.practiceService.getPractices(username).subscribe((data) => {
-      data.forEach(practice => {
-        const [day, month, year] = practice.date.split(/[- :]/);
-        const date = day + '/' + month + '/' + year;
-        if (this.practiceMap.has(date)) {
-          this.practiceMap.get(date)?.push(practice);
-        } else {
-          this.practiceMap.set(date, [practice]);
-        }
+    this.practiceService.getPractices(username)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((data) => {
+        data.forEach(practice => {
+          const [day, month, year] = practice.date.split(/[- :]/);
+          const date = day + '/' + month + '/' + year;
+          if (this.practiceMap.has(date)) {
+            this.practiceMap.get(date)?.push(practice);
+          } else {
+            this.practiceMap.set(date, [practice]);
+          }
+        });
+        this.practices = data; 
       });
-      this.practices = data; 
-    });
   }
 
   getTime(dateStr: string) {

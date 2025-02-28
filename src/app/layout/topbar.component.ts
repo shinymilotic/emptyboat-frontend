@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Signal, ViewChild, computed, signal } from '@angular/core';
+import { Component, DestroyRef, ElementRef, OnInit, Signal, ViewChild, computed, inject, signal } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { RouterLink } from '@angular/router';
@@ -10,6 +10,7 @@ import { MenuModule } from 'primeng/menu';
 import { UserService } from '../services/user.service';
 import { Router } from "@angular/router";
 import { ApiError } from '../models/apierrors.model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-topbar',
@@ -26,7 +27,7 @@ import { ApiError } from '../models/apierrors.model';
     ]
 })
 export class TopBarComponent {
-
+    destroyRef: DestroyRef = inject(DestroyRef);
     createMenuItems: Signal<MenuItem[]> = computed(() => {
         const user = this.userService.userSignal();
         if (user != null) {
@@ -100,14 +101,15 @@ export class TopBarComponent {
 
     logout(): void {
         this.userService.logout()
-        .subscribe({
-          next: () => {
-              this.userService.purgeAuth();
-              void this.router.navigate(["/"]).then(() => window.location.reload());
-          },
-          error: (errors: ApiError) => {
-            void this.router.navigate(["/"]).then(() => window.location.reload());
-        }
-        });
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+            next: () => {
+                this.userService.purgeAuth();
+                void this.router.navigate(["/"]).then(() => window.location.reload());
+            },
+            error: (errors: ApiError) => {
+                void this.router.navigate(["/"]).then(() => window.location.reload());
+            }
+            });
       }
 }

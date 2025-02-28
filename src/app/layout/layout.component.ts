@@ -29,11 +29,8 @@ import { TopBarComponent } from "./topbar.component";
 })
 export class LayoutComponent {
     overlayMenuOpenSubscription: Subscription;
-
     menuOutsideClickListener: any;
-
     @ViewChild(AppMenuComponent) appSidebar!: AppMenuComponent;
-
     @ViewChild(TopBarComponent) appTopbar!: TopBarComponent;
 
   constructor(public layoutService: LayoutService, public renderer: Renderer2, public router: Router) {
@@ -106,15 +103,6 @@ export class LayoutComponent {
             'layout-mobile-active': this.layoutService.state.staticMenuMobileActive,
             'p-input-filled': this.layoutService.config().inputStyle === 'filled',
             'p-ripple-disabled': !this.layoutService.config().ripple
-        }
-    }
-    ngOnDestroy() {
-        if (this.overlayMenuOpenSubscription) {
-            this.overlayMenuOpenSubscription.unsubscribe();
-        }
-
-        if (this.menuOutsideClickListener) {
-            this.menuOutsideClickListener();
         }
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnDestroy, OnInit } from "@angular/core";
 import {
   ActivatedRoute,
   Router,
@@ -12,6 +12,7 @@ import { UserService } from "../../../services/user.service";
 import { Profile } from "../../../models/auth/profile.model";
 import { ProfileService } from "../../../services/profile.service";
 import { FollowButtonComponent } from "../../../shared-components/buttons/follow-button.component";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
     selector: "app-profile-page",
@@ -25,10 +26,10 @@ import { FollowButtonComponent } from "../../../shared-components/buttons/follow
         RouterOutlet,
     ]
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit {
   profile!: Profile;
   isUser: boolean = false;
-  destroy$ = new Subject<void>();
+  destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -45,6 +46,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           void this.router.navigate(["/"]);
           return throwError(() => error);
         }),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((profile) => {
         this.profile = profile;
@@ -58,11 +60,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     return false;
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   // onToggleFollowing(profile: Profile) {

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, RequiredValidator, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { FileSelectEvent, FileUpload, FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
 import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
 import { ImageModule } from 'primeng/image';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export interface CreateUserForm {
   username: FormControl<string>;
@@ -44,6 +45,7 @@ export class CreateUserComponent implements OnInit{
   createUserForm!: FormGroup<CreateUserForm>;
   isDisplayError: boolean = false;
   errors: ApiError = {errors: []};
+  destroyRef: DestroyRef = inject(DestroyRef);
   @ViewChild('inputImage') inputImage!: ElementRef;
   @ViewChild('resetImageBtn') resetImageBtn!: ElementRef;
   @ViewChild('imagePreview') imagePreview!: ElementRef;
@@ -137,14 +139,16 @@ export class CreateUserComponent implements OnInit{
       return;
     }
 
-    this.manageUserService.adminCreateUser(form).subscribe({
-      next: () => {
-        this.router.navigate(["/admin/user"]);
-      },
-      error: (error: ApiError) => {
-        this.errors = error;
-      }
-    });
+    this.manageUserService.adminCreateUser(form)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.router.navigate(["/admin/user"]);
+        },
+        error: (error: ApiError) => {
+          this.errors = error;
+        }
+      });
   }
 
   get username() {

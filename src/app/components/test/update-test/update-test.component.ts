@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { TestService } from 'src/app/services/test.service';
@@ -16,6 +16,7 @@ import { AddQuestionDialogComponent } from "./add-question-dialog/add-question-d
 import { NewOpenQuestion } from './add-question-dialog/new-open-question.model';
 import { NewChoiceQuestion } from './add-question-dialog/new-choice-question.model';
 import { ChoiceAnswerUpd } from './choice-answer-update';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-update-test',
@@ -34,6 +35,7 @@ export class UpdateTestComponent implements OnInit {
   visible: boolean = false;
   selectedUpdateQuesion: number = -1;
   questionTypeForNew: number = -1;
+  destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -49,7 +51,8 @@ export class UpdateTestComponent implements OnInit {
         catchError((err) => {
           void this.router.navigate(["/"]);
           return throwError(() => err);
-        })
+        }),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((data) => {
         this.testUpd.description = data.description;
@@ -90,17 +93,19 @@ export class UpdateTestComponent implements OnInit {
 
   updateTest() {
     const testId = this.route.snapshot.params["id"];
-    this.testService.update(testId, this.testUpd).subscribe({
-      next: () => {
-        this.router.navigateByUrl(`/`, { skipLocationChange: true }).then(() => {
-          this.router.navigate([`/test/${testId}/update`]);
-        }); 
-      },
+    this.testService.update(testId, this.testUpd)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.router.navigateByUrl(`/`, { skipLocationChange: true }).then(() => {
+            this.router.navigate([`/test/${testId}/update`]);
+          }); 
+        },
 
-      error: (err) => {
-        this.errors = err;
-      },
-    });
+        error: (err) => {
+          this.errors = err;
+        },
+      });
   }
 
   public get QuestionType() {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, Input, OnInit } from "@angular/core";
 import { PracticeService } from "src/app/services/practice.service";
 import { PracticeResult } from "./PracticeResult";
 import { Question } from "./Question";
@@ -6,6 +6,7 @@ import { ChoiceResult } from "./ChoiceQuestion";
 import { ChoiceAnswer } from "./ChoiceAnswer";
 import { OpenAnswerResult } from "./OpenAnswerResult";
 import { QuestionType } from "src/app/models/test/QuestionType";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
     selector: "app-practice-result",
@@ -15,7 +16,7 @@ import { QuestionType } from "src/app/models/test/QuestionType";
     imports: []
 })
 export class PracticeResultComponent implements OnInit {
-  
+  destroyRef: DestroyRef = inject(DestroyRef);
   @Input() username!: string;
   @Input() id!: string;
   practiceResult: PracticeResult = {
@@ -27,9 +28,11 @@ export class PracticeResultComponent implements OnInit {
     private readonly practiceService: PracticeService) {}
 
   ngOnInit(): void {
-    this.practiceService.getPractice(this.id).subscribe((data: PracticeResult) => {
-      this.practiceResult = data;
-    });
+    this.practiceService.getPractice(this.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((data: PracticeResult) => {
+        this.practiceResult = data;
+      });
   }
 
   asChoiceQuestion(question: Question): ChoiceResult {

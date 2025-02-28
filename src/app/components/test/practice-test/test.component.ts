@@ -105,7 +105,8 @@ export class TestComponent implements OnInit {
         catchError((err) => {
           void this.router.navigate(["/"]);
           return throwError(() => err);
-        })
+        }),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((data) => {
         this.test = data;
@@ -148,6 +149,7 @@ export class TestComponent implements OnInit {
       }
     });
     this.practiceService.createPractice(practice)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
         const user: User | null = this.userService.userSignal();
 

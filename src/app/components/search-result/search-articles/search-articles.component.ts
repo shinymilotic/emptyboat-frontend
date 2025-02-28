@@ -33,10 +33,12 @@ export class SearchArticlesComponent {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.q = params['q'];
-      this.search();
-    });
+    this.route.queryParams
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(params => {
+        this.q = params['q'];
+        this.search();
+      });
   }
 
   ngOnDestroy() {

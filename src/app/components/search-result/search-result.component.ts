@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { LoadingState } from 'src/app/models/loading-state.model';
 import { SearchService } from 'src/app/services/search.service';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-search-result',
@@ -18,7 +19,7 @@ import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@ang
 export class SearchResultComponent implements OnInit{
   loading = LoadingState.NOT_LOADED;
   LoadingState = LoadingState;
-  destroy$ = new Subject<void>();
+  destroyRef: DestroyRef = inject(DestroyRef);
   q: string = '';
 
   constructor(
@@ -27,8 +28,10 @@ export class SearchResultComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.q = params['q'];
-    });
+    this.route.queryParams
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(params => {
+        this.q = params['q'];
+      });
   }
 }

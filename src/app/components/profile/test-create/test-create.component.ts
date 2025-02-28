@@ -1,7 +1,8 @@
-import { Component, computed, OnInit, Signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnInit, Signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SimpleTestResponse } from '../../test/test-list/simple-test-response.model';
 import { TestService } from 'src/app/services/test.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-test-create',
@@ -12,6 +13,7 @@ import { TestService } from 'src/app/services/test.service';
 })
 export class TestCreateComponent implements OnInit {
   tests: SimpleTestResponse[] = [];
+  destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(
       private readonly testService : TestService,
@@ -20,11 +22,13 @@ export class TestCreateComponent implements OnInit {
 
   ngOnInit(): void {
     const username :string = this.route.snapshot.params["username"];
-    this.testService.getProfileCreateTests(username).subscribe({
-      next: (data) => {
-        this.tests = data;
-      },
-      error: () => {
+    this.testService.getProfileCreateTests(username)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (data) => {
+          this.tests = data;
+        },
+        error: () => {
 
       }});
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import {
   FormControl,
   FormGroup,
@@ -12,6 +12,7 @@ import { SettingsForm } from "./SettingsForm";
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule} from 'primeng/floatlabel';
 import { ApiError } from "src/app/models/apierrors.model";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
     selector: "app-settings-page",
@@ -25,6 +26,7 @@ export class SettingsComponent implements OnInit {
   settingsForm: FormGroup<SettingsForm>;
   errors!: ApiError;
   isSubmitting = false;
+  destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(
     private readonly router: Router,
@@ -38,9 +40,11 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getCurrentUser().subscribe((data) => {
-      this.settingsForm.patchValue(data);
-    });
+    this.userService.getCurrentUser()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((data) => {
+        this.settingsForm.patchValue(data);
+      });
   }
 
   submitForm() {
@@ -48,6 +52,7 @@ export class SettingsComponent implements OnInit {
 
     this.userService
       .update(this.settingsForm.value)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => void this.router.navigate(["/@".concat(data.username)]),
         error: (err) => {
