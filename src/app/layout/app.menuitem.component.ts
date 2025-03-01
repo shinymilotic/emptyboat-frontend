@@ -1,8 +1,7 @@
 import { ChangeDetectorRef, Component, DestroyRef, HostBinding, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Subscription } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { MenuService } from './app.menu.service';
 import { LayoutService } from './service/app.layout.service';
 import { InputSwitchModule } from 'primeng/inputswitch';

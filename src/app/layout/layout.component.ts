@@ -5,7 +5,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { RippleModule } from 'primeng/ripple';
 import { SidebarModule } from 'primeng/sidebar';
-import { Subscription, filter } from 'rxjs';
+import { filter } from 'rxjs';
 import { LayoutService } from './service/app.layout.service';
 import { AppMenuComponent } from "./app.menu.component";
 import { TopBarComponent } from "./topbar.component";
