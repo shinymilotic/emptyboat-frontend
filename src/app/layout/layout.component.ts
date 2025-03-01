@@ -1,4 +1,4 @@
-import { Component, Renderer2, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { InputSwitchModule } from 'primeng/inputswitch';
@@ -9,6 +9,7 @@ import { Subscription, filter } from 'rxjs';
 import { LayoutService } from './service/app.layout.service';
 import { AppMenuComponent } from "./app.menu.component";
 import { TopBarComponent } from "./topbar.component";
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-layout',
@@ -28,34 +29,40 @@ import { TopBarComponent } from "./topbar.component";
     ]
 })
 export class LayoutComponent {
-    overlayMenuOpenSubscription: Subscription;
+    destroyRef: DestroyRef = inject(DestroyRef);
     menuOutsideClickListener: any;
     @ViewChild(AppMenuComponent) appSidebar!: AppMenuComponent;
     @ViewChild(TopBarComponent) appTopbar!: TopBarComponent;
 
   constructor(public layoutService: LayoutService, public renderer: Renderer2, public router: Router) {
 
-    this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
-        if (!this.menuOutsideClickListener) {
-            this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
-                const isOutsideClicked = !(this.appSidebar.el.nativeElement.isSameNode(event.target) || this.appSidebar.el.nativeElement.contains(event.target)
-                || this.appTopbar.menuButton.nativeElement.isSameNode(event.target) || this.appTopbar.menuButton.nativeElement.contains(event.target));
-                
-                if (isOutsideClicked) {
-                    this.hideMenu();
-                    console.log("Hide menu");
-                }
-            });
-        }
+    this.layoutService.overlayOpen$
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => {
+            if (!this.menuOutsideClickListener) {
+                this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
+                    const isOutsideClicked = !(this.appSidebar.el.nativeElement.isSameNode(event.target) || this.appSidebar.el.nativeElement.contains(event.target)
+                    || this.appTopbar.menuButton.nativeElement.isSameNode(event.target) || this.appTopbar.menuButton.nativeElement.contains(event.target));
+                    
+                    if (isOutsideClicked) {
+                        this.hideMenu();
+                        console.log("Hide menu");
+                    }
+                });
+            }
 
 
 
-        // if (this.layoutService.state.staticMenuMobileActive) {
-        //     this.blockBodyScroll();
-        // }
-    });
+            // if (this.layoutService.state.staticMenuMobileActive) {
+            //     this.blockBodyScroll();
+            // }
+        });
 
-        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+        this.router.events
+            .pipe(
+                filter(event => event instanceof NavigationEnd),
+                takeUntilDestroyed(this.destroyRef)
+            )
             .subscribe(() => {
                 this.hideMenu();
         });

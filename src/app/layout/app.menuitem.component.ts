@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, HostBinding, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { MenuService } from './app.menu.service';
 import { LayoutService } from './service/app.layout.service';
 import { InputSwitchModule } from 'primeng/inputswitch';
@@ -11,6 +11,7 @@ import { RippleModule } from 'primeng/ripple';
 import { SidebarModule } from 'primeng/sidebar';
 import { FormsModule } from '@angular/forms';
 import { NgFor, NgForOf } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -83,43 +84,42 @@ import { NgFor, NgForOf } from '@angular/common';
     styleUrl: './app.menu.component.scss',
     standalone: true
 })
-export class AppMenuitemComponent implements OnInit, OnDestroy {
-
+export class AppMenuitemComponent implements OnInit {
     @Input() item: any;
-
     @Input() index!: number;
-
     @Input() @HostBinding('class.layout-root-menuitem') root!: boolean;
-
     @Input() parentKey!: string;
-
     active = false;
-
-    menuSourceSubscription: Subscription;
-
-    menuResetSubscription: Subscription;
-
     key: string = "";
+    destroyRef: DestroyRef = inject(DestroyRef);
 
     constructor(public layoutService: LayoutService, private cd: ChangeDetectorRef, public router: Router, private menuService: MenuService) {
-        this.menuSourceSubscription = this.menuService.menuSource$.subscribe(value => {
-            Promise.resolve(null).then(() => {
-                if (value.routeEvent) {
-                    this.active = (value.key === this.key || value.key.startsWith(this.key + '-')) ? true : false;
-                }
-                else {
-                    if (value.key !== this.key && !value.key.startsWith(this.key + '-')) {
-                        this.active = false;
+        this.menuService.menuSource$
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(value => {
+                Promise.resolve(null).then(() => {
+                    if (value.routeEvent) {
+                        this.active = (value.key === this.key || value.key.startsWith(this.key + '-')) ? true : false;
                     }
-                }
+                    else {
+                        if (value.key !== this.key && !value.key.startsWith(this.key + '-')) {
+                            this.active = false;
+                        }
+                    }
+                });
             });
-        });
 
-        this.menuResetSubscription = this.menuService.resetSource$.subscribe(() => {
-            this.active = false;
-        });
+        this.menuService.resetSource$
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(() => {
+                this.active = false;
+            });
 
-        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+        this.router.events
+            .pipe(
+                filter(event => event instanceof NavigationEnd),
+                takeUntilDestroyed(this.destroyRef)
+            )
             .subscribe(params => {
                 if (this.item.routerLink) {
                     this.updateActiveStateFromRoute();
@@ -170,15 +170,5 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
     @HostBinding('class.active-menuitem') 
     get activeClass() {
         return this.active && !this.root;
-    }
-
-    ngOnDestroy() {
-        if (this.menuSourceSubscription) {
-            this.menuSourceSubscription.unsubscribe();
-        }
-
-        if (this.menuResetSubscription) {
-            this.menuResetSubscription.unsubscribe();
-        }
     }
 }
