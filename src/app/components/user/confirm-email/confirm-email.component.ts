@@ -4,7 +4,6 @@ import { ActivatedRoute, RouterLink } from "@angular/router";
 import { ListErrorsComponent } from "../../../shared-components/list-errors/list-errors.component";
 import { UserService } from "src/app/services/user.service";
 import { ApiError } from "src/app/models/apierrors.model";
-import { takeUntil } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 @Component({
     selector: "app-confirm-email",
