@@ -46,7 +46,6 @@ export class LayoutComponent {
                     
                     if (isOutsideClicked) {
                         this.hideMenu();
-                        console.log("Hide menu");
                     }
                 });
             }
