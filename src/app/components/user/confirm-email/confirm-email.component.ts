@@ -10,7 +10,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
     templateUrl: "./confirm-email.component.html",
     styleUrls: ["./confirm-email.component.css"],
     standalone: true,
-    imports: [RouterLink, ListErrorsComponent, ReactiveFormsModule]
+    imports: [ReactiveFormsModule]
 })
 export class ConfirmEmailComponent implements OnInit {
   private isConfirmed: boolean = false;
