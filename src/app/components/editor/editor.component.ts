@@ -70,6 +70,58 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit() {
+    const id = this.route.snapshot.params["id"];
+    if (id != undefined) {
+      this.articleService.get(id)
+        .pipe(
+          catchError((err) => {
+            void this.router.navigate(["/editor"]);
+            return throwError(() => err);
+          }),
+          takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (data) => {
+            if (this.userService.userSignal()?.username === data.author.username) {
+              this.inTags = data.tagList;
+              this.articleForm.patchValue(data);
+              this.editor = new Editor({
+                element: document.querySelector('.tiptap-editor') as HTMLElement,
+                extensions: [
+                  StarterKit,
+                ],
+                content: data.body,
+          
+              });
+              this.isUpdate = true;
+            } else {
+              void this.router.navigate(["/"]);
+            }
+            this.initEditorMenu();
+          },
+          error: (errors: ApiError) => {
+            this.isSubmitting = false;
+            this.errors = errors;
+          },
+        });
+    } else {
+      this.editor = new Editor({
+        element: document.querySelector('.tiptap-editor') as HTMLElement,
+        extensions: [
+          StarterKit,
+        ],
+        content: '<div class="editor-content"></div>',
+      });
+      this.initEditorMenu();
+    }
+
+    this.tagService.getAll(false)
+      .pipe(takeUntilDestroyed(this.destroyRef))      
+      .subscribe((data) => {
+        this.filteredTags = data;
+      });
+  }
+
+  initEditorMenu() {
     this.items = [
       {
         icon: 'format_bold',
@@ -156,54 +208,6 @@ export class EditorComponent implements OnInit {
         isActive: () => this.editor.isActive('redo'),
       },
     ];
-
-    const id = this.route.snapshot.params["id"];
-    if (id != undefined) {
-      this.articleService.get(id)
-        .pipe(
-          catchError((err) => {
-            void this.router.navigate(["/editor"]);
-            return throwError(() => err);
-          }),
-          takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: (data) => {
-            if (this.userService.userSignal()?.username === data.author.username) {
-              this.inTags = data.tagList;
-              this.articleForm.patchValue(data);
-              this.editor = new Editor({
-                element: document.querySelector('.tiptap-editor') as HTMLElement,
-                extensions: [
-                  StarterKit,
-                ],
-                content: data.body,
-          
-              });
-              this.isUpdate = true;
-            } else {
-              void this.router.navigate(["/"]);
-            }
-          },
-          error: (errors: ApiError) => {
-            this.isSubmitting = false;
-            this.errors = errors;
-          },
-        });
-    } else {
-      this.editor = new Editor({
-        element: document.querySelector('.tiptap-editor') as HTMLElement,
-        extensions: [
-          StarterKit,
-        ],
-        content: '<div class="editor-content"></div>',
-      });
-    }
-
-    this.tagService.getAll(false)
-      .pipe(takeUntilDestroyed(this.destroyRef))      
-      .subscribe((data) => {
-        this.filteredTags = data;
-      });
   }
 
   submitForm(): void {

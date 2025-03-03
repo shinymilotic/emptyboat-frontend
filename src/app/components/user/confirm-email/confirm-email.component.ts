@@ -1,7 +1,6 @@
 import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
-import { ActivatedRoute, RouterLink } from "@angular/router";
-import { ListErrorsComponent } from "../../../shared-components/list-errors/list-errors.component";
+import { ActivatedRoute } from "@angular/router";
 import { UserService } from "src/app/services/user.service";
 import { ApiError } from "src/app/models/apierrors.model";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
