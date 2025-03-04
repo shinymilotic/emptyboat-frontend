@@ -1,12 +1,12 @@
-@if (comment) {
+@if (this.comment != null) {
   <div class="card">
     <div class="card-header">
       <a
         class="comment-author"
-        [routerLink]="['/@'.concat(comment.author.username)]"
+        [routerLink]="['/@'.concat(this.comment.author.username)]"
       >
         <img
-          [src]="comment.author.image"
+          [src]="this.comment.author.image"
           alt="author image"
           class="comment-author-img"
         />
@@ -14,12 +14,12 @@
       &nbsp;
       <a
         class="author"
-        [routerLink]="['/@'.concat(comment.author.username)]"
+        [routerLink]="['/@'.concat(this.comment.author.username)]"
       >
-        {{ comment.author.username }}
+        {{ this.comment.author.username }}
       </a>
       <span class="date-posted">
-        {{ comment.createdAt | date : "longDate" }}
+        {{ this.comment.createdAt | date : "longDate" }}
       </span>
       @if (canModify()) {
         <span class="mod-options cursor-pointer" >
@@ -32,7 +32,7 @@
     </div>
     <div class="card-block">
       <p class="card-text">
-        {{ comment.body }}
+        {{ this.comment.body }}
       </p>
     </div>
   </div>  
