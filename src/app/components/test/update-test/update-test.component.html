@@ -8,13 +8,12 @@
             @for (questionUpd of this.testUpd.questions; track $index;) {
                 <li class="question {{this.background(questionUpd)}}" (click)="showUpdateQuestionDialog($index)">
                     @if (questionUpd.questionType === QuestionType.CHOICE) { 
-                        <div>
-                            <div>{{questionUpd.question}}</div>
-                        </div>
+                        <div [innerHTML]="questionUpd.question"></div>
                         <ol class="choice-answer-list">
                         @for (answer of asChoiceQuestion($index).answers; track $index; let aIndex = $index) {
                           @if (answer.updateFlg !== UpdateFlg.DELETE) {
-                            <li>{{answer.answer}}
+                            <li>
+                              <span [innerHTML]="answer.answer"></span>
                               @if (answer.truth === true) {
                                 <i class="pi pi-check"></i>
                               } @else {
@@ -25,7 +24,7 @@
                         }
                         </ol>
                     } @else if (questionUpd.questionType === QuestionType.OPEN) {
-                        <div>{{questionUpd.question}}</div>
+                        <div [innerHTML]="questionUpd.question"></div>
                     }
                 </li>
             }
