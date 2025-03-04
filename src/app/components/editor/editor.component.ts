@@ -142,12 +142,6 @@ export class EditorComponent implements OnInit {
         isActive: () => this.editor.isActive('strike'),
       },
       {
-        icon: 'code',
-        title: 'Code',
-        action: () => this.editor.chain().focus().toggleCode().run(),
-        isActive: () => this.editor.isActive('code'),
-      },
-      {
         icon: 'format_h1',
         title: 'Heading 1',
         action: () => this.editor.chain().focus().toggleHeading({ level: 1 }).run(),
@@ -158,12 +152,6 @@ export class EditorComponent implements OnInit {
         title: 'Heading 2',
         action: () => this.editor.chain().focus().toggleHeading({ level: 2 }).run(),
         isActive: () => this.editor.isActive('heading', { level: 2 }),
-      },
-      {
-        icon: 'format_paragraph',
-        title: 'Paragraph',
-        action: () => this.editor.chain().focus().setParagraph().run(),
-        isActive: () => this.editor.isActive('paragraph'),
       },
       {
         icon: 'format_list_bulleted',

@@ -47,30 +47,6 @@ editor!: Editor;
         isActive: () => this.editor.isActive('strike'),
       },
       {
-        icon: 'code',
-        title: 'Code',
-        action: () => this.editor.chain().focus().toggleCode().run(),
-        isActive: () => this.editor.isActive('code'),
-      },
-      {
-        icon: 'format_h1',
-        title: 'Heading 1',
-        action: () => this.editor.chain().focus().toggleHeading({ level: 1 }).run(),
-        isActive: () => this.editor.isActive('heading', { level: 1 }),
-      },
-      {
-        icon: 'format_h2',
-        title: 'Heading 2',
-        action: () => this.editor.chain().focus().toggleHeading({ level: 2 }).run(),
-        isActive: () => this.editor.isActive('heading', { level: 2 }),
-      },
-      {
-        icon: 'format_paragraph',
-        title: 'Paragraph',
-        action: () => this.editor.chain().focus().setParagraph().run(),
-        isActive: () => this.editor.isActive('paragraph'),
-      },
-      {
         icon: 'format_list_bulleted',
         title: 'Bullet List',
         action: () => this.editor.chain().focus().toggleBulletList().run(),
@@ -83,33 +59,16 @@ editor!: Editor;
         isActive: () => this.editor.isActive('orderedList'),
       },
       {
-        icon: 'code_blocks',
-        title: 'Code Block',
-        action: () => this.editor.chain().focus().toggleCodeBlock().run(),
-        isActive: () => this.editor.isActive('codeBlock'),
-      },
-      {
         icon: 'format_quote',
         title: 'Blockquote',
         action: () => this.editor.chain().focus().toggleBlockquote().run(),
         isActive: () => this.editor.isActive('blockquote'),
       },
       {
-        icon: 'horizontal_rule',
-        title: 'Horizontal Rule',
-        action: () => this.editor.chain().focus().setHorizontalRule().run(),
-      },
-      {
-        icon: 'undo',
-        title: 'Undo',
-        action: () => this.editor.chain().focus().undo().run(),
-        isActive: () => this.editor.isActive('undo'),
-      },
-      {
-        icon: 'redo',
-        title: 'Redo',
-        action: () => this.editor.chain().focus().redo().run(),
-        isActive: () => this.editor.isActive('redo'),
+        icon: 'code_blocks',
+        title: 'Code Block',
+        action: () => this.editor.chain().focus().toggleCodeBlock().run(),
+        isActive: () => this.editor.isActive('codeBlock'),
       },
     ];
 
