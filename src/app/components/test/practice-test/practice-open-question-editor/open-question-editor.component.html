@@ -1,5 +1,5 @@
   
-  @if (this.editorFocus) {
+  @if (this.editorFocus && this.editor != null) {
     <div class="editor-header" contenteditable="false" >
       @for (item of items; track $index) {
         <button class="menu-item" [class]="item.isActive && item.isActive()? 'is-active' : ''" (click)="item.action() ">

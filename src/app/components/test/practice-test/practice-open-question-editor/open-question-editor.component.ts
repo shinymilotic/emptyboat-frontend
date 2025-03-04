@@ -10,7 +10,6 @@ import StarterKit from '@tiptap/starter-kit';
 })
 export class OpenQuestionEditorComponent implements OnInit {
   editor!: Editor;
-  editors: any = {};
   items: Array<any> = [];
   editorFocus: boolean = false;
   @Input() questionId!: string;
