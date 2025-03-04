@@ -3,7 +3,6 @@ import {
     Component,
     DestroyRef,
     inject,
-    OnDestroy,
     OnInit,
 } from "@angular/core";
 import {
@@ -16,7 +15,6 @@ import {
     Validators,
 } from "@angular/forms";
 import { Router } from "@angular/router";
-import { Subject } from "rxjs";
 import { Question } from "src/app/models/test/question.model";
 import { CreateTestRequest } from "src/app/models/test/test.model";
 import { TestService } from "src/app/services/test.service";
@@ -54,6 +52,7 @@ export class CreateTestComponent implements OnInit {
     description: this.fb.control(""),
     questions: this.fb.array([]),
   });
+  questionCount: number = 0;
   destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(
@@ -117,6 +116,7 @@ export class CreateTestComponent implements OnInit {
         ]),
       })
     );
+    this.questionCount++;
   }
 
   addOpenQuestion() {
@@ -129,10 +129,12 @@ export class CreateTestComponent implements OnInit {
         ),
       })
     );
+    this.questionCount++;
   }
 
   deleteQuestion(qIndex: number) {
     this.questionsFormArr.removeAt(qIndex);
+    this.questionCount--;
   }
 
   submitForm() {
