@@ -112,12 +112,25 @@
                 <form class="comment-form" (ngSubmit)="addComment()">
                   <fieldset [disabled]="isSubmitting" class="border-none">
                     <div class="card-block">
-                      <textarea
+                      <!-- <textarea
                         class="form-control w-11/12 outline-none"
                         placeholder="Write comment..."
                         rows="3"
                         [formControl]="commentControl"
-                      ></textarea>
+                      ></textarea> -->
+                      <div class="editor-header" contenteditable="false" >
+                        @for (item of items; track $index) {
+                          <button type="button" class="menu-item" [class]="item.isActive && item.isActive()? 'is-active' : ''" (click)="item.action() ">
+                          <span class="material-symbols-outlined">
+                            {{item.icon}}
+                          </span>
+                          </button>
+                        }
+                      </div>
+                      
+                      <div class="tiptap-editor">
+                        
+                      </div>
                     </div>
                     <hr>
                     <button class="overcloud-btn comment-btn" type="submit">

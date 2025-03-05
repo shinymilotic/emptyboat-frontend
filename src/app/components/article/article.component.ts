@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, Signal, computed, inject } from "@angular/core";
+import { Component, DestroyRef, ElementRef, OnInit, Signal, computed, inject } from "@angular/core";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { Article } from "../../models/blog/article.model";
@@ -18,6 +18,8 @@ import { ShowAuthedDirective } from "../../directives/show-authed.directive";
 import { ApiError } from "src/app/models/apierrors.model";
 import { DialogModule } from 'primeng/dialog';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { Editor } from "@tiptap/core";
+import StarterKit from "@tiptap/starter-kit";
 
 @Component({
     selector: "app-article-page",
@@ -55,13 +57,16 @@ export class ArticleComponent implements OnInit {
   isDeleting = false;
   destroyRef: DestroyRef = inject(DestroyRef);
   visible: boolean = false;
+  editor!: Editor;
+  items: Array<any> = [];
   
   constructor(
     private readonly route: ActivatedRoute,
     private readonly articleService: ArticlesService,
     private readonly commentsService: CommentsService,
     private readonly router: Router,
-    public readonly userService: UserService
+    public readonly userService: UserService,
+    public elementRef: ElementRef,
   ) {
     this.commentControl = new FormControl<string>("", { nonNullable: true });
   }
@@ -144,5 +149,57 @@ export class ArticleComponent implements OnInit {
 
   showDialog() {
     this.visible = true;
+    this.editor = new Editor({
+      element: document.querySelector('.tiptap-editor') as HTMLElement,
+      extensions: [
+        StarterKit
+      ],
+      content: '<div class="editor-content"></div>',
+    });
+    
+    this.items = [
+      {
+        icon: 'format_bold',
+        title: 'Bold',
+        action: () => this.editor.chain().focus().toggleBold().run(),
+        isActive: () => this.editor.isActive('bold'),
+      },
+      {
+        icon: 'format_italic',
+        title: 'Italic',
+        action: () => this.editor.chain().focus().toggleItalic().run(),
+        isActive: () => this.editor.isActive('italic'),
+      },
+      {
+        icon: 'format_strikethrough',
+        title: 'Strike',
+        action: () => this.editor.chain().focus().toggleStrike().run(),
+        isActive: () => this.editor.isActive('strike'),
+      },
+      {
+        icon: 'format_list_bulleted',
+        title: 'Bullet List',
+        action: () => this.editor.chain().focus().toggleBulletList().run(),
+        isActive: () => this.editor.isActive('bulletList'),
+      },
+      {
+        icon: 'format_list_numbered',
+        title: 'Ordered List',
+        action: () => this.editor.chain().focus().toggleOrderedList().run(),
+        isActive: () => this.editor.isActive('orderedList'),
+      },
+      {
+        icon: 'code_blocks',
+        title: 'Code Block',
+        action: () => this.editor.chain().focus().toggleCodeBlock().run(),
+        isActive: () => this.editor.isActive('codeBlock'),
+      },
+      {
+        icon: 'format_quote',
+        title: 'Blockquote',
+        action: () => this.editor.chain().focus().toggleBlockquote().run(),
+        isActive: () => this.editor.isActive('blockquote'),
+      },
+    ];
   }
 }
