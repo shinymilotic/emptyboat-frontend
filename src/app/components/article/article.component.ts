@@ -1,26 +1,18 @@
 import { Component, DestroyRef, ElementRef, OnInit, Signal, computed, inject } from "@angular/core";
-import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { Article } from "../../models/blog/article.model";
 import { ArticlesService } from "../../services/articles.service";
-import { CommentsService } from "../../services/comments.service";
 import { UserService } from "../../services/user.service";
 import { ArticleMetaComponent } from "../../shared-components/article-helpers/article-meta.component";
-import { NgClass, NgForOf } from "@angular/common";
+import { NgClass } from "@angular/common";
 import { FollowButtonComponent } from "../../shared-components/buttons/follow-button.component";
 import { FavoriteButtonComponent } from "../../shared-components/buttons/favorite-button.component";
-import { ListErrorsComponent } from "../../shared-components/list-errors/list-errors.component";
-import { ArticleCommentComponent } from "./article-comment.component";
 import { catchError, } from "rxjs/operators";
-import { combineLatest, throwError } from "rxjs";
-import { Comment } from "../../models/blog/comment.model";
-import { ShowAuthedDirective } from "../../directives/show-authed.directive";
-import { ApiError } from "src/app/models/apierrors.model";
 import { DialogModule } from 'primeng/dialog';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { Editor } from "@tiptap/core";
-import StarterKit from "@tiptap/starter-kit";
 import { CommentDialogComponent } from "./comment-dialog/comment-dialog.component";
+import { throwError } from "rxjs";
 
 @Component({
     selector: "app-article-page",

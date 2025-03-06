@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, DestroyRef, HostBinding, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, HostBinding, inject, Input, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { filter } from 'rxjs/operators';

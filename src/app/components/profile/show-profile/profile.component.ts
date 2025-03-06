@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnDestroy, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import {
   ActivatedRoute,
   Router,
@@ -7,7 +7,7 @@ import {
   RouterOutlet,
 } from "@angular/router";
 import { catchError } from "rxjs/operators";
-import { Subject, throwError } from "rxjs";
+import { throwError } from "rxjs";
 import { UserService } from "../../../services/user.service";
 import { Profile } from "../../../models/auth/profile.model";
 import { ProfileService } from "../../../services/profile.service";

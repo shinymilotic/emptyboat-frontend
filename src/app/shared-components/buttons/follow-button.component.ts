@@ -4,12 +4,11 @@ import {
   EventEmitter,
   inject,
   Input,
-  OnDestroy,
   OnInit,
   Output,
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { Observable, Subject } from "rxjs";
+import { Observable } from "rxjs";
 import { ProfileService } from "../../services/profile.service";
 import { UserService } from "../../services/user.service";
 import { Profile } from "../../models/auth/profile.model";

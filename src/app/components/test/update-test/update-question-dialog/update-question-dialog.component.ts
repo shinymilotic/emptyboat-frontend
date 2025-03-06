@@ -1,12 +1,10 @@
-import { Component, computed, EventEmitter, Input, OnChanges, OnInit, Output, Signal, SimpleChanges, WritableSignal } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgFor, NgForOf } from '@angular/common';
 import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
 import { UpdateFlg } from 'src/app/models/update-flg.enum';
-import { ListErrorsComponent } from 'src/app/shared-components/list-errors/list-errors.component';
 import { QuestionType } from 'src/app/models/test/QuestionType';
 import { ChoiceAnswerUpd } from '../choice-answer-update';
 import { ChoiceQuestionUpd } from '../choice-question-update';

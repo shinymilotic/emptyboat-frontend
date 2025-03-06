@@ -1,10 +1,9 @@
-import { Component, DestroyRef, inject, OnDestroy, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ArticleListComponent } from "../../../shared-components/article-helpers/article-list.component";
 import { ProfileService } from "../../../services/profile.service";
 import { Profile } from "../../../models/auth/profile.model";
 import { ArticleListConfig } from "../../../models/blog/article-list-config.model";
-import { Subject } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({

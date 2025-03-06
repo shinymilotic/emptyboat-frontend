@@ -1,15 +1,14 @@
 import { Component, DestroyRef, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, RequiredValidator, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { UserManageService } from '../user-manage.serivce';
 import { CreateUserRequest } from './create-user-request.model';
-import { NgIf } from '@angular/common';
 import { ApiError } from 'src/app/models/apierrors.model';
 import { ListErrorsComponent } from "../../../../shared-components/list-errors/list-errors.component";
 import { Router } from '@angular/router';
-import { FileSelectEvent, FileUpload, FileUploadEvent, FileUploadModule } from 'primeng/fileupload';
+import { FileUploadModule } from 'primeng/fileupload';
 import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
 import { ImageModule } from 'primeng/image';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';

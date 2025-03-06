@@ -1,4 +1,4 @@
-import { Component, DestroyRef, ElementRef, OnInit, Signal, ViewChild, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, ElementRef, Signal, ViewChild, computed, inject } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { RouterLink } from '@angular/router';

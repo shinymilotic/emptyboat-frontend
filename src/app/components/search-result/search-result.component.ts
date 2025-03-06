@@ -1,5 +1,4 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
 import { LoadingState } from 'src/app/models/loading-state.model';
 import { SearchService } from 'src/app/services/search.service';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';

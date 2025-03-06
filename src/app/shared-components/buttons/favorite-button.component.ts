@@ -4,13 +4,10 @@ import {
   EventEmitter,
   inject,
   Input,
-  OnDestroy,
   Output,
-  Renderer2,
 } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
-import { NgClass } from "@angular/common";
 import { ArticlesService } from "../../services/articles.service";
 import { UserService } from "../../services/user.service";
 import { Article } from "../../models/blog/article.model";

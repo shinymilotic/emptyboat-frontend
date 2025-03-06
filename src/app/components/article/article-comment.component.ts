@@ -1,12 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, Signal, ViewEncapsulation, computed, inject } from "@angular/core";
+import { Component, EventEmitter, Input, Output, Signal, ViewEncapsulation, computed } from "@angular/core";
 import { UserService } from "../../services/user.service";
-import { User } from "../../models/auth/user.model";
-import { RouterLink } from "@angular/router";
-import { map } from "rxjs/operators";
 import { Comment } from "../../models/blog/comment.model";
-import { AsyncPipe, DatePipe } from "@angular/common";
-import { Editor } from "@tiptap/core";
-import StarterKit from "@tiptap/starter-kit";
+import { RouterLink } from "@angular/router";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: "app-article-comment",

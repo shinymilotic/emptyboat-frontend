@@ -1,6 +1,6 @@
 import { Component, DestroyRef, HostListener, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Article } from 'src/app/models/blog/article.model';
 import { LoadingState } from 'src/app/models/loading-state.model';
 import { SearchParam } from 'src/app/models/search.model';

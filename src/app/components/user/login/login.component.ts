@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnDestroy, OnInit } from "@angular/core";
+import { Component, DestroyRef, inject, OnInit } from "@angular/core";
 import {
   Validators,
   FormGroup,
@@ -7,10 +7,7 @@ import {
 } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { ListErrorsComponent } from "../../../shared-components/list-errors/list-errors.component";
-import { ApiValidationError } from "../../../models/apivalidationerror.model";
 import { UserService } from "../../../services/user.service";
-import { catchError, takeUntil } from "rxjs/operators";
-import { Subject, throwError } from "rxjs";
 import { LoginForm } from "./LoginForm";
 import { ApiError } from "src/app/models/apierrors.model";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
