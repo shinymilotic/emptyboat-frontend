@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, Signal, computed, inject } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, Signal, ViewEncapsulation, computed, inject } from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { User } from "../../models/auth/user.model";
 import { RouterLink } from "@angular/router";
@@ -14,6 +14,7 @@ import StarterKit from "@tiptap/starter-kit";
   styleUrls: ['./article-comment.component.css'],
   imports: [RouterLink, DatePipe],
   standalone: true,
+  encapsulation: ViewEncapsulation.None,
 })
 export class ArticleCommentComponent {
   @Input() comment!: Comment;

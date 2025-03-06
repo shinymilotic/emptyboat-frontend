@@ -137,12 +137,6 @@
     text-align: center;
 }
 
-.comment-btn {
-    border-radius: 3rem;
-    float: right;
-    padding:.5rem 1rem;
-}
-
 .follow-favorites-panel {
     display: flex;
     margin-top: 20px;
@@ -169,31 +163,4 @@
 
 .comment-form {
     padding-bottom: 0px;
-}
-
-.menu-item {
-    background-color: transparent;
-    border: none;
-    border-radius: 0.4rem;
-    color: #303030;
-    cursor: pointer;
-    height: 2.5rem;
-    margin-right: 0.25rem;
-    padding: 0.25rem;
-    width: 3rem;
-  
-    span {
-      fill: currentColor;
-      height: 100%;
-      width: 100%;
-    }
-  
-    &:hover,
-    &.is-active {
-      background-color: gray ;
-    }
-}
-
-.tiptap-editor {
-  min-height: 20vh;
 }

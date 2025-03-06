@@ -96,6 +96,7 @@ export class CreateTestComponent implements OnInit {
           QuestionType.CHOICE,
           Validators.required
         ),
+        questionOrder: this.fb.nonNullable.control(this.questionCount + 1, Validators.required),
         answers: this.fb.array([
           this.fb.group<ChoiceAnswerForm>({
             answer: this.fb.nonNullable.control("", Validators.required),
@@ -127,6 +128,7 @@ export class CreateTestComponent implements OnInit {
           QuestionType.OPEN,
           Validators.required,
         ),
+        questionOrder: this.fb.nonNullable.control(this.questionCount + 1, Validators.required)
       })
     );
     this.questionCount++;

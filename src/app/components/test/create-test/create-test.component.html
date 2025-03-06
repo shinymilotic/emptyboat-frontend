@@ -21,19 +21,25 @@
             type="text"
             placeholder="Description"
           />
-  
+        <div>Current question number: {{this.questionCount}}</div>
+
         <div formArrayName="questions">
           <div
             class="question p-2"
             *ngFor="let question of questionsFormArr.controls; let qIndex = index"
             [formGroupName]="qIndex"
           >
-          <div class="flex">
-            <app-editor class="form-group mb-3 w-full" id="question-{{ qIndex }}" (content)="questionChange($event, question)" ></app-editor>
 
-            <span class="mod-options cursor-pointer" >
-              <i class="pi pi-times" (click)="deleteQuestion(qIndex)"></i>
-            </span>
+          <div class="flex ">
+            <div class="min-w-8">{{question.value.questionOrder}}.</div>
+
+            <div class="w-full flex items-center">
+              <app-editor class="form-group mb-3 w-full" id="question-{{ qIndex }}" (content)="questionChange($event, question)" ></app-editor>
+  
+              <span class="mod-options cursor-pointer ml-1" >
+                <i class="pi pi-times" (click)="deleteQuestion(qIndex)"></i>
+              </span>
+            </div>
           </div>
   
           @if (this.isChoiceQuestion(qIndex)) {
