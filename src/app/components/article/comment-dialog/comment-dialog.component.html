@@ -45,10 +45,42 @@
         <a [routerLink]="['/register']">Register</a> to comments on this post.
         </div>
         <br>
-        @for (comment of comments; track $index) {
-        <app-article-comment [comment]="comment"
-        (delete)="deleteComment(comment)"
-        >
-        </app-article-comment>
-        }  
+        
+        @for (comment of this.comments; track $index) {
+
+            <div class="card">
+              <div class="card-header">
+                <a
+                  class="comment-author"
+                  [routerLink]="['/@'.concat(comment.author.username)]"
+                >
+                  <img
+                    [src]="comment.author.image"
+                    alt="author image"
+                    class="comment-author-img"
+                  />
+                </a>
+                &nbsp;
+                <a
+                  class="author"
+                  [routerLink]="['/@'.concat(comment.author.username)]"
+                >
+                  {{ comment.author.username }}
+                </a>
+                <span class="date-posted">
+                  {{ comment.createdAt | date : "longDate" }}
+                </span>
+                @if (this.canModify(comment)) {
+                  <span class="mod-options cursor-pointer" >
+                    <i class="pi pi-trash" (click)="this.deleteComment(comment)"></i>
+                  </span>
+                }
+                
+              </div>
+              <div class="card-block">
+                <div class="card-text" [innerHTML]="comment.body">
+                </div>
+              </div>
+            </div>  
+          }
 </p-dialog>

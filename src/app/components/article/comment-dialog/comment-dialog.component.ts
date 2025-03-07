@@ -1,22 +1,24 @@
-import { Component, DestroyRef, ElementRef, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ListErrorsComponent } from "../../../shared-components/list-errors/list-errors.component";
 import { ApiError } from 'src/app/models/apierrors.model';
 import { RouterLink } from '@angular/router';
 import { CommentsService } from 'src/app/services/comments.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ArticleCommentComponent } from "../article-comment.component";
 import { Comment } from 'src/app/models/blog/comment.model';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import { ShowAuthedDirective } from 'src/app/directives/show-authed.directive';
+import { DatePipe } from '@angular/common';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-comment-dialog',
   standalone: true,
-  imports: [DialogModule, ListErrorsComponent, RouterLink, ArticleCommentComponent, ShowAuthedDirective],
+  imports: [DialogModule, ListErrorsComponent, RouterLink,DatePipe, ShowAuthedDirective],
   templateUrl: './comment-dialog.component.html',
-  styleUrl: './comment-dialog.component.css'
+  styleUrl: './comment-dialog.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class CommentDialogComponent implements OnInit {
   commentFormErrors!: ApiError;
@@ -28,7 +30,7 @@ export class CommentDialogComponent implements OnInit {
   editor!: Editor;
   @Output() visible = new EventEmitter<void>();
 
-  constructor(private commentService: CommentsService, public elementRef: ElementRef) {}
+  constructor(private commentService: CommentsService, public elementRef: ElementRef, private readonly userService: UserService) {}
 
   ngOnInit(): void {
     this.commentService.getAll(this.articleId)
@@ -127,5 +129,13 @@ export class CommentDialogComponent implements OnInit {
 
   closeDialog() {
     this.visible.emit();
+  }
+
+  canModify(cmt: Comment): boolean {
+    if (this.userService.userSignal()?.username === cmt.author.username) {
+      return true;
+    }
+
+    return false;
   }
 }
