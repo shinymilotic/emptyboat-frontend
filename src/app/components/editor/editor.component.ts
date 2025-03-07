@@ -1,6 +1,7 @@
 import {
   Component,
   DestroyRef,
+  ElementRef,
   inject,
   OnDestroy,
   OnInit,
@@ -61,7 +62,8 @@ export class EditorComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly userService: UserService,
-    private readonly tagService: TagService
+    private readonly tagService: TagService,
+    private readonly elementRef: ElementRef
   ) {
     this.articleForm = new FormGroup<ArticleForm>({
       title: new FormControl("", { nonNullable: true }),
@@ -85,7 +87,7 @@ export class EditorComponent implements OnInit {
               this.inTags = data.tagList;
               this.articleForm.patchValue(data);
               this.editor = new Editor({
-                element: document.querySelector('.tiptap-editor') as HTMLElement,
+                element: this.elementRef.nativeElement.querySelector('.tiptap-editor') as HTMLElement,
                 extensions: [
                   StarterKit,
                 ],
@@ -105,7 +107,7 @@ export class EditorComponent implements OnInit {
         });
     } else {
       this.editor = new Editor({
-        element: document.querySelector('.tiptap-editor') as HTMLElement,
+        element: this.elementRef.nativeElement.querySelector('.tiptap-editor') as HTMLElement,
         extensions: [
           StarterKit,
         ],
