@@ -22,18 +22,17 @@
           </p-floatLabel>
         </fieldset>
   
-        <fieldset class="form-group mb-8">
-          <p-floatLabel>
-              <textarea 
+        <fieldset class="form-group mb-8 text-left flex flex-col">
+              <!-- <textarea 
                   pInputText
                   id="bio" 
                   rows="5" cols="30"
                   class="w-full form-border" 
                   formControlName="bio"    
                   >
-              </textarea>
+              </textarea> -->
               <label for="bio">Bio:</label>
-          </p-floatLabel>
+              <div contenteditable id="bio" class="w-full bio form-border" formControlName="bio"></div>
         </fieldset>
 
         <button class="overcloud-btn btn-update float-right" type="submit">

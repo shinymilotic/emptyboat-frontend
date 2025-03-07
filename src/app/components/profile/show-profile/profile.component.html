@@ -3,7 +3,7 @@
   @if (profile) {
         <div class="flex flex-row p-4 user-info">
           <img [src]="profile.image" class="user-img" alt="Avatar" width="160" height="160"/>
-          <div class="user-info flex flex-col ml-5">
+          <div class="user-info flex flex-col ml-5 justify-between">
             <h1 class="font-bold mb-4">{{ profile.username }}</h1>
             <div>
               <a class="followers"

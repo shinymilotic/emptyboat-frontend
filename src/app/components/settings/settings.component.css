@@ -25,4 +25,14 @@
 .btn-update {
   border-radius: 8px;
   padding: 4px 16px;
-} 
+}
+
+.bio {
+  flex: 1 1 auto;
+  padding: 1.25rem 1rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+  outline: none;
+  min-height: 10rem;
+}

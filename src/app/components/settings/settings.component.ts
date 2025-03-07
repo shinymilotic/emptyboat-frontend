@@ -13,13 +13,14 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule} from 'primeng/floatlabel';
 import { ApiError } from "src/app/models/apierrors.model";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { ContenteditableValueAccessor } from "src/app/directives/contenteditable.directive";
 
 @Component({
     selector: "app-settings-page",
     templateUrl: "./settings.component.html",
     styleUrls: ["./settings.component.css"],
     standalone: true,
-    imports: [ListErrorsComponent, ReactiveFormsModule, InputTextModule, FloatLabelModule]
+    imports: [ListErrorsComponent, ReactiveFormsModule, InputTextModule, FloatLabelModule, ContenteditableValueAccessor]
 })
 export class SettingsComponent implements OnInit {
   user!: User;
