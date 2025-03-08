@@ -48,6 +48,7 @@ export class CreateUserComponent implements OnInit{
   @ViewChild('inputImage') inputImage!: ElementRef;
   @ViewChild('resetImageBtn') resetImageBtn!: ElementRef;
   @ViewChild('imagePreview') imagePreview!: ElementRef;
+  defaultImg: string = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
 
   constructor(
     private readonly fb: FormBuilder,
@@ -176,7 +177,7 @@ export class CreateUserComponent implements OnInit{
 
   onSelectImage(event: Event) {
     const target: HTMLInputElement = event.target as HTMLInputElement;
-
+    
     if (target != null && target.files != null) {
       target.files[0].arrayBuffer().then((data: ArrayBuffer) => {
         let binary = '';
@@ -196,6 +197,6 @@ export class CreateUserComponent implements OnInit{
   resetImage() {
     this.inputImage.nativeElement.value = '';
     this.resetImageBtn.nativeElement.style.display = 'none';
-    this.imagePreview.nativeElement.src = '';
+    this.imagePreview.nativeElement.src = this.defaultImg;
   }
 }

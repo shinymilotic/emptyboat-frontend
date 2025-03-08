@@ -59,3 +59,13 @@
     border-radius: 8px;
     margin-bottom: 1rem;
 }
+
+.create-user-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-control {
+    width: 60%;
+}
