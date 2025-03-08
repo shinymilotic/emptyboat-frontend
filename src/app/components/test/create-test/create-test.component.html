@@ -23,16 +23,14 @@
           />
         <div>Current question number: {{this.questionCount}}</div>
 
-        <div formArrayName="questions">
-          <div
+        <ol formArrayName="questions">
+          <li
             class="question p-2"
             *ngFor="let question of questionsFormArr.controls; let qIndex = index"
             [formGroupName]="qIndex"
           >
 
           <div class="flex ">
-            <div class="min-w-8">{{question.value.questionOrder}}.</div>
-
             <div class="w-full flex items-center">
               <app-editor class="form-group mb-3 w-full" id="question-{{ qIndex }}" (content)="questionChange($event, question)" ></app-editor>
   
@@ -43,8 +41,8 @@
           </div>
   
           @if (this.isChoiceQuestion(qIndex)) {
-            <div formArrayName="answers">
-              <div
+            <ol formArrayName="answers">
+              <li
                 class="flex mb-2 answer-container"
                 *ngFor="
                   let answer of getAnswerFormArr(qIndex).controls;
@@ -69,7 +67,7 @@
                   <i class="pi pi-times delete-answer-icon" (click)="deleteAnswer(qIndex, aIndex)"></i>
                 </span>
                 <br>
-              </div>
+              </li>
               <button
                 type="button"
                 class="addAnswerBtn"
@@ -77,10 +75,10 @@
               >
                 Add answer
               </button>
-            </div>
+            </ol>
           }
-          </div>
-        </div>
+          </li>
+        </ol>
   
         <div>
           <button
