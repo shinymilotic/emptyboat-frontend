@@ -24,7 +24,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class UserComponent implements OnInit {
   users!: User[];
   usersCount!: number;
-  pageNumber: number = 0;
+  pageNumber: number = 1;
   itemsPerPage: number = 10;
   searchKeywords: string = '';
   destroyRef: DestroyRef = inject(DestroyRef);
@@ -33,9 +33,7 @@ export class UserComponent implements OnInit {
   constructor(
     private readonly userManageService: UserManageService,
     private readonly router: Router
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
     forkJoin([
@@ -61,11 +59,11 @@ export class UserComponent implements OnInit {
         next: (data: User[]) => {
           this.users = data;
           if ($event.page != undefined) {
-            this.pageNumber = $event.page;
+            this.pageNumber = $event.page + 1;
           }
 
           if ($event.rows != undefined) {
-            this.pageNumber = $event.rows;
+            this.itemsPerPage = $event.rows;
           }
           
         },

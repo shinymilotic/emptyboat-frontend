@@ -15,7 +15,7 @@ export class UserManageService {
     let params = new HttpParams();
 
     if (pageNumber != null && itemsPerPage != null) {
-      params = params.set('pageNumber', pageNumber + 1);
+      params = params.set('pageNumber', pageNumber);
       params = params.set('itemsPerPage', itemsPerPage);  
     }
     
