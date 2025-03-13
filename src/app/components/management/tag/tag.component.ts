@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
@@ -29,7 +29,10 @@ export class TagComponent implements OnInit {
   error!: ApiError;
   destroyRef: DestroyRef = inject(DestroyRef);
 
-  constructor(private readonly tagService: TagService) {}
+  constructor(
+    private readonly tagService: TagService,
+    private readonly router: Router
+  ) {}
 
   ngOnInit(): void {
     forkJoin([
@@ -48,8 +51,17 @@ export class TagComponent implements OnInit {
     })
   }
 
-  deleteTag(tagId: number) {
-    
+  deleteTag(tagId: string) {
+    this.tagService.deleteTag(tagId).subscribe({
+      next: () => {
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate(['admin/tag']);
+      });
+      },
+      error: (error: ApiError) => {
+        this.error = error;
+      }
+    })
   }
 
   onPageChange($event: PaginatorState): void {
