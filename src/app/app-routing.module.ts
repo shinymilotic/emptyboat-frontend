@@ -68,6 +68,22 @@ export const routes: Routes = [
         ],
       },
       {
+        path: "admin/tag/create",
+        loadComponent: () =>
+          import("./components/management/tag/create-tag/create-tag.component").then((m) => m.CreateTagComponent),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
+      },
+      {
+        path: "admin/tag/:id/update",
+        loadComponent: () =>
+          import("./components/management/tag/update-tag/update-tag.component").then((m) => m.UpdateTagComponent),
+        canActivate: [
+          () => inject(AuthGuard).canActivate(),
+        ],
+      },
+      {
         path: "admin/article",
         loadComponent: () =>
           import("./components/management/article/article.component").then((m) => m.ArticleComponent),
