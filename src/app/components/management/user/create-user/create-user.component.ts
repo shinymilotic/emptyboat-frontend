@@ -12,6 +12,8 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
 import { ImageModule } from 'primeng/image';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { UserLogic } from '../user-logic';
+import { ApiValidationError } from 'src/app/models/apivalidationerror.model';
 
 export interface CreateUserForm {
   username: FormControl<string>;
@@ -53,7 +55,8 @@ export class CreateUserComponent implements OnInit{
   constructor(
     private readonly fb: FormBuilder,
     private readonly manageUserService: UserManageService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly userLogic: UserLogic
   ) { }
   
   ngOnInit(): void {
@@ -78,62 +81,26 @@ export class CreateUserComponent implements OnInit{
     });
   }
 
-  validateUsername(): void {
-    if (this.username?.hasError('required')) {
-      this.errors.errors.push({
-        messageId: '',
-        message: 'Username can\'t be blank.'
-      });
-    }
-
-    if (this.username?.hasError('minlength') || this.username?.hasError('maxlength')) {
-      this.errors.errors.push({
-        messageId: '',
-        message: 'Username must contains from 6 to 32 characters'
-      });
-    }
-  }
-
-  validatePassword(): void {
-    if (this.password?.hasError('required')) {
-      this.errors.errors.push({
-        messageId: '',
-        message: 'Password can\'t be blank.'
-      });
-    }
-
-    if (this.password?.hasError('minlength') || this.password?.hasError('maxlength')) {
-      this.errors.errors.push({
-        messageId: '',
-        message: 'Password must contains from 8 to 64 characters.'
-      });
-    }
-  }
-
-  validateEmail(): void {
-    if (this.email?.hasError('required')) {
-      this.errors.errors.push({
-        messageId: '',
-        message: 'Email can\'t be blank.'
-      });
-    }
-
-    if (this.email?.hasError('email')) {
-      this.errors.errors.push({
-        messageId: '',
-        message: 'Email is not valid.'
-      });
-    }
-  }
-
   createUser(): void {
     const form : CreateUserRequest = this.createUserForm.value;
 
     this.errors = {errors: []};
 
-    this.validateUsername();
-    this.validatePassword();
-    this.validateEmail();
+    const usernameValidation: ApiValidationError | null = this.userLogic.validateUsername(this.username);
+    const passwordValidation: ApiValidationError | null = this.userLogic.validatePassword(this.password);
+    const emailValidation: ApiValidationError | null = this.userLogic.validateEmail(this.email);
+
+    if (usernameValidation != null) {
+      this.errors.errors.push(usernameValidation);
+    }
+
+    if (passwordValidation != null) {
+      this.errors.errors.push(passwordValidation);
+    }
+
+    if (emailValidation != null) {
+      this.errors.errors.push(emailValidation);
+    }
 
     if (this.errors.errors.length != 0) {
       return;
@@ -187,6 +154,7 @@ export class CreateUserComponent implements OnInit{
         for (var i = 0; i < len; i++) {
           binary += String.fromCharCode(bytes[i]);
         }
+        
         this.createUserForm.get('image')?.setValue(btoa(binary));
         this.resetImageBtn.nativeElement.style.display = 'block';
         this.imagePreview.nativeElement.src= 'data:image/png;base64,'+ btoa(binary);
