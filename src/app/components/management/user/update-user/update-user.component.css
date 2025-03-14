@@ -1,0 +1,71 @@
+.updateUserBtn {
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.form-errors {
+    padding-bottom: 2rem;
+    color: #b85c5c;
+}
+
+.form-container  {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    line-height: 26px;
+    margin-bottom: 10px;
+    width: 75%;
+}
+
+.bio {
+    width: 246.33px;
+    overflow-y: overlay;
+    outline: none;
+    min-height: 100px;
+}
+
+.bio:focus {
+    border-color: #4b5563;
+}
+
+.deleteFileBtn {
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: none;
+}
+
+/* input[type=file] {
+    display: block;
+}
+
+.chooseFileInput::file-selector-button {
+    display: none;
+} */
+
+.chooseFileBtn::file-selector-button {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: 0.1sease-in-out;
+    background-color: var(--primary-color);
+    color: white;
+    outline: none;
+    white-space: nowrap;
+    border-color: var(--primary-color) !important;
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.create-user-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-control {
+    width: 60%;
+}
