@@ -21,7 +21,7 @@ export class TestService {
   }
 
   create(test: Partial<CreateTestRequest>): Observable<void> {
-    return this.http.post<void>("/test", test);
+    return this.http.post<void>("/tests", test);
   }
 
   delete(id: string): Observable<void> {
@@ -30,7 +30,7 @@ export class TestService {
 
   update(testId: string, testUpd: TestResponseUpd): Observable<void> {
     return this.http
-      .put<void>(`/test/${testId}/update`, testUpd);
+      .put<void>(`/tests/${testId}`, testUpd);
   }
 
   getProfileCreateTests(username: string) : Observable<SimpleTestResponse[]> {

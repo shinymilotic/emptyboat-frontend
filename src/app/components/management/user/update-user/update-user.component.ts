@@ -11,8 +11,8 @@ import { ApiError } from 'src/app/models/apierrors.model';
 import { ListErrorsComponent } from 'src/app/shared-components/list-errors/list-errors.component';
 import { CreateUserRequest } from '../create-user/create-user-request.model';
 import { CreateUserForm } from '../create-user/create-user.component';
-import { UserManageService } from '../user-manage.serivce';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-update-user',
@@ -43,7 +43,7 @@ isDisable: boolean = true;
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly manageUserService: UserManageService,
+    private readonly userService: UserService,
     private readonly router: Router
   ) { }
   
@@ -130,7 +130,7 @@ isDisable: boolean = true;
       return;
     }
 
-    this.manageUserService.adminCreateUser(form)
+    this.userService.createUser(form)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {

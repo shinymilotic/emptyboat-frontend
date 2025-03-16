@@ -18,6 +18,6 @@ export class CommentsService {
   }
 
   delete(commentId: string, articleId: string): Observable<void> {
-    return this.http.delete<void>(`/comment/${commentId}`);
+    return this.http.delete<void>(`/comments/${commentId}`);
   }
 }

@@ -1,10 +1,11 @@
 import { Injectable, signal } from "@angular/core";
 import { Observable } from "rxjs";
 import { tap, shareReplay } from "rxjs/operators";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { User } from "../models/auth/user.model";
 import { AuthCookieUtils } from "../utils/authCookie.utils";
 import { ApiError } from "../models/apierrors.model";
+import { CreateUserRequest } from "../components/management/user/create-user/create-user-request.model";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
@@ -30,7 +31,7 @@ export class UserService {
     password: string;
   }): Observable<void> {
     return this.http
-      .post<void>("/users", credentials);
+      .post<void>("/users/register", credentials);
   }
 
   logout(): Observable<void> {
@@ -42,7 +43,7 @@ export class UserService {
   }
 
   update(user: Partial<User>): Observable<User> {
-    return this.http.put<User>("/users/current", user).pipe(
+    return this.http.put<User>("/users", user).pipe(
       tap((user) => {
         this.userSignal.set(user);
       })
@@ -50,7 +51,6 @@ export class UserService {
   }
 
   auth(): Observable<User> {
-    console.log("auth");
     return this.http.get<User>("/users/current").pipe(
       tap({
         next: (data) => {
@@ -69,18 +69,44 @@ export class UserService {
 
   refreshToken(): Observable<string> {
     return this.http
-      .post<string>("/users/refreshToken", {});
+      .post<string>("/users/refresh-token", {});
       ;
   }
 
   confirmEmail(token: string) : Observable<void> {
     return this.http
-      .post<void>(`/confirmEmail`, {"confirmToken" : token});
+      .post<void>(`/users/confirm-email`, {"confirmToken" : token});
     ;
   }
 
   getFollowers(userId: string) : Observable<User[]> {
     return this.http
       .get<User[]>(`/followers/${userId}`, {});
+  }
+
+  getUsers(pageNumber?: number, itemsPerPage?: number) : Observable<User[]> {
+    let params = new HttpParams();
+
+    if (pageNumber != null && itemsPerPage != null) {
+      params = params.set('pageNumber', pageNumber);
+      params = params.set('itemsPerPage', itemsPerPage);  
+    }
+    
+    return this.http
+      .get<User[]>(`/users`, { params });
+  }
+
+  getUsersCount() : Observable<number> {
+    return this.http
+      .get<number>(`/users/count`);
+  }
+
+  deleteUser(userId: string) : Observable<void> {
+    return this.http
+      .delete<void>(`/users/${userId}`);
+  }
+
+  createUser(user: CreateUserRequest): Observable<void>  {
+    return this.http.post<void>(`/users`, user);
   }
 }

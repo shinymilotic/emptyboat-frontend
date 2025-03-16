@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { User } from './user.model';
-import { UserManageService } from './user-manage.serivce';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { ImageModule } from 'primeng/image';
 import { IconFieldModule } from 'primeng/iconfield';
@@ -13,6 +12,7 @@ import { ApiError } from 'src/app/models/apierrors.model';
 import { ListErrorsComponent } from "../../../shared-components/list-errors/list-errors.component";
 import { forkJoin } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user',
@@ -31,14 +31,14 @@ export class UserComponent implements OnInit {
   error!: ApiError;
 
   constructor(
-    private readonly userManageService: UserManageService,
+    private readonly userSerivce: UserService,
     private readonly router: Router
   ) {}
 
   ngOnInit(): void {
     forkJoin([
-      this.userManageService.getUsers(this.pageNumber, this.itemsPerPage),
-      this.userManageService.getUsersCount()
+      this.userSerivce.getUsers(this.pageNumber, this.itemsPerPage),
+      this.userSerivce.getUsersCount()
       ])
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
@@ -53,7 +53,7 @@ export class UserComponent implements OnInit {
   }
 
   onPageChange($event: PaginatorState) {
-    this.userManageService.getUsers($event.page, $event.rows)
+    this.userSerivce.getUsers($event.page, $event.rows)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data: User[]) => {
@@ -74,7 +74,7 @@ export class UserComponent implements OnInit {
   }
 
   deleteUser(userId: string) : void {
-    this.userManageService.deleteUser(userId)
+    this.userSerivce.deleteUser(userId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {

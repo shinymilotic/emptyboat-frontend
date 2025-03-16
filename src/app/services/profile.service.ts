@@ -10,18 +10,18 @@ export class ProfileService {
   constructor(private readonly http: HttpClient) {}
 
   get(username: string): Observable<Profile> {
-    return this.http.get<Profile>("/profiles/" + username).pipe(
+    return this.http.get<Profile>(`/profiles/${username}`).pipe(
       shareReplay(1)
     );
   }
 
   follow(username: string): Observable<void> {
     return this.http
-      .post<void>("/profiles/" + username + "/follow", {});
+      .post<void>(`/profiles/${username}/follow`, {});
   }
 
   unfollow(username: string): Observable<void> {
     return this.http
-      .delete<void>("/profiles/" + username + "/follow");
+      .delete<void>(`/profiles/${username}/follow`);
   }
 }

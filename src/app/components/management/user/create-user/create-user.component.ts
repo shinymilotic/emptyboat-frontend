@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { UserManageService } from '../user-manage.serivce';
 import { CreateUserRequest } from './create-user-request.model';
 import { ApiError } from 'src/app/models/apierrors.model';
 import { ListErrorsComponent } from "../../../../shared-components/list-errors/list-errors.component";
@@ -14,6 +13,7 @@ import { ImageModule } from 'primeng/image';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserLogic } from '../user-logic';
 import { ApiValidationError } from 'src/app/models/apivalidationerror.model';
+import { UserService } from 'src/app/services/user.service';
 
 export interface CreateUserForm {
   username: FormControl<string>;
@@ -54,7 +54,7 @@ export class CreateUserComponent implements OnInit{
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly manageUserService: UserManageService,
+    private readonly userService: UserService,
     private readonly router: Router,
     private readonly userLogic: UserLogic
   ) { }
@@ -106,7 +106,7 @@ export class CreateUserComponent implements OnInit{
       return;
     }
 
-    this.manageUserService.adminCreateUser(form)
+    this.userService.createUser(form)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {

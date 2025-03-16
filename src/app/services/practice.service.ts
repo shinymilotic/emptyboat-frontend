@@ -12,7 +12,7 @@ export class PracticeService {
 
   createPractice(practice: Practice): Observable<CreatePracticeResponse> {
     return this.http
-      .post<CreatePracticeResponse>(`/practice`, practice);
+      .post<CreatePracticeResponse>(`/practices`, practice);
   }
 
   getPractices(username: string): Observable<UserPractice[]> {
@@ -22,6 +22,6 @@ export class PracticeService {
 
   getPractice(id: string): Observable<PracticeResult> {
     return this.http
-      .get<PracticeResult>(`/practice/${id}`);
+      .get<PracticeResult>(`/practices/${id}`);
   }
 }

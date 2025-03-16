@@ -36,7 +36,7 @@ export class TagComponent implements OnInit {
 
   ngOnInit(): void {
     forkJoin([
-      this.tagService.getTagAdmin(this.pageNumber, this.itemsPerPage),
+      this.tagService.getTagManage(this.pageNumber, this.itemsPerPage),
       this.tagService.getTagCount()
     ])
     .pipe(takeUntilDestroyed(this.destroyRef))
@@ -69,7 +69,7 @@ export class TagComponent implements OnInit {
         return;
       }
 
-      this.tagService.getTagAdmin($event.page + 1, $event.rows)
+      this.tagService.getTagManage($event.page + 1, $event.rows)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
           next: (data: TagManage[]) => {

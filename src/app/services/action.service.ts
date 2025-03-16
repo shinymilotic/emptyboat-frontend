@@ -12,7 +12,7 @@ export class ActionService {
 
   constructor() {}
 
-  toggleAction(action: string) {
+  toggleAction(action: string) {/*  */
     this.actionEmitter.emit(action);
   }
 }
