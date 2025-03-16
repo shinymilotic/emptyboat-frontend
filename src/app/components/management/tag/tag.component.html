@@ -16,7 +16,7 @@
 </div>
 <div class="card flex flex-col justify-center">
     <p-table #table 
-    [value]="tags"
+    [value]="tags.tags"
     [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
@@ -36,5 +36,5 @@
             </tr>
         </ng-template>
     </p-table>
-    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="this.tagCount" [rowsPerPageOptions]="[5, 10, 20, 30]" />
+    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="this.tags.tagCount" [rowsPerPageOptions]="[5, 10, 20, 30]" />
 </div>

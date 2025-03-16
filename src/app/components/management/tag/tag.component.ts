@@ -1,13 +1,12 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { TagService } from 'src/app/services/tags.service';
-import { TagManage } from './tag-manage.model';
+import { TagList } from './tag-list.model';
 import { ListErrorsComponent } from "../../../shared-components/list-errors/list-errors.component";
 import { ApiError } from 'src/app/models/apierrors.model';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { TableModule } from 'primeng/table';
 import { FormsModule } from '@angular/forms';
-import { forkJoin } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { Router, RouterLink } from '@angular/router';
@@ -24,8 +23,7 @@ import { AdminTagService } from 'src/app/services/admin-tags.service';
 export class TagComponent implements OnInit {
   pageNumber: number = 1;
   itemsPerPage: number = 10;
-  tags: TagManage[] = [];
-  tagCount: number = 0;
+  tags!: TagList;
   searchKeywords: string = '';
   error!: ApiError;
   destroyRef: DestroyRef = inject(DestroyRef);
@@ -36,10 +34,10 @@ export class TagComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.tagService.getTagManage(this.pageNumber, this.itemsPerPage)
+    this.tagService.getTags(this.pageNumber, this.itemsPerPage)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (tags) => {
+        next: (tags: TagList) => {
           this.tags = tags;
         },
         error: (error: ApiError) => {
@@ -66,10 +64,10 @@ export class TagComponent implements OnInit {
         return;
       }
 
-      this.tagService.getTagManage($event.page + 1, $event.rows)
+      this.tagService.getTags($event.page + 1, $event.rows)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
-          next: (data: TagManage[]) => {
+          next: (data: TagList) => {
             this.tags = data;
             if ($event.page != undefined) {
               this.pageNumber = $event.page + 1;

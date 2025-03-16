@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { TagManage } from "../components/management/tag/tag-manage.model";
+import { TagList } from "../components/management/tag/tag-list.model";
 import { Observable } from "rxjs";
 
 @Injectable({ providedIn: "root" })
@@ -8,7 +8,7 @@ export class AdminTagService {
 
     constructor(private readonly http: HttpClient) {}
 
-    public getTagManage(pageNumber?: number, itemsPerPage?: number) : Observable<TagManage[]> {
+    public getTags(pageNumber?: number, itemsPerPage?: number) : Observable<TagList> {
         let params = new HttpParams();
 
         if (pageNumber != null && itemsPerPage != null) {
@@ -17,7 +17,7 @@ export class AdminTagService {
         }
         
         return this.http
-        .get<TagManage[]>(`/admin/tags`, { params });
+        .get<TagList>(`/admin/tags`, { params });
     }
 
     public deleteTag(tagId: string) : Observable<void> {
