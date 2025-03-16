@@ -16,7 +16,7 @@
 </div>
 <div class="card flex flex-col justify-center">
     <p-table #table 
-    [value]="articles"
+    [value]="this.tests.tests"
     [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
@@ -26,17 +26,17 @@
                 <th style="width:20%">Action</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-article>
+        <ng-template pTemplate="body" let-test>
             <tr>
-                <td>{{ article.id }}</td>
-                <td>{{ article.author }}</td>
-                <td>{{ article.title }}</td>
+                <td>{{ test.id }}</td>
+                <td>{{ test.title }}</td>
+                <td>{{ test.description }}</td>
                 <td>
-                    <button class="overcloud-btn edit-user-btn mr-5" [routerLink]="[article.id, 'update']"><i class="pi pi-pencil"></i></button>&emsp;
-                    <button class="delete-btn" (click)="deleteArticle(article.id)"><i class="pi pi-trash"></i></button>
+                    <button class="overcloud-btn edit-user-btn mr-5" [routerLink]="[test.id, 'update']"><i class="pi pi-pencil"></i></button>&emsp;
+                    <button class="delete-btn" (click)="deleteTest(test.id)"><i class="pi pi-trash"></i></button>
                 </td>
             </tr>
         </ng-template>
     </p-table>
-    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="this.articlesCount" [rowsPerPageOptions]="[5, 10, 20, 30]" />
+    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="this.tests.testCount" [rowsPerPageOptions]="[5, 10, 20, 30]" />
 </div>

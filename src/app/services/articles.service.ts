@@ -3,9 +3,8 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { ArticleListConfig } from "../models/blog/article-list-config.model";
 import { Article } from "../models/blog/article.model";
-import { ArticleList } from "../models/blog/article-list.model";
 import { SubmitArticle } from "../components/editor/submit-article.model";
-import { ArticleManage } from "../components/management/article/article.model";
+import { ArticleList } from "../models/blog/article-list.model";
 
 @Injectable({ providedIn: "root" })
 export class ArticlesService {
@@ -54,22 +53,5 @@ export class ArticlesService {
 
   unfavorite(id: string): Observable<void> {
     return this.http.delete<void>(`/articles/${id}/unfavorite`);
-  }
-
-  getArticlesManage(pageNumber: number, itemsPerPage: number): Observable<ArticleManage[]> {
-    let params = new HttpParams();
-    
-    if (pageNumber != null && itemsPerPage != null) {
-      params = params.set('pageNumber', pageNumber);
-      params = params.set('itemsPerPage', itemsPerPage);  
-    }
-    
-    return this.http
-      .get<ArticleManage[]>(`/articles`, { params });
-  }
-
-  getArticlesCount(): Observable<number> {
-    return this.http
-      .get<number>(`/articles/count`);
   }
 }

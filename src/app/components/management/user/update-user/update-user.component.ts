@@ -13,6 +13,8 @@ import { CreateUserRequest } from '../create-user/create-user-request.model';
 import { CreateUserForm } from '../create-user/create-user.component';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { AdminUserService } from 'src/app/services/admin-users.service';
+import { UserLogic } from '../user-logic';
 
 @Component({
   selector: 'app-update-user',
@@ -43,8 +45,9 @@ isDisable: boolean = true;
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly userService: UserService,
-    private readonly router: Router
+    private readonly userService: AdminUserService,
+    private readonly router: Router,
+    private readonly userLogic: UserLogic
   ) { }
   
   ngOnInit(): void {
@@ -69,62 +72,14 @@ isDisable: boolean = true;
     });
   }
 
-  validateUsername(): void {
-    if (this.username?.hasError('required')) {
-      this.errors.errors.push({
-        messageId: '',
-        message: 'Username can\'t be blank.'
-      });
-    }
-
-    if (this.username?.hasError('minlength') || this.username?.hasError('maxlength')) {
-      this.errors.errors.push({
-        messageId: '',
-        message: 'Username must contains from 6 to 32 characters'
-      });
-    }
-  }
-
-  validatePassword(): void {
-    if (this.password?.hasError('required')) {
-      this.errors.errors.push({
-        messageId: '',
-        message: 'Password can\'t be blank.'
-      });
-    }
-
-    if (this.password?.hasError('minlength') || this.password?.hasError('maxlength')) {
-      this.errors.errors.push({
-        messageId: '',
-        message: 'Password must contains from 8 to 64 characters.'
-      });
-    }
-  }
-
-  validateEmail(): void {
-    if (this.email?.hasError('required')) {
-      this.errors.errors.push({
-        messageId: '',
-        message: 'Email can\'t be blank.'
-      });
-    }
-
-    if (this.email?.hasError('email')) {
-      this.errors.errors.push({
-        messageId: '',
-        message: 'Email is not valid.'
-      });
-    }
-  }
-
   createUser(): void {
     const form : CreateUserRequest = this.updateUserForm.value;
 
     this.errors = {errors: []};
 
-    this.validateUsername();
-    this.validatePassword();
-    this.validateEmail();
+    this.userLogic.validateUsername(this.username);
+    this.userLogic.validatePassword(this.password);
+    this.userLogic.validateEmail(this.email);
 
     if (this.errors.errors.length != 0) {
       return;

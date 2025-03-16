@@ -1,6 +1,6 @@
-export interface Article {
+
+export interface Test {
     id: string;
     title: string;
     description: string;
-    author: string;
 }

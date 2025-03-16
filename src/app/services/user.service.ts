@@ -83,30 +83,4 @@ export class UserService {
     return this.http
       .get<User[]>(`/followers/${userId}`, {});
   }
-
-  getUsers(pageNumber?: number, itemsPerPage?: number) : Observable<User[]> {
-    let params = new HttpParams();
-
-    if (pageNumber != null && itemsPerPage != null) {
-      params = params.set('pageNumber', pageNumber);
-      params = params.set('itemsPerPage', itemsPerPage);  
-    }
-    
-    return this.http
-      .get<User[]>(`/users`, { params });
-  }
-
-  getUsersCount() : Observable<number> {
-    return this.http
-      .get<number>(`/users/count`);
-  }
-
-  deleteUser(userId: string) : Observable<void> {
-    return this.http
-      .delete<void>(`/users/${userId}`);
-  }
-
-  createUser(user: CreateUserRequest): Observable<void>  {
-    return this.http.post<void>(`/users`, user);
-  }
 }

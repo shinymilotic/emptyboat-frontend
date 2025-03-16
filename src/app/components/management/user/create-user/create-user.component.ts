@@ -14,6 +14,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserLogic } from '../user-logic';
 import { ApiValidationError } from 'src/app/models/apivalidationerror.model';
 import { UserService } from 'src/app/services/user.service';
+import { AdminUserService } from 'src/app/services/admin-users.service';
 
 export interface CreateUserForm {
   username: FormControl<string>;
@@ -54,7 +55,7 @@ export class CreateUserComponent implements OnInit{
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly userService: UserService,
+    private readonly userService: AdminUserService,
     private readonly router: Router,
     private readonly userLogic: UserLogic
   ) { }

@@ -1,19 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterModule, RouterLink } from '@angular/router';
-import { Router } from 'express';
+import { RouterModule, RouterLink, Router } from '@angular/router';
 import { IconFieldModule } from 'primeng/iconfield';
 import { ImageModule } from 'primeng/image';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
-import { forkJoin } from 'rxjs';
 import { ApiError } from 'src/app/models/apierrors.model';
 import { ListErrorsComponent } from 'src/app/shared-components/list-errors/list-errors.component';
-import { UserManageService } from '../user/user-manage.serivce';
-import { User } from '../user/user.model';
+import { AdminTestService } from 'src/app/services/admin-tests.service';
+import { TestList } from './test-list.model';
 
 @Component({
   selector: 'app-test',
@@ -23,7 +21,7 @@ import { User } from '../user/user.model';
   styleUrl: './test.component.css'
 })
 export class TestComponent {
-users!: User[];
+  tests!: TestList;
   usersCount!: number;
   pageNumber: number = 1;
   itemsPerPage: number = 10;
@@ -32,20 +30,16 @@ users!: User[];
   error!: ApiError;
 
   constructor(
-    private readonly userManageService: UserManageService,
+    private readonly testService: AdminTestService,
     private readonly router: Router
   ) {}
 
   ngOnInit(): void {
-    forkJoin([
-      this.userManageService.getUsers(this.pageNumber, this.itemsPerPage),
-      this.userManageService.getUsersCount()
-      ])
+    this.testService.getTests(this.pageNumber, this.itemsPerPage)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: ([data, userCount]) => {
-          this.users = data;
-          this.usersCount = userCount;
+        next: (tests: TestList) => {
+          this.tests = tests;
         },
         error: (error: ApiError) => {
           this.error = error;
@@ -54,11 +48,11 @@ users!: User[];
   }
 
   onPageChange($event: PaginatorState) {
-    this.userManageService.getUsers($event.page, $event.rows)
+    this.testService.getTests($event.page, $event.rows)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (data: User[]) => {
-          this.users = data;
+        next: (tests: TestList) => {
+          this.tests = tests;
           if ($event.page != undefined) {
             this.pageNumber = $event.page + 1;
           }
@@ -74,13 +68,13 @@ users!: User[];
       });
   }
 
-  deleteUser(userId: string) : void {
-    this.userManageService.deleteUser(userId)
+  deleteTest(testsId: string) : void {
+    this.testService.deleteTest(testsId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['admin/user']);
+            this.router.navigate(['admin/tests']);
         });
         },
         error: (error: ApiError) => {

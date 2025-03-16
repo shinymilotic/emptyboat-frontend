@@ -13,6 +13,7 @@ import { ListErrorsComponent } from "../../../shared-components/list-errors/list
 import { forkJoin } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserService } from 'src/app/services/user.service';
+import { AdminUserService } from 'src/app/services/admin-users.service';
 
 @Component({
   selector: 'app-user',
@@ -31,25 +32,21 @@ export class UserComponent implements OnInit {
   error!: ApiError;
 
   constructor(
-    private readonly userSerivce: UserService,
+    private readonly userSerivce: AdminUserService,
     private readonly router: Router
   ) {}
 
   ngOnInit(): void {
-    forkJoin([
-      this.userSerivce.getUsers(this.pageNumber, this.itemsPerPage),
-      this.userSerivce.getUsersCount()
-      ])
+    this.userSerivce.getUsers(this.pageNumber, this.itemsPerPage)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: ([data, userCount]) => {
-          this.users = data;
-          this.usersCount = userCount;
+        next: (users) => {
+          this.users = users;
         },
         error: (error: ApiError) => {
           this.error = error;
         }
-      })
+    })
   }
 
   onPageChange($event: PaginatorState) {
@@ -79,7 +76,7 @@ export class UserComponent implements OnInit {
       .subscribe({
         next: () => {
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['admin/user']);
+            this.router.navigate(['admin/users']);
         });
         },
         error: (error: ApiError) => {

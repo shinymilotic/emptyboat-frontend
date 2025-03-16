@@ -12,6 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { Router, RouterLink } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
+import { AdminTagService } from 'src/app/services/admin-tags.service';
 
 @Component({
   selector: 'app-tag',
@@ -30,32 +31,28 @@ export class TagComponent implements OnInit {
   destroyRef: DestroyRef = inject(DestroyRef);
 
   constructor(
-    private readonly tagService: TagService,
+    private readonly tagService: AdminTagService,
     private readonly router: Router
   ) {}
 
   ngOnInit(): void {
-    forkJoin([
-      this.tagService.getTagManage(this.pageNumber, this.itemsPerPage),
-      this.tagService.getTagCount()
-    ])
-    .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe({
-      next: ([tags, tagCount]) => {
-        this.tags = tags;
-        this.tagCount = tagCount;
-      },
-      error: (error: ApiError) => {
-        this.error = error;
-      }
-    })
+    this.tagService.getTagManage(this.pageNumber, this.itemsPerPage)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (tags) => {
+          this.tags = tags;
+        },
+        error: (error: ApiError) => {
+          this.error = error;
+        }
+      })
   }
 
   deleteTag(tagId: string) {
     this.tagService.deleteTag(tagId).subscribe({
       next: () => {
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-          this.router.navigate(['admin/tag']);
+          this.router.navigate(['admin/tags']);
       });
       },
       error: (error: ApiError) => {
