@@ -16,7 +16,7 @@
 </div>
 <div class="card flex flex-col justify-center">
     <p-table #table 
-    [value]="users"
+    [value]="this.users.users"
     [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
@@ -32,7 +32,12 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
-                <td><p-image [src]="user.image" alt="Image" width="90" [preview]="true" />
+                <td>
+                    @if (user.image == null) {
+                        <p-image src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Image" width="90" height="90" [preview]="true" />
+                    } @else {
+                        <p-image [src]="user.image" alt="Image" width="90" height="90" [preview]="true" />
+                    }
                 </td>
                 <td>
                     <button class="overcloud-btn edit-user-btn mr-5" [routerLink]="[user.username, 'update']"><i class="pi pi-pencil"></i></button>&emsp;
@@ -41,5 +46,5 @@
             </tr>
         </ng-template>
     </p-table>
-    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="this.usersCount" [rowsPerPageOptions]="[5, 10, 20, 30]" />
+    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="this.users.userCount" [rowsPerPageOptions]="[5, 10, 20, 30]" />
 </div>

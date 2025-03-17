@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { User } from './user.model';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { ImageModule } from 'primeng/image';
 import { IconFieldModule } from 'primeng/iconfield';
@@ -10,10 +9,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { ApiError } from 'src/app/models/apierrors.model';
 import { ListErrorsComponent } from "../../../shared-components/list-errors/list-errors.component";
-import { forkJoin } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UserService } from 'src/app/services/user.service';
 import { AdminUserService } from 'src/app/services/admin-users.service';
+import { UserList } from './user-list.model';
 
 @Component({
   selector: 'app-user',
@@ -23,7 +21,7 @@ import { AdminUserService } from 'src/app/services/admin-users.service';
   styleUrl: './user.component.css'
 })
 export class UserComponent implements OnInit {
-  users!: User[];
+  users!: UserList;
   usersCount!: number;
   pageNumber: number = 1;
   itemsPerPage: number = 10;
@@ -53,7 +51,7 @@ export class UserComponent implements OnInit {
     this.userSerivce.getUsers($event.page, $event.rows)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (data: User[]) => {
+        next: (data: UserList) => {
           this.users = data;
           if ($event.page != undefined) {
             this.pageNumber = $event.page + 1;
@@ -76,7 +74,7 @@ export class UserComponent implements OnInit {
       .subscribe({
         next: () => {
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['admin/users']);
+            this.router.navigate(['admin/user']);
         });
         },
         error: (error: ApiError) => {
