@@ -14,27 +14,30 @@
         />
     </p-iconField>
 </div>
-<div class="card flex flex-col justify-center">
-    <p-table #table 
-    [value]="tags.tags"
-    [tableStyle]="{ 'min-width': '50rem' }">
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width:20%">ID</th>
-                <th style="width:20%">Name</th>
-                <th style="width:20%">Action</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-tag>
-            <tr>
-                <td>{{ tag.id }}</td>
-                <td>{{ tag.name }}</td>
-                <td>
-                    <button class="overcloud-btn edit-user-btn mr-5" [routerLink]="[tag.id, 'update']"><i class="pi pi-pencil"></i></button>&emsp;
-                    <button class="delete-btn" (click)="deleteTag(tag.id)"><i class="pi pi-trash"></i></button>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
-    <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="this.tags.tagCount" [rowsPerPageOptions]="[5, 10, 20, 30]" />
-</div>
+
+@if (this.tags != null) {
+    <div class="card flex flex-col justify-center">
+        <p-table #table 
+        [value]="this.tags.tags"
+        [tableStyle]="{ 'min-width': '50rem' }">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:20%">ID</th>
+                    <th style="width:20%">Name</th>
+                    <th style="width:20%">Action</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-tag>
+                <tr>
+                    <td>{{ tag.id }}</td>
+                    <td>{{ tag.name }}</td>
+                    <td>
+                        <button class="overcloud-btn edit-user-btn mr-5" [routerLink]="[tag.id, 'update']"><i class="pi pi-pencil"></i></button>&emsp;
+                        <button class="delete-btn" (click)="deleteTag(tag.id)"><i class="pi pi-trash"></i></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="this.tags.tagCount" [rowsPerPageOptions]="[5, 10, 20, 30]" />
+    </div>
+}
