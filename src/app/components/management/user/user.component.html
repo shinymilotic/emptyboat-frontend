@@ -35,7 +35,7 @@
                     <td>{{ user.username }}</td>
                     <td>{{ user.email }}</td>
                     <td>
-                        @if (user.image == null) {
+                        @if (user.image == null || user.image == '') {
                             <p-image src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Image" width="90" height="90" [preview]="true" />
                         } @else {
                             <p-image [src]="user.image" alt="Image" width="90" height="90" [preview]="true" />
