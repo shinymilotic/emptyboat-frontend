@@ -9,12 +9,12 @@ export class CommentsService {
 
   getAll(id: string): Observable<Comment[]> {
     return this.http
-      .get<Comment[]>(`/articles/${id}/comments`);
+      .get<Comment[]>(`/articles/comments/${id}`);
   }
 
   add(id: string, payload: string): Observable<Comment> {
     return this.http
-      .post<Comment>(`/articles/${id}/comments`, { body: payload });
+      .post<Comment>(`/articles/comments/${id}`, { body: payload });
   }
 
   delete(commentId: string, articleId: string): Observable<void> {
