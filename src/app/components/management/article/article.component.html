@@ -31,7 +31,7 @@
             <ng-template pTemplate="body" let-article>
                 <tr>
                     <td>{{ article.id }}</td>
-                    <td>{{ article.author }}</td>
+                    <td>{{ article.author.username }}</td>
                     <td>{{ article.title }}</td>
                     <td>
                         <button class="overcloud-btn edit-article-btn mr-5" [routerLink]="[article.id, 'update']"><i class="pi pi-pencil"></i></button>&emsp;
