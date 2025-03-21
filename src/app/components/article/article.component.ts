@@ -1,85 +1,103 @@
-import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterModule, RouterLink, Router } from '@angular/router';
-import { IconFieldModule } from 'primeng/iconfield';
-import { ImageModule } from 'primeng/image';
-import { InputIconModule } from 'primeng/inputicon';
-import { InputTextModule } from 'primeng/inputtext';
-import { PaginatorModule, PaginatorState } from 'primeng/paginator';
-import { TableModule } from 'primeng/table';
-import { ApiError } from 'src/app/models/apierrors.model';
-import { ListErrorsComponent } from 'src/app/shared-components/list-errors/list-errors.component';
-import { ArticleList } from './article-list.model';
-import { AdminArticleService } from 'src/app/services/admin-articles.service';
+import { Component, DestroyRef, ElementRef, OnInit, Signal, computed, inject } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { Article } from "../../models/blog/article.model";
+import { ArticlesService } from "../../services/articles.service";
+import { UserService } from "../../services/user.service";
+import { ArticleMetaComponent } from "../../shared-components/article-helpers/article-meta.component";
+import { NgClass } from "@angular/common";
+import { FollowButtonComponent } from "../../shared-components/buttons/follow-button.component";
+import { FavoriteButtonComponent } from "../../shared-components/buttons/favorite-button.component";
+import { catchError, } from "rxjs/operators";
+import { DialogModule } from 'primeng/dialog';
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { CommentDialogComponent } from "./comment-dialog/comment-dialog.component";
+import { throwError } from "rxjs";
 
 @Component({
-  selector: 'app-article',
-  standalone: true,
-  imports: [TableModule, CommonModule, RouterModule, PaginatorModule, ImageModule, IconFieldModule, InputIconModule, InputTextModule, RouterLink, ListErrorsComponent],
-  templateUrl: './article.component.html',
-  styleUrl: './article.component.css'
+    selector: "app-article-page",
+    templateUrl: "./article.component.html",
+    styleUrls: ['./article.component.css'],
+    standalone: true,
+    imports: [
+      ArticleMetaComponent,
+      RouterLink,
+      NgClass,
+      FollowButtonComponent,
+      FavoriteButtonComponent,
+      FormsModule,
+      ReactiveFormsModule,
+      DialogModule,
+      CommentDialogComponent
+    ]
 })
-export class ArticleComponent {
-  articles!: ArticleList;
-  articlesCount!: number;
-  pageNumber: number = 1;
-  itemsPerPage: number = 10;
-  searchKeywords: string = '';
+export class ArticleComponent implements OnInit {
+  article!: Article;
+  canModify: Signal<boolean> = computed(() => {
+    if (this.userService.userSignal()?.username === this.article.author.username) {
+      return true;
+    }
+
+    return false;
+  });  
+  isDeleting = false;
   destroyRef: DestroyRef = inject(DestroyRef);
-  error!: ApiError;
-
+  visible: boolean = false;
+  
   constructor(
-    private readonly articleService: AdminArticleService,
-    private readonly router: Router
-  ) {}
-
-  ngOnInit(): void {  
-      this.articleService.getArticles(this.pageNumber, this.itemsPerPage)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe({
-          next: (articles: ArticleList) => {
-            this.articles = articles;
-          },
-          error: (error: ApiError) => {
-            this.error = error;
-          }
-      })
+    private readonly route: ActivatedRoute,
+    private readonly articleService: ArticlesService,
+    private readonly router: Router,
+    public readonly userService: UserService,
+    public elementRef: ElementRef,
+  ) {
   }
 
-  onPageChange($event: PaginatorState) {
-    this.articleService.getArticles($event.page, $event.rows)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (data: ArticleList) => {
-          this.articles = data;
-          if ($event.page != undefined) {
-            this.pageNumber = $event.page + 1;
-          }
+  ngOnInit(): void {
+    const id = this.route.snapshot.params["id"];
+    this.articleService.get(id)
+    .pipe(
+      catchError((err) => {
+        void this.router.navigate(["/"]);
+        return throwError(() => err);
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    )
+    .subscribe((article) => {
+      this.article = article;
+    });
+  }
 
-          if ($event.rows != undefined) {
-            this.itemsPerPage = $event.rows;
-          }
-          
-        },
-        error: (error: ApiError) => {
-          this.error = error;
-        }
+  onToggleFavorite(favorited: boolean): void {
+    this.article.favorited = favorited;
+
+    if (favorited) {
+      this.article.favoritesCount++;
+    } else {
+      this.article.favoritesCount--;
+    }
+  }
+
+  // toggleFollowing(): void {
+  //   this.article.author.following = !this.article.author.following;
+  // }
+
+  deleteArticle(): void {
+    this.isDeleting = true;
+
+    this.articleService
+      .delete(this.article.id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        void this.router.navigate(["/"]);
       });
   }
 
-  deleteArticle(articleId: string) : void {
-    this.articleService.deleteArticle(articleId)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-              this.router.navigate(['manage/article']);
-          });
-        },
-        error: (error: ApiError) => {
-          this.error = error;
-        }
-      })
+  showDialog() {
+    this.visible = true;
+  }
+
+  closeDialog() {
+    this.visible = false;
   }
 }

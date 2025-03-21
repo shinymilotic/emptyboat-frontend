@@ -1,0 +1,21 @@
+.add-article-btn {
+    width:fit-content;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: var(--primary-color);
+}
+
+.edit-article-btn {
+    background-color: var(--primary-color);
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.delete-btn {
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.error-list {
+    color: brown;
+}

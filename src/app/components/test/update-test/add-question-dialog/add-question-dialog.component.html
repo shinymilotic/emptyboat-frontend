@@ -1,0 +1,59 @@
+<p-dialog 
+    header="Add question" 
+    [(visible)]="this.visible" 
+    [modal]="true" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '50vw' }" 
+    [draggable]="false" 
+    [resizable]="false"
+    (onHide)="this.closeNewQuestionDiablog()">
+    
+    @if (this.questionType === QuestionType.CHOICE) {
+            <div class="flex flex-col align-items-center gap-3 m-3" [formGroup]="this.questionForm">
+                <label for="question" class="font-semibold p-2">Question: </label>
+                <div pInputText id="question" class="flex-auto textbox" contenteditable formControlName="question"></div>
+
+                <div formArrayName="answers">
+                    <ol>
+                    @for (answer of this.getAnswersFormArr().controls; track answer) {
+                        <li formGroupName="{{$index}}" class="mt-2 flex items-center">
+                        <fieldset class="form-group mr-3 flex-1">
+                                <div pInputText
+                                id="content-answer-{{ $index }}"
+                                placeholder="Câu trả lời" contenteditable class="textbox" formControlName="answer"></div>
+                        </fieldset>
+
+                        <fieldset class="form-group mr-3 truth-fieldset">
+                            <label class="checkmark-fieldset">
+                            <input
+                                class="form-control"
+                                formControlName="truth"
+                                type="checkbox" />
+                            <span class="checkmark border-solid border"></span>
+                            </label>  
+                        </fieldset>
+                            
+                        <a class="deleteBtn self-center"
+                            (click)="this.deleteAnswer(answer)" >
+                            Delete
+                        </a>
+                    </li>
+                    }  
+                    </ol>
+                </div>
+
+                <button type="button" class="overcloud-btn add-answer-btn" (click)="this.addAnswer()">Add answer</button>
+            </div>
+
+    } @else if (this.questionType === QuestionType.OPEN) {
+            <div class="flex flex-col align-items-center gap-3 m-3" [formGroup]="this.questionForm">
+                <label for="question" class="font-semibold p-2">Question: </label>
+                <div pInputText id="question" class="flex-auto textbox" contenteditable formControlName="question"></div>
+            </div>
+    }
+        
+    <div class="flex justify-content-end gap-2 float-right">
+        <p-button label="Cancel" severity="secondary" (onClick)="this.closeNewQuestionDiablog()" />
+        <p-button type="button" label="Save" (onClick)="this.saveNewQuestion()" />
+    </div>
+</p-dialog>

@@ -1,0 +1,56 @@
+<div class="search-page flex justify-center" >
+    <!-- <app-side-bar class="col-sm-0 col-s-0"></app-side-bar> -->
+  
+    <div>
+      <div class="search-result" >
+        <div class="flex flex-row p-4 user-info">
+          <div class="user-info flex flex-col ml-5 relative">
+            <h1 class="font-bold mb-4">Kết quả tìm kiếm với từ khóa: {{this.q}}</h1>    
+          </div>
+        </div>
+      </div>
+    
+      <div class="container">
+        <div class="articles-toggle">
+          <ul class="nav nav-pills outline-active flex">
+            <li class="nav-item mr-2">
+              <a
+                class="nav-link"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                [queryParams]="{q: this.q}"
+                [routerLink]="['/search', 'articles']"
+              >
+                Bài viết
+              </a>
+            </li>
+            <li class="nav-item mr-2">
+              <a
+                class="nav-link"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                [queryParams]="{q: this.q}"
+                [routerLink]="['/search', 'users']"
+              >
+                Người dùng
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                [queryParams]="{q: this.q}"
+                [routerLink]="['/search', 'tests']"
+              >
+                Bài thi
+              </a>
+            </li>
+          </ul>
+        </div>
+        <br>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    
+  </div>

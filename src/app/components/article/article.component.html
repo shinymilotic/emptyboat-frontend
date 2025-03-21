@@ -1,45 +1,108 @@
-<app-list-errors class="error-list" [errors]="this.error"></app-list-errors>
+@if (article) {
+  <div class="article-page flex justify-between">
+  
+    <div class="article-container">
+      <div class="banner">
+        <div class="container">
+          <h1 class="title">{{ article.title }}</h1>
+          <h2 class="description">{{ article.description }}</h2>
+          <app-article-meta [article]="article">
+            @if (canModify()) {
+              <span>
+                <a
+                  class="overcloud-btn edit-btn"
+                  [routerLink]="['/editor', article.id]"
+                >
+                  Edit
+                </a>
+                <span>&nbsp;&nbsp;</span>
+                <a
+                  class="delete-btn"
+                  [ngClass]="{ disabled: isDeleting }"
+                  (click)="deleteArticle()"
+                >
+                  Delete
+                </a>
+              </span>
+            }
+              <div class="follow-favorites-panel">
+                @if (!canModify()) {
+                <app-follow-button
+                  [profile]="article.author"
+                  class="mr-3"
+                >
+                </app-follow-button>
+                }
+                <app-favorite-button
+                  [article]="article"
+                  (toggle)="onToggleFavorite($event)"
+                > 
+                  {{ article.favorited ? " " : " " }}
+                  <span class="counter">{{ article.favoritesCount }}</span>
+                </app-favorite-button>
+              </div>
+          </app-article-meta>
+        </div>
+      </div>
+      <hr>
+      <div class="page">
+        <div class="row article-content col-md-12">
+            <!-- <div [innerHTML]="article.body | markdown | async"></div> -->
+            <div [innerHTML]="article.body"></div>
+            <ul class="tag-list">
+              @for (tag of article.tagList; track $index) {
+              <li
+                class="tag-pill"
+              >
+                {{ tag.name }}
+              </li>
+              }
+            </ul>
 
-<div class="card flex gap-4 flex-col">
-    <button class="overcloud-btn add-article-btn" [routerLink]="['create']"><i class="pi pi-user-plus"></i></button>
-    <p-iconField iconPosition="left">
-        <p-inputIcon>
-            <i class="pi pi-search"></i>
-        </p-inputIcon>
-        <input
-            pInputText
-            type="text"
-            [(ngModel)]="this.searchKeywords"
-            placeholder="Search keyword"
-        />
-    </p-iconField>
-</div>
-
-@if (this.articles != null) {
-    <div class="card flex flex-col justify-center">
-        <p-table #table 
-        [value]="this.articles.articles"
-        [tableStyle]="{ 'min-width': '50rem' }">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th style="width:20%">ID</th>
-                    <th style="width:20%">Author</th>
-                    <th style="width:20%">Title</th>
-                    <th style="width:20%">Action</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-article>
-                <tr>
-                    <td>{{ article.id }}</td>
-                    <td>{{ article.author.username }}</td>
-                    <td>{{ article.title }}</td>
-                    <td>
-                        <button class="overcloud-btn edit-article-btn mr-5" [routerLink]="[article.id, 'update']"><i class="pi pi-pencil"></i></button>&emsp;
-                        <button class="delete-btn" (click)="deleteArticle(article.id)"><i class="pi pi-trash"></i></button>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-        <p-paginator (onPageChange)="onPageChange($event)" [rows]="10" [totalRecords]="this.articlesCount" [rowsPerPageOptions]="[5, 10, 20, 30]" />
+            <div class="flex">
+              <app-favorite-button
+                [article]="article"
+                (toggle)="onToggleFavorite($event)"
+              > 
+                {{ article.favorited ? " " : " " }}
+                <span class="counter">{{ article.favoritesCount }}</span>
+              </app-favorite-button>
+              <i id="comments-btn" class="pi pi-comments" (click)="showDialog()"></i>
+            </div>
+        </div>
+    
+        <hr />
+    
+        <div class="article-actions">
+          <app-article-meta [article]="article">
+            @if (canModify()) {
+              <span>
+                <a
+                  class="overcloud-btn edit-btn"
+                  [routerLink]="['/editor', article.id]"
+                >
+                  Edit
+                </a>
+                <span>&nbsp;&nbsp;</span>
+                <a
+                  class="delete-btn"
+                  [ngClass]="{ disabled: isDeleting }"
+                  (click)="deleteArticle()"
+                >
+                  Delete
+              </a>
+              </span>
+            }
+            
+          </app-article-meta>
+          
+        </div>
+    
+        @if (this.visible === true) {
+          <app-comment-dialog [articleId]="this.article.id" (visible)="this.closeDialog()"></app-comment-dialog>
+        }
+        
+      </div>
     </div>
+  </div>  
 }

@@ -1,0 +1,15 @@
+
+
+.fail {
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
+.container {
+    background-color: white;
+    border-radius: 12px;
+    word-break: break-all;
+}

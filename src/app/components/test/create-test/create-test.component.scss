@@ -1,0 +1,82 @@
+
+.container {
+  word-break: break-word;
+}
+
+.question {
+  border-radius: 10px;
+}
+
+.addAnswerBtn {
+  padding: 8px;
+  color: #0084ff;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 5px;
+  margin: 5px;
+  border: none;
+  transition: .1s ease-in-out;
+  background-color: white;
+}
+
+.addAnswerBtn:hover {
+  color: white;
+  background-color: #0084ff;
+}
+
+.deleteAnswerBtn {
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #b85c5c;
+  transition: .2s ease-in-out;
+}
+
+.deleteAnswerBtn:hover{
+  color: white;
+  background-color: #b85c5c;
+}
+
+.deleteQuestionBtn {
+  align-self: baseline;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 10px;
+  color: #b85c5c;
+  transition: .2s ease-in-out;
+}
+
+.deleteQuestionBtn:hover {
+  color: white;
+  background-color: #b85c5c;
+}
+
+#submitBtn {
+  border: 1px solid;
+  border-radius: 2px;
+  background-color: #eee;
+  padding: 3px;
+}
+
+.truth-fieldset {
+  background: none!important;
+}
+
+.addQuestionBtn, .createTestBtn {
+  border-radius: 8px;
+  padding: .3em 8px;
+  margin: 5px;
+}
+
+.delete-answer-icon {
+  margin-top: 50%;
+}
+
+.answer-container {
+  align-items: center;
+}

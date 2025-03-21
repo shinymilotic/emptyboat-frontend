@@ -1,0 +1,46 @@
+<div class="flex justify-center">
+
+    <div class="mt-3 w-full">
+      <app-list-errors [errors]="errors"></app-list-errors>
+        <h1>{{ this.testUpd.title }}</h1>
+        <span>{{ this.testUpd.description }}</span>
+        <ol>
+            @for (questionUpd of this.testUpd.questions; track $index;) {
+                <li class="question {{this.background(questionUpd)}}" (click)="showUpdateQuestionDialog($index)">
+                    @if (questionUpd.questionType === QuestionType.CHOICE) { 
+                        <div [innerHTML]="questionUpd.question"></div>
+                        <ol class="choice-answer-list">
+                        @for (answer of asChoiceQuestion($index).answers; track $index; let aIndex = $index) {
+                          @if (answer.updateFlg !== UpdateFlg.DELETE) {
+                            <li>
+                              <span [innerHTML]="answer.answer"></span>
+                              @if (answer.truth === true) {
+                                <i class="pi pi-check"></i>
+                              } @else {
+                                <i class="pi pi-times"></i>
+                              }
+                            </li>
+                          }  
+                        }
+                        </ol>
+                    } @else if (questionUpd.questionType === QuestionType.OPEN) {
+                        <div [innerHTML]="questionUpd.question"></div>
+                    }
+                </li>
+            }
+        </ol>
+        <button class="overcloud-btn add-question-btn" (click)="this.showAddQuestionDialog(QuestionType.OPEN)">Add open question</button>
+        <button class="overcloud-btn add-question-btn" (click)="this.showAddQuestionDialog(QuestionType.CHOICE)">Add choice question</button>
+        <button class="updateTestBtn overcloud-btn" type="submit" (click)="updateTest()">
+          Update
+        </button>
+    </div>
+  </div>
+
+@if (this.selectedUpdateQuesion != -1) {
+  <app-update-question-dialog [updateQuestion]="this.testUpd.questions[this.selectedUpdateQuesion]" (updateQuestionChange)="this.updateQuestion($event)"></app-update-question-dialog>
+}
+
+@if (this.questionTypeForNew === QuestionType.CHOICE || this.questionTypeForNew === QuestionType.OPEN) {
+  <app-add-question-dialog [questionType]="this.questionTypeForNew" (saveQuestion)="this.saveQuestion($event)"></app-add-question-dialog>
+}
