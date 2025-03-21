@@ -1,7 +1,6 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { TagService } from 'src/app/services/tags.service';
 import { TagList } from './tag-list.model';
-import { ListErrorsComponent } from "../../../shared-components/list-errors/list-errors.component";
 import { ApiError } from 'src/app/models/apierrors.model';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -12,6 +11,7 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { Router, RouterLink } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { AdminTagService } from 'src/app/services/admin-tags.service';
+import { ListErrorsComponent } from 'src/app/shared-components/list-errors/list-errors.component';
 
 @Component({
   selector: 'app-tag',

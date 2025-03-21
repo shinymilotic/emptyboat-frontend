@@ -8,10 +8,10 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { ApiError } from 'src/app/models/apierrors.model';
-import { ListErrorsComponent } from "../../../shared-components/list-errors/list-errors.component";
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AdminUserService } from 'src/app/services/admin-users.service';
 import { UserList } from './user-list.model';
+import { ListErrorsComponent } from 'src/app/shared-components/list-errors/list-errors.component';
 
 @Component({
   selector: 'app-user',

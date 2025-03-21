@@ -5,7 +5,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CreateUserRequest } from './create-user-request.model';
 import { ApiError } from 'src/app/models/apierrors.model';
-import { ListErrorsComponent } from "../../../../shared-components/list-errors/list-errors.component";
 import { Router } from '@angular/router';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ContenteditableValueAccessor } from 'src/app/directives/contenteditable.directive';
@@ -13,8 +12,8 @@ import { ImageModule } from 'primeng/image';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UserLogic } from '../user-logic';
 import { ApiValidationError } from 'src/app/models/apivalidationerror.model';
-import { UserService } from 'src/app/services/user.service';
 import { AdminUserService } from 'src/app/services/admin-users.service';
+import { ListErrorsComponent } from 'src/app/shared-components/list-errors/list-errors.component';
 
 export interface CreateUserForm {
   username: FormControl<string>;
