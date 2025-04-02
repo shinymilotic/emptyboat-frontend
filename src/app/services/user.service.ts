@@ -1,11 +1,10 @@
 import { Injectable, signal } from "@angular/core";
 import { Observable } from "rxjs";
 import { tap, shareReplay } from "rxjs/operators";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { User } from "../models/auth/user.model";
 import { AuthCookieUtils } from "../utils/authCookie.utils";
 import { ApiError } from "../models/apierrors.model";
-import { CreateUserRequest } from "../components/management/user/create-user/create-user-request.model";
 
 @Injectable({ providedIn: "root" })
 export class UserService {
